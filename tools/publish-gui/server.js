@@ -64,6 +64,7 @@ function getPlugins() {
     const validation = validateManifest(manifest);
     const existing = catalog.find((c) => c.id === id) || {};
     const zipPath = path.join(DOWNLOADS_DIR, `${id}-plugin.zip`);
+    const hasHandler = fs.existsSync(path.join(PLUGINS_DIR, id, 'handler.js'));
 
     result.push({
       id,
@@ -78,6 +79,7 @@ function getPlugins() {
       author: existing.author || 'PCC公式',
       tags: existing.tags || [],
       requires: existing.requires || [],
+      hasHandler,
     });
   }
   return result;
@@ -114,6 +116,7 @@ function publishPlugin(id, { author, tags, requires }) {
   execFileSync('zip', ['-r', zipPath, '.', '-x', '*.DS_Store'], { cwd: pluginDir });
 
   const catalog = readCatalog();
+  const hasHandler = fs.existsSync(path.join(pluginDir, 'handler.js'));
   const entry = {
     id: manifest.id,
     name: manifest.name,
@@ -123,6 +126,7 @@ function publishPlugin(id, { author, tags, requires }) {
     download: `downloads/${zipName}`,
     requires: requires || [],
     tags: tags || [],
+    hasCode: hasHandler,
   };
 
   const idx = catalog.findIndex((c) => c.id === id);
@@ -181,6 +185,14 @@ const server = http.createServer(async (req, res) => {
   if (req.url === '/api/publish' && req.method === 'POST') {
     try {
       const body = await readBody(req);
+
+      // idは実在するplugins/配下のディレクトリ名と完全一致するものだけ許可
+      // (リクエストのidをそのままパス結合しない = パストラバーサル対策)
+      const validIds = listPluginDirs();
+      if (typeof body.id !== 'string' || !validIds.includes(body.id)) {
+        throw new Error(`不正なプラグインIDです: ${body.id}`);
+      }
+
       const result = publishPlugin(body.id, {
         author: body.author,
         tags: (body.tags || '').split(',').map((s) => s.trim()).filter(Boolean),
@@ -198,6 +210,8 @@ const server = http.createServer(async (req, res) => {
   serveStatic(req, res);
 });
 
-server.listen(PORT, () => {
+// メンテナ専用ツールのため、ローカルホストからのみ待ち受ける
+// (ホスト未指定だと全ネットワークインターフェースで待受してしまうため明示)
+server.listen(PORT, '127.0.0.1', () => {
   console.log(`Publish GUI: http://localhost:${PORT}`);
 });

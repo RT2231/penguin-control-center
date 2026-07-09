@@ -13,7 +13,8 @@
       "公式",
       "時刻同期",
       "systemd"
-    ]
+    ],
+    "hasCode": true
   },
   {
     "id": "openssh",
@@ -29,7 +30,8 @@
       "公式",
       "SSH",
       "systemd"
-    ]
+    ],
+    "hasCode": false
   },
   {
     "id": "docker",
@@ -45,7 +47,8 @@
       "公式",
       "コンテナ",
       "systemd"
-    ]
+    ],
+    "hasCode": false
   },
   {
     "id": "apache2",
@@ -61,7 +64,8 @@
       "公式",
       "Webサーバー",
       "systemd"
-    ]
+    ],
+    "hasCode": false
   },
   {
     "id": "pihole",
@@ -77,6 +81,7 @@
       "公式",
       "DNS",
       "広告ブロック"
-    ]
+    ],
+    "hasCode": false
   }
 ]

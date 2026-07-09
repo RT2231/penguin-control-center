@@ -172,6 +172,8 @@ html, body {
   padding: 2px 8px;
   color: var(--text-muted);
 }
+.store-tag.code-badge { color: var(--warn); border-color: var(--warn); }
+.store-tag.manifest-badge { color: var(--accent); border-color: var(--accent-dim); }
 
 .store-install-btn {
   font-family: var(--font-mono);

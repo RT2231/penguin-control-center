@@ -2,7 +2,7 @@
 // ウィンドウ生成とIPCハンドラの登録のみを担当する。
 // OS操作の実処理はcore/配下のモジュールに委譲する（責務分離）。
 
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 
 const pluginLoader = require('./core/pluginLoader');
@@ -29,6 +29,23 @@ function createWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
+
+  // 多層防御: 悪意あるプラグインdocs.md等からのリンクでも、
+  // 新規ウィンドウは常に拒否し、http/https/mailtoのみ既定ブラウザで開く。
+  // レンダラー内でのアプリ外URLへのナビゲーションも禁止する。
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^(https?:|mailto:)/i.test(url)) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
+  });
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (!url.startsWith('file://')) {
+      event.preventDefault();
+      if (/^(https?:|mailto:)/i.test(url)) shell.openExternal(url);
+    }
+  });
 }
 
 app.whenReady().then(() => {

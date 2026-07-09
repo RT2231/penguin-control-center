@@ -77,6 +77,9 @@ function renderStoreCard(p) {
   card.className = 'store-card';
 
   const tags = (p.tags || []).map((t) => `<span class="store-tag">${escapeHtml(t)}</span>`).join('');
+  const codeBadge = p.hasCode
+    ? '<span class="store-tag code-badge" title="宣言的なCLI定義に加え追加のJavaScriptコード(handler.js)を含みます">⚠ カスタムコード含む</span>'
+    : '<span class="store-tag manifest-badge" title="宣言的なCLI定義のみで構成されています">manifest-only</span>';
 
   let btnLabel = '導入する';
   let btnClass = '';
@@ -94,7 +97,7 @@ function renderStoreCard(p) {
     <div class="name">${escapeHtml(p.name)}</div>
     <div class="meta">v${escapeHtml(p.version)} ・ ${escapeHtml(p.author || '')}</div>
     <div class="desc">${escapeHtml(p.description || '')}</div>
-    <div class="store-tags">${tags}</div>
+    <div class="store-tags">${tags}${codeBadge}</div>
     <button class="store-install-btn ${btnClass}" ${btnDisabled ? 'disabled' : ''}>${btnLabel}</button>
   `;
 
@@ -317,7 +320,12 @@ function inline(text) {
   let t = escapeHtml(text);
   t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
   t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+    // javascript: 等の危険なスキームを無害化（http/https/mailtoのみ許可）
+    const safe = /^(https?:|mailto:)/i.test(url.trim());
+    if (!safe) return label; // リンク化せずテキストのみ表示
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+  });
   return t;
 }
 
@@ -325,7 +333,9 @@ function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 init();

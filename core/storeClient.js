@@ -35,15 +35,21 @@ function fetchJson(url) {
   });
 }
 
-function downloadFile(url, destPath) {
+function downloadFile(url, destPath, allowedOrigin = null) {
   return new Promise((resolve, reject) => {
+    const origin = allowedOrigin || new URL(url).origin;
     const file = fs.createWriteStream(destPath);
     https
       .get(url, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           file.close();
           fs.unlink(destPath, () => {});
-          downloadFile(new URL(res.headers.location, url).toString(), destPath).then(resolve).catch(reject);
+          const nextUrl = new URL(res.headers.location, url);
+          if (nextUrl.origin !== origin) {
+            reject(new Error(`リダイレクト先のオリジンが不正です: ${nextUrl.origin}`));
+            return;
+          }
+          downloadFile(nextUrl.toString(), destPath, origin).then(resolve).catch(reject);
           return;
         }
         if (res.statusCode !== 200) {
@@ -84,15 +90,29 @@ function assertSafeZipEntries(zipPath) {
   }
 }
 
+const PLUGIN_ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,63}$/;
+
 async function installPlugin(entry, baseUrl = DEFAULT_STORE_BASE_URL) {
   if (!entry || !entry.id || !entry.download) {
     throw new Error('プラグインのカタログ情報が不正です');
   }
 
-  const zipUrl = new URL(entry.download, baseUrl).toString();
+  // パストラバーサル対策: idは安全な文字種のみ許可（'..'や'/'を含む値を拒否）
+  if (!PLUGIN_ID_PATTERN.test(entry.id)) {
+    throw new Error(`不正なプラグインIDです: ${entry.id}`);
+  }
+
+  const zipUrl = new URL(entry.download, baseUrl);
+  const baseUrlObj = new URL(baseUrl);
+
+  // ダウンロード元のなりすまし対策: 必ずストアと同一オリジンからのみ取得する
+  if (zipUrl.origin !== baseUrlObj.origin) {
+    throw new Error(`ストアと異なるオリジンからのダウンロードは許可されていません: ${zipUrl.origin}`);
+  }
+
   const tmpZip = path.join(os.tmpdir(), `pcc-plugin-${entry.id}-${Date.now()}.zip`);
 
-  await downloadFile(zipUrl, tmpZip);
+  await downloadFile(zipUrl.toString(), tmpZip);
 
   try {
     assertSafeZipEntries(tmpZip);
