@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>Penguin Control Center</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">🐧</span>
+        <div>
+          <div class="brand-title">Penguin Control Center</div>
+          <div class="brand-sub">plugin manager</div>
+        </div>
+      </div>
+      <nav id="plugin-list" class="plugin-list"><!-- JSで生成 --></nav>
+    </aside>
+
+    <main class="main" id="main">
+      <div class="empty-state" id="empty-state">
+        <p>左のリストから管理したいソフトウェアを選択してください。</p>
+      </div>
+
+      <div class="plugin-view hidden" id="plugin-view">
+        <header class="main-header">
+          <div>
+            <h1 id="plugin-name">—</h1>
+            <p id="plugin-desc" class="muted"></p>
+          </div>
+        </header>
+
+        <div class="tabs" id="tabs">
+          <button class="tab-btn active" data-tab="gui">GUI設定</button>
+          <button class="tab-btn" data-tab="cli">CLI</button>
+          <button class="tab-btn" data-tab="log">ログ</button>
+          <button class="tab-btn" data-tab="config">設定ファイル</button>
+          <button class="tab-btn" data-tab="docs">ドキュメント</button>
+        </div>
+
+        <section class="tab-panel" id="panel-gui">
+          <div id="action-list" class="action-list"></div>
+          <pre id="action-result" class="result-box" hidden></pre>
+        </section>
+
+        <section class="tab-panel hidden" id="panel-cli">
+          <div class="panel-toolbar">
+            <span class="muted">実行されたコマンドの履歴（このアプリ内での実行のみ）</span>
+            <button id="refresh-cli" class="btn-ghost">更新</button>
+          </div>
+          <div id="cli-history" class="cli-history"></div>
+        </section>
+
+        <section class="tab-panel hidden" id="panel-log">
+          <div class="panel-toolbar">
+            <span class="muted" id="log-unit-label"></span>
+            <button id="refresh-log" class="btn-ghost">更新</button>
+          </div>
+          <pre id="log-box" class="result-box"></pre>
+        </section>
+
+        <section class="tab-panel hidden" id="panel-config">
+          <div class="panel-toolbar">
+            <span class="muted" id="config-path-label"></span>
+            <button id="save-config" class="btn-primary">保存（自動バックアップ）</button>
+          </div>
+          <textarea id="config-editor" class="config-editor" spellcheck="false"></textarea>
+          <div id="config-status" class="muted"></div>
+        </section>
+
+        <section class="tab-panel hidden" id="panel-docs">
+          <div id="docs-view" class="docs-view"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

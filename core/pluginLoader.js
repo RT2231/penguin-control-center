@@ -1,0 +1,75 @@
+// core/pluginLoader.js — plugins/配下をスキャンし、マニフェストを読み込む。
+
+const fs = require('fs');
+const path = require('path');
+
+const PLUGINS_DIR = path.join(__dirname, '..', 'plugins');
+
+let cache = null; // { [pluginId]: { manifest, dir, handler } }
+
+function loadAll() {
+  const result = {};
+  if (!fs.existsSync(PLUGINS_DIR)) return result;
+
+  const entries = fs.readdirSync(PLUGINS_DIR, { withFileTypes: true });
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const dir = path.join(PLUGINS_DIR, entry.name);
+    const manifestPath = path.join(dir, 'plugin.json');
+    if (!fs.existsSync(manifestPath)) continue;
+
+    try {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      validateManifest(manifest);
+
+      let handler = null;
+      const handlerPath = path.join(dir, 'handler.js');
+      if (fs.existsSync(handlerPath)) {
+        handler = require(handlerPath);
+      }
+
+      result[manifest.id] = { manifest, dir, handler };
+    } catch (err) {
+      console.error(`プラグイン読み込み失敗: ${entry.name}`, err);
+    }
+  }
+  return result;
+}
+
+function validateManifest(manifest) {
+  if (!manifest.id || !manifest.name || !Array.isArray(manifest.actions)) {
+    throw new Error('マニフェストの必須フィールド(id, name, actions)が不足しています');
+  }
+  for (const action of manifest.actions) {
+    if (!action.id || !action.label || !Array.isArray(action.cli) || action.cli.length === 0) {
+      throw new Error(`アクション定義が不正です: ${JSON.stringify(action)}`);
+    }
+  }
+}
+
+function listPlugins() {
+  if (!cache) cache = loadAll();
+  return Object.values(cache).map((p) => ({
+    id: p.manifest.id,
+    name: p.manifest.name,
+    version: p.manifest.version,
+    description: p.manifest.description,
+    actions: p.manifest.actions,
+    hasConfig: !!(p.manifest.service && p.manifest.service.configPath),
+    hasLog: !!(p.manifest.service && p.manifest.service.systemdUnit),
+  }));
+}
+
+function getPlugin(pluginId) {
+  if (!cache) cache = loadAll();
+  return cache[pluginId] || null;
+}
+
+function readDocs(plugin) {
+  if (!plugin.manifest.docs) return '# ドキュメントは未登録です';
+  const docsPath = path.join(plugin.dir, plugin.manifest.docs);
+  if (!fs.existsSync(docsPath)) return '# ドキュメントファイルが見つかりません';
+  return fs.readFileSync(docsPath, 'utf-8');
+}
+
+module.exports = { listPlugins, getPlugin, readDocs };

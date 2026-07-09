@@ -1,0 +1,276 @@
+/* Design tokens ------------------------------------------------------ */
+:root {
+  --bg: #14171a;
+  --panel: #1c2126;
+  --panel-alt: #20262c;
+  --border: #2a3138;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #45d9c0;
+  --accent-dim: #2b8f7e;
+  --warn: #f0a83c;
+  --danger: #e5534b;
+
+  --font-mono: ui-monospace, "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-sans: -apple-system, "Segoe UI", system-ui, "Noto Sans JP", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100vh;
+}
+
+/* Sidebar -------------------------------------------------------------- */
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 20px 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.brand-mark { font-size: 22px; }
+
+.brand-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.plugin-list { display: flex; flex-direction: column; gap: 4px; }
+
+.plugin-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--text);
+}
+
+.plugin-item:hover { background: var(--panel-alt); }
+
+.plugin-item.active {
+  background: var(--panel-alt);
+  border-color: var(--accent-dim);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.plugin-item .name { font-size: 13px; }
+
+/* Main ------------------------------------------------------------------ */
+.main {
+  padding: 28px 32px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  padding-top: 40px;
+}
+
+.hidden { display: none !important; }
+
+.main-header h1 {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  margin: 0 0 4px 0;
+}
+
+.muted { color: var(--text-muted); font-size: 13px; }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 20px 0 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.tab-panel { padding-top: 4px; }
+
+/* GUI設定タブ: ボタン + 対応CLIのペア表示（このアプリの核） -------------- */
+.action-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.action-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.action-card:hover { border-color: var(--accent-dim); }
+
+.action-card.privileged { border-left: 3px solid var(--warn); }
+
+.action-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.action-cli {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  word-break: break-all;
+}
+
+.action-cli::before { content: "$ "; color: var(--text-muted); }
+
+.result-box {
+  margin-top: 16px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* CLIタブ ---------------------------------------------------------------- */
+.panel-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.btn-ghost, .btn-primary {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-primary {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: #06201b;
+  font-weight: 600;
+}
+
+.cli-history { display: flex; flex-direction: column; gap: 8px; }
+
+.cli-entry {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.cli-entry .cmd { color: var(--accent); }
+.cli-entry .meta { color: var(--text-muted); font-size: 11px; margin: 4px 0; }
+.cli-entry .exit-ok { color: var(--accent); }
+.cli-entry .exit-err { color: var(--danger); }
+
+/* 設定ファイルタブ -------------------------------------------------------- */
+.config-editor {
+  width: 100%;
+  height: 420px;
+  background: var(--panel-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  resize: vertical;
+}
+
+/* ドキュメントタブ -------------------------------------------------------- */
+.docs-view {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  line-height: 1.7;
+}
+
+.docs-view h1, .docs-view h2 { font-family: var(--font-mono); }
+.docs-view code {
+  font-family: var(--font-mono);
+  background: var(--panel-alt);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.docs-view table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+.docs-view th, .docs-view td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  font-size: 13px;
+  text-align: left;
+}
