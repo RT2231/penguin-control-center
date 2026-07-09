@@ -5,7 +5,8 @@
   "main": "main.js",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "publish-gui": "node tools/publish-gui/server.js"
   },
   "devDependencies": {
     "electron": "^31.0.0"

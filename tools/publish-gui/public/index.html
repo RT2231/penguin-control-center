@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>PCC Publish Tool（メンテナ専用）</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🐧 PCC Publish Tool</div>
+    <div class="badge">メンテナ専用ローカルツール</div>
+  </header>
+
+  <main>
+    <p class="lede">
+      <code>plugins/</code>内のプラグインをストアに公開・更新します。
+      ここでの操作は<code>docs/catalog.json</code>の書き換えと<code>docs/downloads/*.zip</code>の生成のみです。
+      Gitへのコミット・pushは行われません（結果を確認してから自分で行ってください）。
+    </p>
+
+    <div id="plugin-list" class="plugin-list">
+      <div class="muted">読み込み中...</div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -35,6 +35,19 @@ npm start
 ストアからダウンロードしたzipを展開し、`plugins/`フォルダに置くだけで新しいプラグインを追加できます。
 対応してほしいソフトウェアがある場合は、[プラグイン提案Issue](https://github.com/RT2231/penguin-control-center/issues/new?template=plugin-proposal.md)から提案してください（公式が審査のうえストアに掲載します）。
 
+## プラグインをストアに公開する（メンテナ向け）
+
+`plugins/`にプラグインを追加・更新したら、GUIツールでストア（`docs/catalog.json` + `docs/downloads/*.zip`）に反映できます。
+
+```bash
+npm run publish-gui
+# → http://localhost:5178 をブラウザで開く
+```
+
+プラグイン一覧から「ストアに公開」を押すと、そのプラグインをzip化して`docs/downloads/`に置き、
+`docs/catalog.json`にエントリを追加・更新します。Gitへのコミット・pushは自動で行われないので、
+画面に表示されるコマンドで確認しながら手動で行ってください。
+
 ## 新しいプラグインの追加方法（開発者向け）
 
 `plugins/<プラグイン名>/plugin.json` を作成するだけで、GUIに新しいソフトウェアが追加されます。
