@@ -27,7 +27,15 @@ npm start
 `pkexec` が使えない環境（PolicyKit未導入など）では失敗しますので、その場合はCLIタブに表示される
 コマンドを手動で `sudo` 実行してください。
 
-## 新しいプラグインの追加方法
+## 公式サイト・プラグインストア
+
+- 公式サイト: https://rt2231.github.io/penguin-control-center/
+- プラグインストア: https://rt2231.github.io/penguin-control-center/store.html
+
+ストアからダウンロードしたzipを展開し、`plugins/`フォルダに置くだけで新しいプラグインを追加できます。
+対応してほしいソフトウェアがある場合は、[プラグイン提案Issue](https://github.com/RT2231/penguin-control-center/issues/new?template=plugin-proposal.md)から提案してください（公式が審査のうえストアに掲載します）。
+
+## 新しいプラグインの追加方法（開発者向け）
 
 `plugins/<プラグイン名>/plugin.json` を作成するだけで、GUIに新しいソフトウェアが追加されます。
 

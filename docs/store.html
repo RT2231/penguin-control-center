@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>プラグインストア — Penguin Control Center</title>
+<style>
+:root{
+  --bg:#14171a; --panel:#1c2126; --panel-alt:#20262c; --border:#2a3138;
+  --text:#e6edf3; --text-muted:#8b949e;
+  --accent:#45d9c0; --accent-dim:#2b8f7e; --warn:#f0a83c;
+  --font-mono: ui-monospace,"IBM Plex Mono","JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  --font-sans: -apple-system,"Segoe UI",system-ui,"Noto Sans JP",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);}
+a{color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+
+nav.topbar{border-bottom:1px solid var(--border);padding:16px 0;}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:var(--font-mono);font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text);}
+.topbar-links{display:flex;gap:20px;font-family:var(--font-mono);font-size:13px;}
+.topbar-links a{color:var(--text-muted);text-decoration:none;}
+.topbar-links a:hover{color:var(--text);}
+
+header.page-head{padding:48px 0 32px;border-bottom:1px solid var(--border);}
+.eyebrow{font-family:var(--font-mono);color:var(--accent);font-size:12px;letter-spacing:.08em;margin-bottom:10px;}
+h1{font-family:var(--font-mono);font-size:clamp(24px,3.4vw,32px);margin:0 0 12px;}
+.lede{color:var(--text-muted);font-size:15px;max-width:64ch;margin:0;}
+
+main{padding:40px 0 80px;}
+
+.install-note{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:28px;font-size:13px;color:var(--text-muted);line-height:1.7;}
+.install-note code{font-family:var(--font-mono);color:var(--accent);}
+
+#plugin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+
+.plugin-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;flex-direction:column;}
+.plugin-card .name{font-size:15px;font-weight:600;margin-bottom:4px;}
+.plugin-card .version{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-bottom:12px;}
+.plugin-card .desc{font-size:13px;color:var(--text-muted);line-height:1.6;flex-grow:1;margin-bottom:14px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.tag{font-family:var(--font-mono);font-size:10px;background:var(--panel-alt);border:1px solid var(--border);border-radius:4px;padding:2px 8px;color:var(--text-muted);}
+.plugin-card .btn{font-family:var(--font-mono);font-size:12px;background:var(--accent-dim);border:1px solid var(--accent);color:#06201b;font-weight:600;border-radius:6px;padding:9px 14px;text-decoration:none;text-align:center;}
+
+.propose-card{border:1px dashed var(--border);border-radius:10px;padding:24px;text-align:center;margin-top:32px;}
+.propose-card p{color:var(--text-muted);font-size:13px;margin:8px 0 16px;}
+.propose-card a.btn{font-family:var(--font-mono);font-size:13px;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:9px 16px;text-decoration:none;}
+
+footer{padding:32px 0 60px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);}
+footer a{color:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">🐧 Penguin Control Center</a>
+    <div class="topbar-links">
+      <a href="index.html">トップ</a>
+      <a href="https://github.com/RT2231/penguin-control-center">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Plugin Store</div>
+    <h1>プラグインストア</h1>
+    <p class="lede">公式が内容を確認して公開しているプラグイン一覧です。ダウンロードして展開し、
+    アプリの<code style="font-family:var(--font-mono)">plugins/</code>フォルダに置くだけで使えます。</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="install-note">
+      インストール方法: zipをダウンロード → 展開 → できたフォルダ（<code>plugin.json</code>を含む）を
+      Penguin Control Centerの <code>plugins/</code> フォルダの中にコピー → アプリを再起動すると
+      サイドバーに追加されます。
+    </div>
+
+    <div id="plugin-grid">
+      <div class="muted" style="color:var(--text-muted);font-family:var(--font-mono);font-size:13px;">読み込み中...</div>
+    </div>
+
+    <div class="propose-card">
+      <div style="font-family:var(--font-mono);font-size:14px;">対応してほしいソフトウェアがありますか？</div>
+      <p>プラグインの追加は提案Issueをもとに公式が審査・公開しています。コードが書けなくても提案できます。</p>
+      <a class="btn" href="https://github.com/RT2231/penguin-control-center/issues/new?template=plugin-proposal.md">プラグインを提案する →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Penguin Control Center is licensed under GPL-3.0 (plugins may be published under MIT).
+    ・ <a href="https://github.com/RT2231/penguin-control-center">Repository</a>
+    ・ <a href="https://github.com/RT2231/penguin-control-center/issues">Issues</a>
+  </div>
+</footer>
+
+<script>
+fetch('catalog.json')
+  .then((res) => res.json())
+  .then((plugins) => {
+    const grid = document.getElementById('plugin-grid');
+    grid.innerHTML = '';
+    for (const p of plugins) {
+      const card = document.createElement('div');
+      card.className = 'plugin-card';
+      const tags = (p.tags || []).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+      card.innerHTML = `
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="version">v${escapeHtml(p.version)} ・ ${escapeHtml(p.author || '')}</div>
+        <div class="desc">${escapeHtml(p.description)}</div>
+        <div class="tags">${tags}</div>
+        <a class="btn" href="${p.download}" download>ダウンロード (.zip)</a>
+      `;
+      grid.appendChild(card);
+    }
+    if (plugins.length === 0) {
+      grid.innerHTML = '<div style="color:var(--text-muted);font-family:var(--font-mono);font-size:13px;">まだ公開されているプラグインはありません。</div>';
+    }
+  })
+  .catch(() => {
+    document.getElementById('plugin-grid').innerHTML =
+      '<div style="color:var(--warn);font-family:var(--font-mono);font-size:13px;">カタログの読み込みに失敗しました。</div>';
+  });
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+</script>
+
+</body>
+</html>

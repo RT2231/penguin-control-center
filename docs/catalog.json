@@ -1,0 +1,12 @@
+[
+  {
+    "id": "chrony",
+    "name": "chrony (NTP時刻同期)",
+    "version": "0.1.0",
+    "description": "chronyデーモンによるシステム時刻の自動同期を管理します。同期状態の確認・サービス起動停止・設定ファイル編集・ログ閲覧に対応。",
+    "author": "PCC公式",
+    "download": "downloads/chrony-plugin.zip",
+    "requires": ["chrony (chronyd)"],
+    "tags": ["公式", "時刻同期", "systemd"]
+  }
+]
