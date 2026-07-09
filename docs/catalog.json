@@ -14,5 +14,69 @@
       "時刻同期",
       "systemd"
     ]
+  },
+  {
+    "id": "openssh",
+    "name": "OpenSSH",
+    "version": "0.1.0",
+    "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
+    "author": "Claude",
+    "download": "downloads/openssh-plugin.zip",
+    "requires": [
+      "openssh-server"
+    ],
+    "tags": [
+      "公式",
+      "SSH",
+      "systemd"
+    ]
+  },
+  {
+    "id": "docker",
+    "name": "Docker",
+    "version": "0.1.0",
+    "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
+    "author": "Claude",
+    "download": "downloads/docker-plugin.zip",
+    "requires": [
+      "docker.io もしくは Docker Engine"
+    ],
+    "tags": [
+      "公式",
+      "コンテナ",
+      "systemd"
+    ]
+  },
+  {
+    "id": "apache2",
+    "name": "Apache HTTP Server",
+    "version": "0.1.0",
+    "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
+    "author": "Claude",
+    "download": "downloads/apache2-plugin.zip",
+    "requires": [
+      "apache2"
+    ],
+    "tags": [
+      "公式",
+      "Webサーバー",
+      "systemd"
+    ]
+  },
+  {
+    "id": "pihole",
+    "name": "Pi-hole",
+    "version": "0.1.0",
+    "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
+    "author": "Claude",
+    "download": "downloads/pihole-plugin.zip",
+    "requires": [
+      "Pi-hole"
+    ],
+    "tags": [
+      "公式",
+      "DNS",
+      "広告ブロック"
+    ]
   }
 ]

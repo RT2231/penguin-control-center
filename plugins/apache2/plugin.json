@@ -1,0 +1,22 @@
+{
+  "id": "apache2",
+  "name": "Apache HTTP Server",
+  "version": "0.1.0",
+  "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
+  "service": {
+    "systemdUnit": "apache2.service",
+    "configPath": "/etc/apache2/apache2.conf"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "apache2.service", "--no-pager"], "privileged": false },
+    { "id": "config-test", "label": "設定ファイルの文法チェック", "cli": ["apachectl", "configtest"], "privileged": false },
+    { "id": "modules", "label": "有効なモジュール一覧", "cli": ["apachectl", "-M"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "apache2.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "apache2.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "apache2.service"], "privileged": true },
+    { "id": "reload", "label": "設定を再読込(無停止)", "cli": ["systemctl", "reload", "apache2.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "apache2.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "apache2.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}
