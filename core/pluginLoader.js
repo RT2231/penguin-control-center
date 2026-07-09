@@ -72,4 +72,9 @@ function readDocs(plugin) {
   return fs.readFileSync(docsPath, 'utf-8');
 }
 
-module.exports = { listPlugins, getPlugin, readDocs };
+function reload() {
+  cache = loadAll();
+  return listPlugins();
+}
+
+module.exports = { listPlugins, getPlugin, readDocs, reload };

@@ -11,4 +11,6 @@ contextBridge.exposeInMainWorld('pcc', {
   writeConfig: (pluginId, content) => ipcRenderer.invoke('pcc:writeConfig', pluginId, content),
   readLog: (pluginId, lines) => ipcRenderer.invoke('pcc:readLog', pluginId, lines),
   readDocs: (pluginId) => ipcRenderer.invoke('pcc:readDocs', pluginId),
+  listStorePlugins: () => ipcRenderer.invoke('pcc:listStorePlugins'),
+  installStorePlugin: (pluginId) => ipcRenderer.invoke('pcc:installStorePlugin', pluginId),
 });

@@ -9,6 +9,7 @@ const pluginLoader = require('./core/pluginLoader');
 const cliRunner = require('./core/cliRunner');
 const configManager = require('./core/configManager');
 const logReader = require('./core/logReader');
+const storeClient = require('./core/storeClient');
 
 let mainWindow;
 
@@ -108,4 +109,30 @@ ipcMain.handle('pcc:readDocs', async (event, pluginId) => {
   const plugin = pluginLoader.getPlugin(pluginId);
   if (!plugin) throw new Error(`不明なプラグインです: ${pluginId}`);
   return pluginLoader.readDocs(plugin);
+});
+
+// ---- ストア(プラグインの取得・インストール) ----
+
+ipcMain.handle('pcc:listStorePlugins', async () => {
+  const catalog = await storeClient.fetchCatalog();
+  const installed = pluginLoader.listPlugins();
+
+  return catalog.map((entry) => {
+    const local = installed.find((p) => p.id === entry.id);
+    return {
+      ...entry,
+      installed: !!local,
+      installedVersion: local ? local.version : null,
+      updateAvailable: !!local && local.version !== entry.version,
+    };
+  });
+});
+
+ipcMain.handle('pcc:installStorePlugin', async (event, pluginId) => {
+  const catalog = await storeClient.fetchCatalog();
+  const entry = catalog.find((e) => e.id === pluginId);
+  if (!entry) throw new Error(`ストアにプラグインが見つかりません: ${pluginId}`);
+
+  await storeClient.installPlugin(entry);
+  return pluginLoader.reload();
 });

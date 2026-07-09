@@ -7,6 +7,8 @@ let activeTab = 'gui';
 async function init() {
   plugins = await window.pcc.listPlugins();
   renderSidebar();
+  document.getElementById('open-store').addEventListener('click', openStore);
+  document.getElementById('refresh-store').addEventListener('click', loadStore);
 }
 
 function renderSidebar() {
@@ -27,6 +29,7 @@ function selectPlugin(pluginId) {
   renderSidebar();
 
   document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('store-view').classList.add('hidden');
   document.getElementById('plugin-view').classList.remove('hidden');
 
   const plugin = plugins.find((p) => p.id === pluginId);
@@ -36,6 +39,84 @@ function selectPlugin(pluginId) {
   setupTabs();
   renderActionList(plugin);
   showTab('gui');
+}
+
+// ---- ストア画面 ----
+async function openStore() {
+  activePluginId = null;
+  document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('plugin-view').classList.add('hidden');
+  document.getElementById('store-view').classList.remove('hidden');
+  renderSidebar();
+  await loadStore();
+}
+
+async function loadStore() {
+  const list = document.getElementById('store-list');
+  list.innerHTML = '<div class="muted">読み込み中...</div>';
+
+  try {
+    const storePlugins = await window.pcc.listStorePlugins();
+    list.innerHTML = '';
+
+    if (storePlugins.length === 0) {
+      list.innerHTML = '<div class="muted">現在ストアに公開されているプラグインはありません。</div>';
+      return;
+    }
+
+    for (const p of storePlugins) {
+      list.appendChild(renderStoreCard(p));
+    }
+  } catch (err) {
+    list.innerHTML = `<div class="muted">ストアの取得に失敗しました: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function renderStoreCard(p) {
+  const card = document.createElement('div');
+  card.className = 'store-card';
+
+  const tags = (p.tags || []).map((t) => `<span class="store-tag">${escapeHtml(t)}</span>`).join('');
+
+  let btnLabel = '導入する';
+  let btnClass = '';
+  let btnDisabled = false;
+  if (p.installed && !p.updateAvailable) {
+    btnLabel = '導入済み';
+    btnClass = 'installed';
+    btnDisabled = true;
+  } else if (p.updateAvailable) {
+    btnLabel = `更新する (v${p.installedVersion} → v${p.version})`;
+    btnClass = 'update';
+  }
+
+  card.innerHTML = `
+    <div class="name">${escapeHtml(p.name)}</div>
+    <div class="meta">v${escapeHtml(p.version)} ・ ${escapeHtml(p.author || '')}</div>
+    <div class="desc">${escapeHtml(p.description || '')}</div>
+    <div class="store-tags">${tags}</div>
+    <button class="store-install-btn ${btnClass}" ${btnDisabled ? 'disabled' : ''}>${btnLabel}</button>
+  `;
+
+  const btn = card.querySelector('.store-install-btn');
+  if (!btnDisabled) {
+    btn.addEventListener('click', () => installFromStore(p.id, btn));
+  }
+
+  return card;
+}
+
+async function installFromStore(pluginId, btn) {
+  btn.disabled = true;
+  btn.textContent = '導入中...';
+  try {
+    plugins = await window.pcc.installStorePlugin(pluginId);
+    renderSidebar();
+    await loadStore();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = `エラー: ${err.message}`;
+  }
 }
 
 function setupTabs() {

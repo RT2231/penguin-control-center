@@ -30,9 +30,10 @@ npm start
 ## 公式サイト・プラグインストア
 
 - 公式サイト: https://rt2231.github.io/penguin-control-center/
-- プラグインストア: https://rt2231.github.io/penguin-control-center/store.html
+- プラグインストア(Webページ): https://rt2231.github.io/penguin-control-center/store.html
+- **アプリ内から直接導入**: アプリのサイドバー上部「＋ ストアから追加」を押すと、公式ストアのプラグイン一覧が表示され、
+  「導入する」ボタン一つでダウンロード・展開・`plugins/`への配置まで自動で行われます（`unzip`コマンドが必要です）。
 
-ストアからダウンロードしたzipを展開し、`plugins/`フォルダに置くだけで新しいプラグインを追加できます。
 対応してほしいソフトウェアがある場合は、[プラグイン提案Issue](https://github.com/RT2231/penguin-control-center/issues/new?template=plugin-proposal.md)から提案してください（公式が審査のうえストアに掲載します）。
 
 ## プラグインをストアに公開する（メンテナ向け）
@@ -75,7 +76,7 @@ npm run publish-gui
 
 ## 既知の制約（MVPのため）
 
-- プラグインストアは未実装（`plugins/`ディレクトリへの手動配置のみ）
+- プラグインの更新チェックは手動（ストア画面を開いたときのみ確認、バックグラウンド自動更新なし）
 - 設定ファイルの構文チェック・差分表示・Undoは未実装（バックアップ作成のみ）
 - 初心者/上級者モード切替は未実装
 - Ubuntu/Debian系での動作を主に想定（他ディストリビューションは`systemdUnit`名の差異等で調整が必要な場合あり）

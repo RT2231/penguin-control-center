@@ -16,12 +16,24 @@
           <div class="brand-sub">plugin manager</div>
         </div>
       </div>
+      <button id="open-store" class="store-btn">＋ ストアから追加</button>
       <nav id="plugin-list" class="plugin-list"><!-- JSで生成 --></nav>
     </aside>
 
     <main class="main" id="main">
       <div class="empty-state" id="empty-state">
-        <p>左のリストから管理したいソフトウェアを選択してください。</p>
+        <p>左のリストから管理したいソフトウェアを選択するか、「＋ ストアから追加」で新しいプラグインを導入してください。</p>
+      </div>
+
+      <div class="store-view hidden" id="store-view">
+        <header class="main-header">
+          <div>
+            <h1>プラグインストア</h1>
+            <p class="muted">公式が公開しているプラグインをワンクリックで導入できます。</p>
+          </div>
+          <button id="refresh-store" class="btn-ghost">更新</button>
+        </header>
+        <div id="store-list" class="store-list"></div>
       </div>
 
       <div class="plugin-view hidden" id="plugin-view">
