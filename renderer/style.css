@@ -330,7 +330,7 @@ html, body {
 /* 設定ファイルタブ -------------------------------------------------------- */
 .config-editor {
   width: 100%;
-  height: 420px;
+  height: 340px;
   background: var(--panel-alt);
   color: var(--text);
   border: 1px solid var(--border);
@@ -340,6 +340,40 @@ html, body {
   font-size: 12px;
   resize: vertical;
 }
+
+/* 差分表示 -------------------------------------------------------------- */
+.diff-section { margin-top: 18px; }
+
+.diff-header {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.config-diff {
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.diff-line {
+  padding: 1px 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.diff-line.add { background: rgba(69, 217, 192, .10); color: var(--accent); }
+.diff-line.add::before { content: "+ "; color: var(--accent); }
+.diff-line.del { background: rgba(229, 83, 75, .10); color: var(--danger); }
+.diff-line.del::before { content: "- "; color: var(--danger); }
+.diff-line.ctx { color: var(--text-muted); }
+.diff-line.ctx::before { content: "  "; }
 
 /* ドキュメントタブ -------------------------------------------------------- */
 .docs-view {

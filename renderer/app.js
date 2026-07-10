@@ -259,6 +259,9 @@ async function loadLog() {
 document.getElementById('refresh-log').addEventListener('click', loadLog);
 
 // ---- 設定ファイルタブ ----
+let configOriginalContent = '';
+let diffDebounceTimer = null;
+
 async function loadConfig() {
   const plugin = plugins.find((p) => p.id === activePluginId);
   const editor = document.getElementById('config-editor');
@@ -269,6 +272,7 @@ async function loadConfig() {
     document.getElementById('config-path-label').textContent = 'このプラグインには設定ファイルが定義されていません';
     editor.value = '';
     editor.disabled = true;
+    renderConfigDiff();
     return;
   }
 
@@ -277,6 +281,73 @@ async function loadConfig() {
   const result = await window.pcc.readConfig(activePluginId);
   document.getElementById('config-path-label').textContent = result.path + (result.exists ? '' : '（未作成）');
   editor.value = result.content;
+  configOriginalContent = result.content;
+  renderConfigDiff();
+}
+
+document.getElementById('config-editor').addEventListener('input', () => {
+  clearTimeout(diffDebounceTimer);
+  diffDebounceTimer = setTimeout(renderConfigDiff, 250);
+});
+
+function renderConfigDiff() {
+  const box = document.getElementById('config-diff');
+  const editor = document.getElementById('config-editor');
+  const current = editor.value;
+
+  if (current === configOriginalContent) {
+    box.innerHTML = '<span class="muted">変更前と同じ内容です。</span>';
+    return;
+  }
+
+  const totalLines = current.split('\n').length + configOriginalContent.split('\n').length;
+  if (totalLines > 4000) {
+    box.innerHTML = '<span class="muted">ファイルが大きいため、差分表示は省略されています。</span>';
+    return;
+  }
+
+  const diff = diffLines(configOriginalContent, current);
+  box.innerHTML = '';
+  for (const part of diff) {
+    const div = document.createElement('div');
+    div.className = `diff-line ${part.type}`;
+    div.textContent = part.text;
+    box.appendChild(div);
+  }
+}
+
+// 行単位のLCSベース差分（外部ライブラリ不使用の最小実装）
+function diffLines(oldText, newText) {
+  const a = oldText.split('\n');
+  const b = newText.split('\n');
+  const m = a.length;
+  const n = b.length;
+
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+
+  const result = [];
+  let i = 0;
+  let j = 0;
+  while (i < m && j < n) {
+    if (a[i] === b[j]) {
+      result.push({ type: 'ctx', text: a[i] });
+      i++; j++;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      result.push({ type: 'del', text: a[i] });
+      i++;
+    } else {
+      result.push({ type: 'add', text: b[j] });
+      j++;
+    }
+  }
+  while (i < m) { result.push({ type: 'del', text: a[i] }); i++; }
+  while (j < n) { result.push({ type: 'add', text: b[j] }); j++; }
+  return result;
 }
 
 document.getElementById('save-config').addEventListener('click', async () => {
@@ -288,6 +359,8 @@ document.getElementById('save-config').addEventListener('click', async () => {
     status.textContent = result.backupPath
       ? `保存しました。バックアップ: ${result.backupPath}`
       : `保存しました（新規作成、バックアップなし）`;
+    configOriginalContent = editor.value;
+    renderConfigDiff();
   } catch (err) {
     status.textContent = `エラー: ${err.message}`;
   }
