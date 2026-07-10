@@ -139,6 +139,27 @@ html, body {
 }
 .store-btn:hover { background: var(--panel); }
 
+.mode-toggle-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.mode-toggle-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+.mode-toggle-btn .mode-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
 /* ストア画面 ------------------------------------------------------------ */
 .store-view { padding-top: 4px; }
 

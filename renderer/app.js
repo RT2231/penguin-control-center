@@ -3,12 +3,37 @@
 let plugins = [];
 let activePluginId = null;
 let activeTab = 'gui';
+let uiMode = localStorage.getItem('pcc-mode') === 'beginner' ? 'beginner' : 'advanced';
+
+function applyModeToDOM() {
+  const btn = document.getElementById('mode-toggle');
+  if (uiMode === 'beginner') {
+    btn.innerHTML = '<span class="mode-dot" style="background:var(--accent)"></span>初心者モード（切替）';
+  } else {
+    btn.innerHTML = '<span class="mode-dot" style="background:var(--warn)"></span>上級者モード（切替）';
+  }
+  document.body.classList.toggle('beginner-mode', uiMode === 'beginner');
+}
+
+function toggleMode() {
+  uiMode = uiMode === 'beginner' ? 'advanced' : 'beginner';
+  localStorage.setItem('pcc-mode', uiMode);
+  applyModeToDOM();
+
+  // 初心者モードに切り替えた際、設定ファイルタブを開いていたらGUI設定タブへ戻す
+  if (uiMode === 'beginner' && activeTab === 'config') {
+    showTab('gui');
+  }
+  if (activePluginId) setupTabs();
+}
 
 async function init() {
   plugins = await window.pcc.listPlugins();
   renderSidebar();
+  applyModeToDOM();
   document.getElementById('open-store').addEventListener('click', openStore);
   document.getElementById('refresh-store').addEventListener('click', loadStore);
+  document.getElementById('mode-toggle').addEventListener('click', toggleMode);
 }
 
 function renderSidebar() {
@@ -155,12 +180,17 @@ async function installFromStore(pluginId, btn) {
 function setupTabs() {
   const buttons = document.querySelectorAll('.tab-btn');
   buttons.forEach((btn) => {
+    const isAdvancedOnly = btn.classList.contains('advanced-only');
+    btn.classList.toggle('hidden', isAdvancedOnly && uiMode === 'beginner');
     btn.classList.toggle('active', btn.dataset.tab === activeTab);
     btn.onclick = () => showTab(btn.dataset.tab);
   });
 }
 
 function showTab(tab) {
+  // 初心者モードでは設定ファイルタブに入れない(URLや過去の状態からの遷移も含めて防止)
+  if (uiMode === 'beginner' && tab === 'config') tab = 'gui';
+
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tab-panel').forEach((p) => p.classList.add('hidden'));
