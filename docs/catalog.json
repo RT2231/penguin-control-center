@@ -88,5 +88,41 @@
       "広告ブロック"
     ],
     "hasCode": false
+  },
+  {
+    "id": "ufw",
+    "name": "UFW (シンプルなファイアウォール)",
+    "version": "0.1.0",
+    "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
+    "author": "Claude",
+    "download": "downloads/ufw-plugin.zip",
+    "sha256": "745b307ecc39459e4c21f52c3d1dc6e4f7db6c8900c1cc3b07b9de02a4032bda",
+    "requires": [
+      "ufw"
+    ],
+    "tags": [
+      "公式",
+      "ファイアウォール",
+      "セキュリティ"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "fail2ban",
+    "name": "Fail2ban (不正アクセス防止)",
+    "version": "0.1.0",
+    "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
+    "author": "Claude",
+    "download": "downloads/fail2ban-plugin.zip",
+    "sha256": "6b098be197550f063348910c7645a4c75754afeede4d97cb94d9124de8daa3ea",
+    "requires": [
+      "fail2ban"
+    ],
+    "tags": [
+      "公式",
+      "セキュリティ",
+      "不正アクセス防止"
+    ],
+    "hasCode": false
   }
 ]

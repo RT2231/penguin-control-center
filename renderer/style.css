@@ -91,7 +91,11 @@ html, body {
   border-radius: 50%;
   background: var(--text-muted);
   flex-shrink: 0;
+  transition: background-color .2s;
 }
+.status-dot.status-active { background: var(--accent); box-shadow: 0 0 4px var(--accent); }
+.status-dot.status-inactive { background: var(--text-muted); }
+.status-dot.status-failed { background: var(--danger); box-shadow: 0 0 4px var(--danger); }
 
 .plugin-item .name { font-size: 13px; }
 

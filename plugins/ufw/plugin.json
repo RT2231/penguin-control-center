@@ -1,0 +1,20 @@
+{
+  "id": "ufw",
+  "name": "UFW (シンプルなファイアウォール)",
+  "version": "0.1.0",
+  "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
+  "service": {
+    "systemdUnit": "ufw.service",
+    "configPath": "/etc/default/ufw"
+  },
+  "actions": [
+    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "ufw.service", "--no-pager"], "privileged": false },
+    { "id": "status", "label": "ファイアウォール状態(詳細)", "cli": ["ufw", "status", "verbose"], "privileged": true },
+    { "id": "status-numbered", "label": "ルール一覧(番号付き)", "cli": ["ufw", "status", "numbered"], "privileged": true },
+    { "id": "allow-ssh", "label": "SSHを許可(締め出し防止)", "cli": ["ufw", "allow", "OpenSSH"], "privileged": true },
+    { "id": "enable", "label": "ファイアウォールを有効化", "cli": ["ufw", "--force", "enable"], "privileged": true },
+    { "id": "disable", "label": "ファイアウォールを無効化", "cli": ["ufw", "disable"], "privileged": true },
+    { "id": "reload", "label": "ルールを再読込", "cli": ["ufw", "reload"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

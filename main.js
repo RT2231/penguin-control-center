@@ -157,6 +157,20 @@ ipcMain.handle('pcc:readDocs', async (event, pluginId) => {
   return pluginLoader.readDocs(plugin);
 });
 
+ipcMain.handle('pcc:getServiceStatus', async (event, pluginId) => {
+  const plugin = pluginLoader.getPlugin(pluginId);
+  if (!plugin || !plugin.manifest.service || !plugin.manifest.service.systemdUnit) {
+    return { status: 'unknown' };
+  }
+  // systemctl is-active は非特権で実行可能な読み取り専用コマンド。
+  // サイドバーの状態ドット表示専用の軽量チェック(CLIタブの履歴にも記録される=透明性を維持)。
+  const result = await cliRunner.run(['systemctl', 'is-active', plugin.manifest.service.systemdUnit], {
+    privileged: false,
+  });
+  const status = (result.stdout || '').trim() || 'unknown';
+  return { status };
+});
+
 // ---- ストア(プラグインの取得・インストール) ----
 
 ipcMain.handle('pcc:listStorePlugins', async () => {

@@ -42,10 +42,30 @@ function renderSidebar() {
   for (const plugin of plugins) {
     const item = document.createElement('div');
     item.className = 'plugin-item' + (plugin.id === activePluginId ? ' active' : '');
-    item.innerHTML = `<span class="status-dot"></span><span class="name">${escapeHtml(plugin.name)}</span>`;
+    item.innerHTML = `<span class="status-dot" data-plugin-id="${escapeHtml(plugin.id)}"></span><span class="name">${escapeHtml(plugin.name)}</span>`;
     item.addEventListener('click', () => selectPlugin(plugin.id));
     list.appendChild(item);
   }
+  refreshSidebarStatusDots();
+}
+
+async function refreshSidebarStatusDots() {
+  for (const plugin of plugins) {
+    if (!plugin.hasLog) continue; // systemdUnit未定義のプラグインはスキップ
+    window.pcc.getServiceStatus(plugin.id).then((result) => {
+      const dot = document.querySelector(`.status-dot[data-plugin-id="${cssEscape(plugin.id)}"]`);
+      if (!dot) return;
+      dot.classList.remove('status-active', 'status-inactive', 'status-failed');
+      if (result.status === 'active') dot.classList.add('status-active');
+      else if (result.status === 'failed') dot.classList.add('status-failed');
+      else dot.classList.add('status-inactive');
+      dot.title = `systemctl is-active: ${result.status}`;
+    }).catch(() => {});
+  }
+}
+
+function cssEscape(str) {
+  return String(str).replace(/[^a-zA-Z0-9_-]/g, '');
 }
 
 function selectPlugin(pluginId) {

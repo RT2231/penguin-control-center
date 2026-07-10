@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('pcc', {
   restoreConfigBackup: (pluginId, backupPath) => ipcRenderer.invoke('pcc:restoreConfigBackup', pluginId, backupPath),
   readLog: (pluginId, lines) => ipcRenderer.invoke('pcc:readLog', pluginId, lines),
   readDocs: (pluginId) => ipcRenderer.invoke('pcc:readDocs', pluginId),
+  getServiceStatus: (pluginId) => ipcRenderer.invoke('pcc:getServiceStatus', pluginId),
   listStorePlugins: () => ipcRenderer.invoke('pcc:listStorePlugins'),
   installStorePlugin: (pluginId) => ipcRenderer.invoke('pcc:installStorePlugin', pluginId),
   uninstallPlugin: (pluginId) => ipcRenderer.invoke('pcc:uninstallPlugin', pluginId),
