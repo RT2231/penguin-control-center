@@ -72,9 +72,24 @@ function readDocs(plugin) {
   return fs.readFileSync(docsPath, 'utf-8');
 }
 
+function uninstall(pluginId) {
+  const plugin = getPlugin(pluginId);
+  if (!plugin) throw new Error(`不明なプラグインです: ${pluginId}`);
+
+  // 安全対策: 削除対象が必ずplugins/配下に収まっていることを確認してから削除する
+  const resolvedDir = path.resolve(plugin.dir);
+  const resolvedRoot = path.resolve(PLUGINS_DIR);
+  if (resolvedDir !== path.join(resolvedRoot, pluginId) || !resolvedDir.startsWith(resolvedRoot + path.sep)) {
+    throw new Error('不正なプラグインパスのため削除を中止しました');
+  }
+
+  fs.rmSync(resolvedDir, { recursive: true, force: true });
+  return reload();
+}
+
 function reload() {
   cache = loadAll();
   return listPlugins();
 }
 
-module.exports = { listPlugins, getPlugin, readDocs, reload };
+module.exports = { listPlugins, getPlugin, readDocs, reload, uninstall };

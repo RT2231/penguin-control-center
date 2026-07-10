@@ -282,13 +282,21 @@ html, body {
   margin-bottom: 12px;
 }
 
-.btn-ghost, .btn-primary {
+.btn-ghost, .btn-primary, .btn-danger {
   font-family: var(--font-sans);
   font-size: 12px;
   border-radius: 6px;
   padding: 6px 12px;
   cursor: pointer;
 }
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  flex-shrink: 0;
+}
+.btn-danger:hover { background: rgba(229, 83, 75, .1); }
 
 .btn-ghost {
   background: transparent;

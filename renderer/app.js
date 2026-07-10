@@ -39,6 +39,36 @@ function selectPlugin(pluginId) {
   setupTabs();
   renderActionList(plugin);
   showTab('gui');
+
+  const uninstallBtn = document.getElementById('uninstall-plugin');
+  uninstallBtn.disabled = false;
+  uninstallBtn.textContent = 'アンインストール';
+  uninstallBtn.onclick = () => uninstallPlugin(pluginId);
+}
+
+async function uninstallPlugin(pluginId) {
+  const btn = document.getElementById('uninstall-plugin');
+  btn.disabled = true;
+  btn.textContent = '処理中...';
+
+  try {
+    const result = await window.pcc.uninstallPlugin(pluginId);
+    if (result.cancelled) {
+      btn.disabled = false;
+      btn.textContent = 'アンインストール';
+      return;
+    }
+
+    plugins = result.plugins;
+    activePluginId = null;
+    document.getElementById('plugin-view').classList.add('hidden');
+    document.getElementById('store-view').classList.add('hidden');
+    document.getElementById('empty-state').classList.remove('hidden');
+    renderSidebar();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = `エラー: ${err.message}`;
+  }
 }
 
 // ---- ストア画面 ----

@@ -153,3 +153,25 @@ ipcMain.handle('pcc:installStorePlugin', async (event, pluginId) => {
   await storeClient.installPlugin(entry);
   return pluginLoader.reload();
 });
+
+ipcMain.handle('pcc:uninstallPlugin', async (event, pluginId) => {
+  const plugin = pluginLoader.getPlugin(pluginId);
+  if (!plugin) throw new Error(`不明なプラグインです: ${pluginId}`);
+
+  const { response } = await dialog.showMessageBox(mainWindow, {
+    type: 'warning',
+    buttons: ['キャンセル', 'アンインストールする'],
+    defaultId: 0,
+    cancelId: 0,
+    title: 'プラグインのアンインストール',
+    message: `「${plugin.manifest.name}」をアンインストールしますか？`,
+    detail:
+      `plugins/${pluginId}/ 以下のファイルが削除されます。この操作は取り消せません。\n\n` +
+      `※ 管理対象ソフトウェア自体（実際のchronyやDockerなど）はアンインストールされません。` +
+      `PCC上の管理用プラグインのみが削除されます。`,
+  });
+  if (response !== 1) return { cancelled: true };
+
+  const plugins = pluginLoader.uninstall(pluginId);
+  return { cancelled: false, plugins };
+});

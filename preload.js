@@ -13,4 +13,5 @@ contextBridge.exposeInMainWorld('pcc', {
   readDocs: (pluginId) => ipcRenderer.invoke('pcc:readDocs', pluginId),
   listStorePlugins: () => ipcRenderer.invoke('pcc:listStorePlugins'),
   installStorePlugin: (pluginId) => ipcRenderer.invoke('pcc:installStorePlugin', pluginId),
+  uninstallPlugin: (pluginId) => ipcRenderer.invoke('pcc:uninstallPlugin', pluginId),
 });
