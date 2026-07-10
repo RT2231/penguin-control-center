@@ -1,0 +1,21 @@
+{
+  "id": "cron",
+  "name": "cron (定期実行タスク)",
+  "version": "0.1.0",
+  "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
+  "service": {
+    "systemdUnit": "cron.service",
+    "configPath": "/etc/crontab"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "cron.service", "--no-pager"], "privileged": false },
+    { "id": "list-user-crontab", "label": "自分のcrontab一覧", "cli": ["crontab", "-l"], "privileged": false },
+    { "id": "list-cron-d", "label": "システム全体のジョブ一覧(/etc/cron.d)", "cli": ["ls", "-la", "/etc/cron.d"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "cron.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "cron.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "cron.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "cron.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "cron.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "mysql",
+  "name": "MySQL / MariaDB",
+  "version": "0.1.0",
+  "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
+  "service": {
+    "systemdUnit": "mysql.service",
+    "configPath": "/etc/mysql/my.cnf"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "mysql.service", "--no-pager"], "privileged": false },
+    { "id": "version", "label": "クライアントのバージョン確認", "cli": ["mysql", "--version"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "mysql.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "mysql.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "mysql.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "mysql.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "mysql.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

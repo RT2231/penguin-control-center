@@ -124,5 +124,77 @@
       "不正アクセス防止"
     ],
     "hasCode": false
+  },
+  {
+    "id": "nginx",
+    "name": "Nginx",
+    "version": "0.1.0",
+    "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
+    "author": "Claude",
+    "download": "downloads/nginx-plugin.zip",
+    "sha256": "ce83578c64cb46e82bac9672ed55b4c137c33fc27037c9c4961ec7a1c75966f1",
+    "requires": [
+      "nginx"
+    ],
+    "tags": [
+      "公式",
+      "Webサーバー",
+      "systemd"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "samba",
+    "name": "Samba (ファイル共有)",
+    "version": "0.1.0",
+    "description": "Windows/Mac/Linux間でファイルを共有するSambaサーバー(smbd)の状態確認・起動停止・設定を管理します。",
+    "author": "Claude",
+    "download": "downloads/samba-plugin.zip",
+    "sha256": "fe46d6248fdf07ecbe01032a7aad438cae2a46e3d0fff1c9caa8e609c00793a0",
+    "requires": [
+      "samba"
+    ],
+    "tags": [
+      "公式",
+      "ファイル共有",
+      "systemd"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "cron",
+    "name": "cron (定期実行タスク)",
+    "version": "0.1.0",
+    "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
+    "author": "Claude",
+    "download": "downloads/cron-plugin.zip",
+    "sha256": "25cf77441fbda59796c74c5a861bdfac7198832db555721eed35c6901ece7935",
+    "requires": [
+      "cron"
+    ],
+    "tags": [
+      "公式",
+      "定期実行",
+      "systemd"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "mysql",
+    "name": "MySQL / MariaDB",
+    "version": "0.1.0",
+    "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
+    "author": "Claude",
+    "download": "downloads/mysql-plugin.zip",
+    "sha256": "eb893314745402b61e87d0fc6108737578a1c8d3599fe8f2922ec574ce28b38b",
+    "requires": [
+      "mysql-server もしくは mariadb-server"
+    ],
+    "tags": [
+      "公式",
+      "データベース",
+      "systemd"
+    ],
+    "hasCode": false
   }
 ]

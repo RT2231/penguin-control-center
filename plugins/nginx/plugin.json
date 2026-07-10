@@ -1,0 +1,22 @@
+{
+  "id": "nginx",
+  "name": "Nginx",
+  "version": "0.1.0",
+  "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
+  "service": {
+    "systemdUnit": "nginx.service",
+    "configPath": "/etc/nginx/nginx.conf"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "nginx.service", "--no-pager"], "privileged": false },
+    { "id": "config-test", "label": "設定ファイルの文法チェック", "cli": ["nginx", "-t"], "privileged": false },
+    { "id": "version", "label": "バージョン・コンパイルオプション確認", "cli": ["nginx", "-V"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "nginx.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "nginx.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "nginx.service"], "privileged": true },
+    { "id": "reload", "label": "設定を再読込(無停止)", "cli": ["systemctl", "reload", "nginx.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "nginx.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "nginx.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}
