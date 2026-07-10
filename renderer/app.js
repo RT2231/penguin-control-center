@@ -273,6 +273,7 @@ async function loadConfig() {
     editor.value = '';
     editor.disabled = true;
     renderConfigDiff();
+    document.getElementById('backup-list').innerHTML = '<span class="muted">—</span>';
     return;
   }
 
@@ -283,6 +284,7 @@ async function loadConfig() {
   editor.value = result.content;
   configOriginalContent = result.content;
   renderConfigDiff();
+  loadBackupList();
 }
 
 document.getElementById('config-editor').addEventListener('input', () => {
@@ -361,10 +363,59 @@ document.getElementById('save-config').addEventListener('click', async () => {
       : `保存しました（新規作成、バックアップなし）`;
     configOriginalContent = editor.value;
     renderConfigDiff();
+    loadBackupList();
   } catch (err) {
     status.textContent = `エラー: ${err.message}`;
   }
 });
+
+// ---- バックアップ一覧・復元(Undo) ----
+async function loadBackupList() {
+  const box = document.getElementById('backup-list');
+  const plugin = plugins.find((p) => p.id === activePluginId);
+  if (!plugin.hasConfig) {
+    box.innerHTML = '<span class="muted">—</span>';
+    return;
+  }
+
+  box.innerHTML = '<span class="muted">読み込み中...</span>';
+  const backups = await window.pcc.listConfigBackups(activePluginId);
+
+  if (backups.length === 0) {
+    box.innerHTML = '<span class="muted">まだバックアップはありません（保存すると自動的に作成されます）。</span>';
+    return;
+  }
+
+  box.innerHTML = '';
+  for (const b of backups) {
+    const item = document.createElement('div');
+    item.className = 'backup-item';
+    item.innerHTML = `
+      <span class="backup-time">${escapeHtml(b.savedAt)}</span>
+      <button class="backup-restore-btn">この内容に戻す</button>
+    `;
+    const btn = item.querySelector('.backup-restore-btn');
+    btn.addEventListener('click', () => restoreBackup(b.path, btn));
+    box.appendChild(item);
+  }
+}
+
+async function restoreBackup(backupPath, btn) {
+  btn.disabled = true;
+  btn.textContent = '処理中...';
+  try {
+    const result = await window.pcc.restoreConfigBackup(activePluginId, backupPath);
+    if (result.cancelled) {
+      btn.disabled = false;
+      btn.textContent = 'この内容に戻す';
+      return;
+    }
+    await loadConfig(); // エディタ・差分・バックアップ一覧をすべて最新化
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = `エラー: ${err.message}`;
+  }
+}
 
 // ---- ドキュメントタブ ----
 async function loadDocs() {

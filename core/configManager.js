@@ -34,4 +34,45 @@ function writeConfig(configPath, newContent) {
   return { path: configPath, backupPath, savedAt: new Date().toISOString() };
 }
 
-module.exports = { readConfig, writeConfig };
+function listBackups(configPath) {
+  const dir = path.dirname(configPath);
+  const base = path.basename(configPath);
+  if (!fs.existsSync(dir)) return [];
+
+  const prefix = `${base}.bak.`;
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.startsWith(prefix))
+    .map((name) => {
+      const fullPath = path.join(dir, name);
+      const stat = fs.statSync(fullPath);
+      return { path: fullPath, name, savedAt: stat.mtime.toISOString() };
+    })
+    .sort((a, b) => (a.savedAt < b.savedAt ? 1 : -1)); // 新しい順
+}
+
+function restoreBackup(configPath, backupPath) {
+  const dir = path.dirname(configPath);
+  const base = path.basename(configPath);
+  const prefix = `${base}.bak.`;
+
+  // 安全対策: 復元元は必ず「同じ設定ファイルの、同じディレクトリ内にあるバックアップ」に限定する
+  // (任意パスの読み取り/上書きを防ぐ)
+  const resolvedBackup = path.resolve(backupPath);
+  const resolvedDir = path.resolve(dir);
+  if (
+    path.dirname(resolvedBackup) !== resolvedDir ||
+    !path.basename(resolvedBackup).startsWith(prefix)
+  ) {
+    throw new Error('不正なバックアップファイルのため復元を中止しました');
+  }
+  if (!fs.existsSync(resolvedBackup)) {
+    throw new Error('指定されたバックアップが見つかりません');
+  }
+
+  // 復元前の状態も念のためバックアップしておく(Undoに対するUndoを可能にする)
+  const currentBackup = writeConfig(configPath, fs.readFileSync(resolvedBackup, 'utf-8'));
+  return currentBackup;
+}
+
+module.exports = { readConfig, writeConfig, listBackups, restoreBackup };

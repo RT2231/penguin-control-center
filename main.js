@@ -114,6 +114,35 @@ ipcMain.handle('pcc:writeConfig', async (event, pluginId, content) => {
   return configManager.writeConfig(plugin.manifest.service.configPath, content);
 });
 
+ipcMain.handle('pcc:listConfigBackups', async (event, pluginId) => {
+  const plugin = pluginLoader.getPlugin(pluginId);
+  if (!plugin || !plugin.manifest.service || !plugin.manifest.service.configPath) {
+    throw new Error('このプラグインには設定ファイルが定義されていません');
+  }
+  return configManager.listBackups(plugin.manifest.service.configPath);
+});
+
+ipcMain.handle('pcc:restoreConfigBackup', async (event, pluginId, backupPath) => {
+  const plugin = pluginLoader.getPlugin(pluginId);
+  if (!plugin || !plugin.manifest.service || !plugin.manifest.service.configPath) {
+    throw new Error('このプラグインには設定ファイルが定義されていません');
+  }
+
+  const { response } = await dialog.showMessageBox(mainWindow, {
+    type: 'warning',
+    buttons: ['キャンセル', '復元する'],
+    defaultId: 0,
+    cancelId: 0,
+    title: '設定ファイルの復元',
+    message: 'このバックアップの内容で設定ファイルを上書きしますか？',
+    detail: `復元先: ${plugin.manifest.service.configPath}\n現在の内容は復元前に自動でバックアップされます。`,
+  });
+  if (response !== 1) return { cancelled: true };
+
+  configManager.restoreBackup(plugin.manifest.service.configPath, backupPath);
+  return { cancelled: false, content: configManager.readConfig(plugin.manifest.service.configPath) };
+});
+
 ipcMain.handle('pcc:readLog', async (event, pluginId, lines) => {
   const plugin = pluginLoader.getPlugin(pluginId);
   if (!plugin || !plugin.manifest.service || !plugin.manifest.service.systemdUnit) {

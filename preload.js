@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('pcc', {
   getCliHistory: () => ipcRenderer.invoke('pcc:getCliHistory'),
   readConfig: (pluginId) => ipcRenderer.invoke('pcc:readConfig', pluginId),
   writeConfig: (pluginId, content) => ipcRenderer.invoke('pcc:writeConfig', pluginId, content),
+  listConfigBackups: (pluginId) => ipcRenderer.invoke('pcc:listConfigBackups', pluginId),
+  restoreConfigBackup: (pluginId, backupPath) => ipcRenderer.invoke('pcc:restoreConfigBackup', pluginId, backupPath),
   readLog: (pluginId, lines) => ipcRenderer.invoke('pcc:readLog', pluginId, lines),
   readDocs: (pluginId) => ipcRenderer.invoke('pcc:readDocs', pluginId),
   listStorePlugins: () => ipcRenderer.invoke('pcc:listStorePlugins'),

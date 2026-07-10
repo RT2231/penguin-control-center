@@ -375,6 +375,39 @@ html, body {
 .diff-line.ctx { color: var(--text-muted); }
 .diff-line.ctx::before { content: "  "; }
 
+/* バックアップ一覧(Undo) -------------------------------------------------- */
+.backup-list { display: flex; flex-direction: column; gap: 8px; }
+
+.backup-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.backup-item .backup-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.backup-restore-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: transparent;
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.backup-restore-btn:hover { background: rgba(69, 217, 192, .1); }
+.backup-restore-btn:disabled { opacity: .5; cursor: not-allowed; }
+
 /* ドキュメントタブ -------------------------------------------------------- */
 .docs-view {
   background: var(--panel);
