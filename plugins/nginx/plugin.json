@@ -7,6 +7,7 @@
     "systemdUnit": "nginx.service",
     "configPath": "/etc/nginx/nginx.conf"
   },
+  "conflictsWith": ["apache2"],
   "actions": [
     { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "nginx.service", "--no-pager"], "privileged": false },
     { "id": "config-test", "label": "設定ファイルの文法チェック", "cli": ["nginx", "-t"], "privileged": false },

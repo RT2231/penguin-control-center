@@ -9,7 +9,7 @@
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand">
+      <div class="brand" id="brand-home" role="button" tabindex="0">
         <span class="brand-mark">🐧</span>
         <div>
           <div class="brand-title">Penguin Control Center</div>
@@ -18,12 +18,24 @@
       </div>
       <button id="open-store" class="store-btn">＋ ストアから追加</button>
       <button id="mode-toggle" class="mode-toggle-btn"></button>
+      <input id="plugin-search" class="plugin-search" type="text" placeholder="プラグインを検索..." />
       <nav id="plugin-list" class="plugin-list"><!-- JSで生成 --></nav>
     </aside>
 
     <main class="main" id="main">
       <div class="empty-state" id="empty-state">
-        <p>左のリストから管理したいソフトウェアを選択するか、「＋ ストアから追加」で新しいプラグインを導入してください。</p>
+        <p>まだプラグインが導入されていません。「＋ ストアから追加」で導入してください。</p>
+      </div>
+
+      <div class="dashboard-view hidden" id="dashboard-view">
+        <header class="main-header">
+          <div>
+            <h1>ホーム</h1>
+            <p class="muted">導入済みプラグインの稼働状況です。</p>
+          </div>
+          <button id="refresh-dashboard" class="btn-ghost">状態を更新</button>
+        </header>
+        <div id="dashboard-list" class="dashboard-list"></div>
       </div>
 
       <div class="store-view hidden" id="store-view">
@@ -34,6 +46,7 @@
           </div>
           <button id="refresh-store" class="btn-ghost">更新</button>
         </header>
+        <div id="store-tag-filter" class="tag-filter"></div>
         <div id="store-list" class="store-list"></div>
       </div>
 
@@ -100,6 +113,8 @@
       </div>
     </main>
   </div>
+
+  <div id="toast-container" class="toast-container"></div>
 
   <script src="app.js"></script>
 </body>

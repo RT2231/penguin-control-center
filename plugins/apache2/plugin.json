@@ -7,6 +7,7 @@
     "systemdUnit": "apache2.service",
     "configPath": "/etc/apache2/apache2.conf"
   },
+  "conflictsWith": ["nginx"],
   "actions": [
     { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "apache2.service", "--no-pager"], "privileged": false },
     { "id": "config-test", "label": "設定ファイルの文法チェック", "cli": ["apachectl", "configtest"], "privileged": false },

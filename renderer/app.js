@@ -31,9 +31,59 @@ async function init() {
   plugins = await window.pcc.listPlugins();
   renderSidebar();
   applyModeToDOM();
+  showHome();
+
   document.getElementById('open-store').addEventListener('click', openStore);
   document.getElementById('refresh-store').addEventListener('click', loadStore);
   document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+  document.getElementById('refresh-dashboard').addEventListener('click', renderDashboard);
+  document.getElementById('brand-home').addEventListener('click', showHome);
+  document.getElementById('plugin-search').addEventListener('input', (e) => filterPluginList(e.target.value));
+}
+
+// ---- ホーム/ダッシュボード ----
+function showHome() {
+  activePluginId = null;
+  document.getElementById('plugin-view').classList.add('hidden');
+  document.getElementById('store-view').classList.add('hidden');
+  renderSidebar();
+
+  if (plugins.length === 0) {
+    document.getElementById('empty-state').classList.remove('hidden');
+    document.getElementById('dashboard-view').classList.add('hidden');
+    return;
+  }
+  document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('dashboard-view').classList.remove('hidden');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const list = document.getElementById('dashboard-list');
+  list.innerHTML = '';
+  for (const plugin of plugins) {
+    const card = document.createElement('div');
+    card.className = 'dashboard-card';
+    card.innerHTML = `
+      <div class="dc-top">
+        <span class="status-dot" data-plugin-id="${escapeHtml(plugin.id)}"></span>
+        <span class="dc-name">${escapeHtml(plugin.name)}</span>
+      </div>
+      <div class="dc-status" data-status-label="${escapeHtml(plugin.id)}">確認中...</div>
+      <div class="dc-desc">${escapeHtml(plugin.description || '')}</div>
+    `;
+    card.addEventListener('click', () => selectPlugin(plugin.id));
+    list.appendChild(card);
+  }
+  refreshSidebarStatusDots();
+}
+
+function filterPluginList(query) {
+  const q = query.trim().toLowerCase();
+  document.querySelectorAll('#plugin-list .plugin-item').forEach((item) => {
+    const name = item.querySelector('.name').textContent.toLowerCase();
+    item.classList.toggle('hidden', q !== '' && !name.includes(q));
+  });
 }
 
 function renderSidebar() {
@@ -50,22 +100,37 @@ function renderSidebar() {
 }
 
 async function refreshSidebarStatusDots() {
+  const statusLabel = { active: '● 稼働中', inactive: '○ 停止中', failed: '✕ エラー', unknown: '？ 不明' };
+
   for (const plugin of plugins) {
     if (!plugin.hasLog) continue; // systemdUnit未定義のプラグインはスキップ
     window.pcc.getServiceStatus(plugin.id).then((result) => {
-      const dot = document.querySelector(`.status-dot[data-plugin-id="${cssEscape(plugin.id)}"]`);
-      if (!dot) return;
-      dot.classList.remove('status-active', 'status-inactive', 'status-failed');
-      if (result.status === 'active') dot.classList.add('status-active');
-      else if (result.status === 'failed') dot.classList.add('status-failed');
-      else dot.classList.add('status-inactive');
-      dot.title = `systemctl is-active: ${result.status}`;
+      const status = ['active', 'failed'].includes(result.status) ? result.status : 'inactive';
+      const dots = document.querySelectorAll(`.status-dot[data-plugin-id="${cssEscape(plugin.id)}"]`);
+      dots.forEach((dot) => {
+        dot.classList.remove('status-active', 'status-inactive', 'status-failed');
+        dot.classList.add(`status-${status}`);
+        dot.title = `systemctl is-active: ${result.status}`;
+      });
+
+      const label = document.querySelector(`[data-status-label="${cssEscape(plugin.id)}"]`);
+      if (label) label.textContent = statusLabel[result.status] || statusLabel.unknown;
     }).catch(() => {});
   }
 }
 
 function cssEscape(str) {
   return String(str).replace(/[^a-zA-Z0-9_-]/g, '');
+}
+
+// ---- トースト通知 ----
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 4000);
 }
 
 function selectPlugin(pluginId) {
@@ -75,6 +140,7 @@ function selectPlugin(pluginId) {
 
   document.getElementById('empty-state').classList.add('hidden');
   document.getElementById('store-view').classList.add('hidden');
+  document.getElementById('dashboard-view').classList.add('hidden');
   document.getElementById('plugin-view').classList.remove('hidden');
 
   const plugin = plugins.find((p) => p.id === pluginId);
@@ -105,14 +171,12 @@ async function uninstallPlugin(pluginId) {
     }
 
     plugins = result.plugins;
-    activePluginId = null;
-    document.getElementById('plugin-view').classList.add('hidden');
-    document.getElementById('store-view').classList.add('hidden');
-    document.getElementById('empty-state').classList.remove('hidden');
-    renderSidebar();
+    showToast(`「${document.getElementById('plugin-name').textContent}」をアンインストールしました`, 'success');
+    showHome();
   } catch (err) {
     btn.disabled = false;
     btn.textContent = `エラー: ${err.message}`;
+    showToast(`アンインストールに失敗しました: ${err.message}`, 'error');
   }
 }
 
@@ -121,29 +185,63 @@ async function openStore() {
   activePluginId = null;
   document.getElementById('empty-state').classList.add('hidden');
   document.getElementById('plugin-view').classList.add('hidden');
+  document.getElementById('dashboard-view').classList.add('hidden');
   document.getElementById('store-view').classList.remove('hidden');
   renderSidebar();
   await loadStore();
 }
 
+let storePluginsCache = [];
+let activeTagFilters = new Set();
+
 async function loadStore() {
   const list = document.getElementById('store-list');
   list.innerHTML = '<div class="muted">読み込み中...</div>';
+  document.getElementById('store-tag-filter').innerHTML = '';
 
   try {
-    const storePlugins = await window.pcc.listStorePlugins();
-    list.innerHTML = '';
-
-    if (storePlugins.length === 0) {
-      list.innerHTML = '<div class="muted">現在ストアに公開されているプラグインはありません。</div>';
-      return;
-    }
-
-    for (const p of storePlugins) {
-      list.appendChild(renderStoreCard(p));
-    }
+    storePluginsCache = await window.pcc.listStorePlugins();
+    activeTagFilters.clear();
+    renderTagFilter();
+    renderStoreList();
   } catch (err) {
     list.innerHTML = `<div class="muted">ストアの取得に失敗しました: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function renderTagFilter() {
+  const box = document.getElementById('store-tag-filter');
+  const allTags = [...new Set(storePluginsCache.flatMap((p) => p.tags || []))].sort();
+  box.innerHTML = '';
+
+  for (const tag of allTags) {
+    const chip = document.createElement('button');
+    chip.className = 'tag-filter-chip' + (activeTagFilters.has(tag) ? ' active' : '');
+    chip.textContent = tag;
+    chip.addEventListener('click', () => {
+      if (activeTagFilters.has(tag)) activeTagFilters.delete(tag);
+      else activeTagFilters.add(tag);
+      renderTagFilter();
+      renderStoreList();
+    });
+    box.appendChild(chip);
+  }
+}
+
+function renderStoreList() {
+  const list = document.getElementById('store-list');
+  const filtered =
+    activeTagFilters.size === 0
+      ? storePluginsCache
+      : storePluginsCache.filter((p) => (p.tags || []).some((t) => activeTagFilters.has(t)));
+
+  list.innerHTML = '';
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="muted">条件に一致するプラグインはありません。</div>';
+    return;
+  }
+  for (const p of filtered) {
+    list.appendChild(renderStoreCard(p));
   }
 }
 
@@ -190,10 +288,14 @@ async function installFromStore(pluginId, btn) {
   try {
     plugins = await window.pcc.installStorePlugin(pluginId);
     renderSidebar();
-    await loadStore();
+    storePluginsCache = await window.pcc.listStorePlugins();
+    renderTagFilter();
+    renderStoreList();
+    showToast(`「${pluginId}」を導入しました`, 'success');
   } catch (err) {
     btn.disabled = false;
     btn.textContent = `エラー: ${err.message}`;
+    showToast(`導入に失敗しました: ${err.message}`, 'error');
   }
 }
 
@@ -256,8 +358,13 @@ async function runAction(pluginId, actionId) {
       `終了コード: ${result.exitCode}  (${result.durationMs}ms)\n\n` +
       (result.stdout ? `--- stdout ---\n${result.stdout}\n` : '') +
       (result.stderr ? `--- stderr ---\n${result.stderr}\n` : '');
+    showToast(
+      result.exitCode === 0 ? `実行完了: ${result.command}` : `終了コード${result.exitCode}: ${result.command}`,
+      result.exitCode === 0 ? 'success' : 'error'
+    );
   } catch (err) {
     resultBox.textContent = `エラー: ${err.message}`;
+    showToast(`実行エラー: ${err.message}`, 'error');
   }
 }
 
@@ -414,8 +521,10 @@ document.getElementById('save-config').addEventListener('click', async () => {
     configOriginalContent = editor.value;
     renderConfigDiff();
     loadBackupList();
+    showToast('設定ファイルを保存しました', 'success');
   } catch (err) {
     status.textContent = `エラー: ${err.message}`;
+    showToast(`保存に失敗しました: ${err.message}`, 'error');
   }
 });
 
@@ -461,9 +570,11 @@ async function restoreBackup(backupPath, btn) {
       return;
     }
     await loadConfig(); // エディタ・差分・バックアップ一覧をすべて最新化
+    showToast('バックアップから復元しました', 'success');
   } catch (err) {
     btn.disabled = false;
     btn.textContent = `エラー: ${err.message}`;
+    showToast(`復元に失敗しました: ${err.message}`, 'error');
   }
 }
 

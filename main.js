@@ -75,6 +75,32 @@ ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
   const action = plugin.manifest.actions.find((a) => a.id === actionId);
   if (!action) throw new Error(`不明なアクションです: ${actionId}`);
 
+  // 競合チェック: サービスを起動する系のアクションで、宣言的に競合するプラグインが
+  // 現在稼働中の場合は警告する(例: Apache稼働中にNginxを起動するとポートが競合する等)
+  if (['start', 'enable', 'restart'].includes(action.id) && Array.isArray(plugin.manifest.conflictsWith)) {
+    for (const conflictId of plugin.manifest.conflictsWith) {
+      const conflictPlugin = pluginLoader.getPlugin(conflictId);
+      const conflictUnit = conflictPlugin?.manifest?.service?.systemdUnit;
+      if (!conflictUnit) continue;
+
+      const statusResult = await cliRunner.run(['systemctl', 'is-active', conflictUnit], { privileged: false });
+      if ((statusResult.stdout || '').trim() === 'active') {
+        const { response } = await dialog.showMessageBox(mainWindow, {
+          type: 'warning',
+          buttons: ['キャンセル', '続行する'],
+          defaultId: 0,
+          cancelId: 0,
+          title: 'プラグインの競合の可能性',
+          message: `「${conflictPlugin.manifest.name}」が現在稼働中です`,
+          detail:
+            `「${plugin.manifest.name}」と「${conflictPlugin.manifest.name}」は同時に稼働すると` +
+            `ポート等が競合する可能性があります。続行しますか？`,
+        });
+        if (response !== 1) return { cancelled: true };
+      }
+    }
+  }
+
   // 特権操作は実行前にネイティブ確認ダイアログを出す
   if (action.privileged) {
     const { response } = await dialog.showMessageBox(mainWindow, {
