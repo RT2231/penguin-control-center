@@ -262,7 +262,7 @@ function renderStoreCard(p) {
     btnClass = 'installed';
     btnDisabled = true;
   } else if (p.updateAvailable) {
-    btnLabel = `更新する (v${p.installedVersion} → v${p.version})`;
+    btnLabel = `更新する (v${escapeHtml(p.installedVersion)} → v${escapeHtml(p.version)})`;
     btnClass = 'update';
   }
 
