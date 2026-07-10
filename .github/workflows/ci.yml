@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  syntax-and-manifest-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: JS構文チェック(node --check)
+        run: |
+          set -e
+          find . -name "*.js" \
+            -not -path "./node_modules/*" \
+            -not -path "./.git/*" \
+          | while read -r f; do
+              echo "checking: $f"
+              node --check "$f"
+            done
+
+      - name: JSON構文チェック(package.json, catalog.json, plugin.json)
+        run: |
+          set -e
+          find . -name "*.json" \
+            -not -path "./node_modules/*" \
+            -not -path "./.git/*" \
+          | while read -r f; do
+              echo "checking: $f"
+              node -e "JSON.parse(require('fs').readFileSync('$f','utf-8'))"
+            done
+
+      - name: プラグインマニフェストの必須フィールド検証
+        run: |
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const dir = "plugins";
+            let failed = false;
+            for (const id of fs.readdirSync(dir)) {
+              const manifestPath = path.join(dir, id, "plugin.json");
+              if (!fs.existsSync(manifestPath)) continue;
+              const m = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+              if (!m.id || !m.name || !Array.isArray(m.actions) || m.actions.length === 0) {
+                console.error(`NG: ${id} - 必須フィールド不足`);
+                failed = true;
+                continue;
+              }
+              for (const action of m.actions) {
+                if (!action.id || !action.label || !Array.isArray(action.cli) || action.cli.length === 0) {
+                  console.error(`NG: ${id} - 不正なアクション定義: ${JSON.stringify(action)}`);
+                  failed = true;
+                }
+              }
+              console.log(`OK: ${id}`);
+            }
+            if (failed) process.exit(1);
+          '
+
+      - name: catalog.jsonの整合性チェック(zip実在・sha256一致)
+        run: |
+          node -e '
+            const fs = require("fs");
+            const crypto = require("crypto");
+            const path = require("path");
+            const catalog = JSON.parse(fs.readFileSync("docs/catalog.json", "utf-8"));
+            let failed = false;
+            for (const entry of catalog) {
+              const zipPath = path.join("docs", entry.download);
+              if (!fs.existsSync(zipPath)) {
+                console.error(`NG: ${entry.id} - zipが存在しません: ${zipPath}`);
+                failed = true;
+                continue;
+              }
+              if (entry.sha256) {
+                const hash = crypto.createHash("sha256").update(fs.readFileSync(zipPath)).digest("hex");
+                if (hash !== entry.sha256) {
+                  console.error(`NG: ${entry.id} - sha256不一致 (catalog: ${entry.sha256}, 実ファイル: ${hash})`);
+                  failed = true;
+                  continue;
+                }
+              }
+              console.log(`OK: ${entry.id}`);
+            }
+            if (failed) process.exit(1);
+          '

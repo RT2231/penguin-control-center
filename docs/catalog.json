@@ -6,6 +6,7 @@
     "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
     "author": "PCC公式",
     "download": "downloads/chrony-plugin.zip",
+    "sha256": "bda4b14eba8ffd43abcfd518cb2b25718805665624d9e4ef1e2ddfae37879ed4",
     "requires": [
       "chrony (chronyd)"
     ],
@@ -23,6 +24,7 @@
     "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "Claude",
     "download": "downloads/openssh-plugin.zip",
+    "sha256": "e2f742b835a802295666e3f05919277d875451fad0eb4ed221f174cbbdc2cb12",
     "requires": [
       "openssh-server"
     ],
@@ -40,6 +42,7 @@
     "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
     "author": "Claude",
     "download": "downloads/docker-plugin.zip",
+    "sha256": "3c4982154fa6d165b4c3654155f23fd7582a3589c254101a7cbfe777eae6df40",
     "requires": [
       "docker.io もしくは Docker Engine"
     ],
@@ -57,6 +60,7 @@
     "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "Claude",
     "download": "downloads/apache2-plugin.zip",
+    "sha256": "9330ed41797eb7771802da2b944e66ae8bf4d834538ede88fc05030117c7527e",
     "requires": [
       "apache2"
     ],
@@ -74,6 +78,7 @@
     "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
     "author": "Claude",
     "download": "downloads/pihole-plugin.zip",
+    "sha256": "e0d2b11de9665a546a827eb2a2a79612fd8d76f2d1f974b9cc0b6085eb8b6d44",
     "requires": [
       "Pi-hole"
     ],

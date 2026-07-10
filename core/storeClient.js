@@ -7,6 +7,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 
 const DEFAULT_STORE_BASE_URL = 'https://rt2231.github.io/penguin-control-center/';
@@ -115,6 +116,16 @@ async function installPlugin(entry, baseUrl = DEFAULT_STORE_BASE_URL) {
   await downloadFile(zipUrl.toString(), tmpZip);
 
   try {
+    // 改ざん・破損検知: カタログにsha256が記載されていれば必ず一致を確認する
+    if (entry.sha256) {
+      const actualHash = crypto.createHash('sha256').update(fs.readFileSync(tmpZip)).digest('hex');
+      if (actualHash !== entry.sha256) {
+        throw new Error(
+          `ダウンロードしたファイルのハッシュ値がカタログの記載と一致しません。改ざんまたは破損の可能性があるためインストールを中止しました。`
+        );
+      }
+    }
+
     assertSafeZipEntries(tmpZip);
 
     const destDir = path.join(PLUGINS_DIR, entry.id);

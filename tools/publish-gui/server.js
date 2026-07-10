@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 const { execFileSync } = require('child_process');
+const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..', '..'); // リポジトリルート
 const PLUGINS_DIR = path.join(ROOT, 'plugins');
@@ -117,6 +118,7 @@ function publishPlugin(id, { author, tags, requires }) {
 
   const catalog = readCatalog();
   const hasHandler = fs.existsSync(path.join(pluginDir, 'handler.js'));
+  const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).digest('hex');
   const entry = {
     id: manifest.id,
     name: manifest.name,
@@ -124,6 +126,7 @@ function publishPlugin(id, { author, tags, requires }) {
     description: manifest.description,
     author: author || 'PCC公式',
     download: `downloads/${zipName}`,
+    sha256,
     requires: requires || [],
     tags: tags || [],
     hasCode: hasHandler,
