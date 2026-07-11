@@ -13,7 +13,7 @@
     "dist:deb": "electron-builder --linux deb"
   },
   "devDependencies": {
-    "electron": "^31.0.0",
+    "electron": "^43.1.0",
     "electron-builder": "^26.15.3"
   },
   "build": {
@@ -41,12 +41,7 @@
       "icon": "build/icons",
       "category": "System",
       "synopsis": "LinuxのCLIツールをGUIで管理する統合管理ツール",
-      "description": "GUI操作と対応するCLIコマンドを同時に確認しながら、Linuxのシステム管理ソフトウェアを操作・学習できるプラグイン型ツール",
-      "desktop": {
-        "Name": "Penguin Control Center",
-        "Comment": "Linux CLIツールのGUI管理・学習ツール",
-        "Categories": "System;Settings;"
-      }
+      "description": "GUI操作と対応するCLIコマンドを同時に確認しながら、Linuxのシステム管理ソフトウェアを操作・学習できるプラグイン型ツール"
     },
     "deb": {
       "depends": ["libnotify4", "libxtst6", "libnss3"]
