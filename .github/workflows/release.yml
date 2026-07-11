@@ -1,0 +1,39 @@
+name: Release Build
+
+# vX.Y.Z タグをpushすると、Linux向けパッケージ(.deb / AppImage)を自動ビルドし、
+# 対応するGitHub Releaseへ添付する。
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 依存関係のインストール
+        run: npm install
+
+      - name: Linuxパッケージをビルド(deb + AppImage)
+        run: npx electron-builder --linux AppImage deb
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ビルド成果物を一覧表示
+        run: ls -lh release/
+
+      - name: GitHub Releaseへ添付
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.deb
+            release/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,11 +4,52 @@
   "description": "LinuxのCLIツールをGUIで管理し、学習・管理・拡張を一つにまとめるオープンソースプラットフォーム",
   "main": "main.js",
   "license": "GPL-3.0",
+  "author": "RT2231 <rt2231@users.noreply.github.com>",
   "scripts": {
     "start": "electron .",
-    "publish-gui": "node tools/publish-gui/server.js"
+    "publish-gui": "node tools/publish-gui/server.js",
+    "dist": "electron-builder --linux AppImage deb",
+    "dist:appimage": "electron-builder --linux AppImage",
+    "dist:deb": "electron-builder --linux deb"
   },
   "devDependencies": {
-    "electron": "^31.0.0"
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "dev.rt2231.penguin-control-center",
+    "productName": "Penguin Control Center",
+    "copyright": "Copyright © 2026 RT2231",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "core/**/*",
+      "plugins/**/*",
+      "renderer/**/*",
+      "!plugins/**/node_modules",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb", "arch": ["x64"] }
+      ],
+      "icon": "build/icons",
+      "category": "System",
+      "synopsis": "LinuxのCLIツールをGUIで管理する統合管理ツール",
+      "description": "GUI操作と対応するCLIコマンドを同時に確認しながら、Linuxのシステム管理ソフトウェアを操作・学習できるプラグイン型ツール",
+      "desktop": {
+        "Name": "Penguin Control Center",
+        "Comment": "Linux CLIツールのGUI管理・学習ツール",
+        "Categories": "System;Settings;"
+      }
+    },
+    "deb": {
+      "depends": ["libnotify4", "libxtst6", "libnss3"]
+    }
   }
 }

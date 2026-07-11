@@ -10,15 +10,41 @@ LinuxのCLIツールをGUIで管理し、対応するCLIも同時に学べる統
 - Node.js 18以上
 - `chrony` パッケージ（`sudo apt install chrony` 等。未インストールでもアプリ自体は起動します）
 
-## 起動方法
+## インストール方法
+
+### 方法A: 配布パッケージを使う（推奨・簡単）
+
+[Releases](https://github.com/RT2231/penguin-control-center/releases)から、お使いの環境に合わせて
+ダウンロードしてください。
+
+- **`.deb`（Debian/Ubuntu系）**: `sudo dpkg -i penguin-control-center_*.deb` でインストール後、
+  アプリケーションメニューから起動できます
+- **`.AppImage`（ディストリビューション非依存）**: ダウンロード後に実行権限を付与して直接起動
+  ```bash
+  chmod +x "Penguin Control Center-*.AppImage"
+  ./Penguin\ Control\ Center-*.AppImage
+  ```
+
+### 方法B: ソースから起動する（開発・カスタマイズ向け）
 
 ```bash
-cd pcc
+git clone https://github.com/RT2231/penguin-control-center.git
+cd penguin-control-center
 npm install
 npm start
 ```
 
-初回 `npm install` でElectron本体（数百MB）がダウンロードされます。
+## 自分でパッケージをビルドする
+
+```bash
+npm install
+npm run dist            # deb + AppImage 両方
+npm run dist:deb        # debのみ
+npm run dist:appimage   # AppImageのみ
+```
+
+`release/`ディレクトリに成果物が生成されます。`vX.Y.Z`形式のタグをpushすると、GitHub Actionsが
+自動でビルドし、対応するReleaseに添付します。
 
 ## 特権操作について
 
