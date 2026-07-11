@@ -36,7 +36,7 @@ async function init() {
   document.getElementById('open-store').addEventListener('click', openStore);
   document.getElementById('refresh-store').addEventListener('click', loadStore);
   document.getElementById('mode-toggle').addEventListener('click', toggleMode);
-  document.getElementById('refresh-dashboard').addEventListener('click', renderDashboard);
+  document.getElementById('refresh-dashboard').addEventListener('click', () => refreshSidebarStatusDots(true));
   document.getElementById('brand-home').addEventListener('click', showHome);
   document.getElementById('plugin-search').addEventListener('input', (e) => filterPluginList(e.target.value));
 }
@@ -99,23 +99,52 @@ function renderSidebar() {
   refreshSidebarStatusDots();
 }
 
-async function refreshSidebarStatusDots() {
-  const statusLabel = { active: '● 稼働中', inactive: '○ 停止中', failed: '✕ エラー', unknown: '？ 不明' };
+// ---- サービス状態チェック(キャッシュ付き) ----
+// 画面遷移のたびに全プラグイン分のsystemctlを叩くと無駄が多いため、
+// 直近の結果を一定時間キャッシュし、force=trueの時だけ必ず再取得する。
+const statusCache = new Map(); // pluginId -> { status, fetchedAt }
+const STATUS_CACHE_TTL_MS = 5000;
+const statusLabelText = { active: '● 稼働中', inactive: '○ 停止中', failed: '✕ エラー', unknown: '？ 不明' };
 
+function applyStatus(pluginId, rawStatus) {
+  const status = ['active', 'failed'].includes(rawStatus) ? rawStatus : 'inactive';
+  document.querySelectorAll(`.status-dot[data-plugin-id="${cssEscape(pluginId)}"]`).forEach((dot) => {
+    dot.classList.remove('status-active', 'status-inactive', 'status-failed');
+    dot.classList.add(`status-${status}`);
+    dot.title = `systemctl is-active: ${rawStatus}`;
+  });
+  const label = document.querySelector(`[data-status-label="${cssEscape(pluginId)}"]`);
+  if (label) label.textContent = statusLabelText[rawStatus] || statusLabelText.unknown;
+}
+
+async function refreshSidebarStatusDots(force = false) {
   for (const plugin of plugins) {
     if (!plugin.hasLog) continue; // systemdUnit未定義のプラグインはスキップ
-    window.pcc.getServiceStatus(plugin.id).then((result) => {
-      const status = ['active', 'failed'].includes(result.status) ? result.status : 'inactive';
-      const dots = document.querySelectorAll(`.status-dot[data-plugin-id="${cssEscape(plugin.id)}"]`);
-      dots.forEach((dot) => {
-        dot.classList.remove('status-active', 'status-inactive', 'status-failed');
-        dot.classList.add(`status-${status}`);
-        dot.title = `systemctl is-active: ${result.status}`;
-      });
 
-      const label = document.querySelector(`[data-status-label="${cssEscape(plugin.id)}"]`);
-      if (label) label.textContent = statusLabel[result.status] || statusLabel.unknown;
+    const cached = statusCache.get(plugin.id);
+    const isFresh = cached && Date.now() - cached.fetchedAt < STATUS_CACHE_TTL_MS;
+    if (isFresh && !force) {
+      applyStatus(plugin.id, cached.status);
+      continue;
+    }
+
+    window.pcc.getServiceStatus(plugin.id).then((result) => {
+      statusCache.set(plugin.id, { status: result.status, fetchedAt: Date.now() });
+      applyStatus(plugin.id, result.status);
     }).catch(() => {});
+  }
+}
+
+// 特定のプラグインだけを即時に再チェックする(アクション実行直後など、状態が変わった直後用)
+async function refreshOneStatus(pluginId) {
+  const plugin = plugins.find((p) => p.id === pluginId);
+  if (!plugin || !plugin.hasLog) return;
+  try {
+    const result = await window.pcc.getServiceStatus(pluginId);
+    statusCache.set(pluginId, { status: result.status, fetchedAt: Date.now() });
+    applyStatus(pluginId, result.status);
+  } catch {
+    // 状態確認の失敗は致命的ではないため黙って無視する
   }
 }
 
@@ -171,6 +200,7 @@ async function uninstallPlugin(pluginId) {
     }
 
     plugins = result.plugins;
+    statusCache.delete(pluginId);
     showToast(`「${document.getElementById('plugin-name').textContent}」をアンインストールしました`, 'success');
     showHome();
   } catch (err) {
@@ -362,6 +392,7 @@ async function runAction(pluginId, actionId) {
       result.exitCode === 0 ? `実行完了: ${result.command}` : `終了コード${result.exitCode}: ${result.command}`,
       result.exitCode === 0 ? 'success' : 'error'
     );
+    refreshOneStatus(pluginId); // 起動/停止等で状態が変わった可能性があるため即時反映
   } catch (err) {
     resultBox.textContent = `エラー: ${err.message}`;
     showToast(`実行エラー: ${err.message}`, 'error');
