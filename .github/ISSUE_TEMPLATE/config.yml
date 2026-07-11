@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: セキュリティ上の脆弱性を報告する
+    url: https://github.com/RT2231/penguin-control-center/security/advisories/new
+    about: 公開Issueにせず、非公開のSecurity Advisoryで報告してください（詳細はSECURITY.md参照）
+  - name: 質問・雑談
+    url: https://github.com/RT2231/penguin-control-center/discussions
+    about: バグでも機能要望でもない質問はDiscussionsをご利用ください

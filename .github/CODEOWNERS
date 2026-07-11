@@ -1,0 +1,7 @@
+# デフォルトのオーナー: リポジトリ全体
+* @RT2231
+
+# プラグインストアのカタログ・審査は特に慎重にレビュー
+/docs/catalog.json @RT2231
+/plugins/ @RT2231
+/tools/publish-gui/ @RT2231
