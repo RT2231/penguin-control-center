@@ -32,7 +32,7 @@ jobs:
         run: ls -lh release/
 
       - name: GitHub Releaseへ添付
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             release/*.deb
