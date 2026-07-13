@@ -2,6 +2,7 @@
 // ここに列挙したAPI以外、レンダラーはメインプロセス/OSに一切触れられない。
 
 const { contextBridge, ipcRenderer } = require('electron');
+const { diffLines } = require('./core/diffLines');
 
 contextBridge.exposeInMainWorld('pcc', {
   listPlugins: () => ipcRenderer.invoke('pcc:listPlugins'),
@@ -17,4 +18,5 @@ contextBridge.exposeInMainWorld('pcc', {
   listStorePlugins: () => ipcRenderer.invoke('pcc:listStorePlugins'),
   installStorePlugin: (pluginId) => ipcRenderer.invoke('pcc:installStorePlugin', pluginId),
   uninstallPlugin: (pluginId) => ipcRenderer.invoke('pcc:uninstallPlugin', pluginId),
+  diffLines: (oldText, newText) => diffLines(oldText, newText),
 });

@@ -9,9 +9,9 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
+const { getPluginsDir } = require('./pluginsPath');
 
 const DEFAULT_STORE_BASE_URL = 'https://rt2231.github.io/penguin-control-center/';
-const PLUGINS_DIR = path.join(__dirname, '..', 'plugins');
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
@@ -128,7 +128,7 @@ async function installPlugin(entry, baseUrl = DEFAULT_STORE_BASE_URL) {
 
     assertSafeZipEntries(tmpZip);
 
-    const destDir = path.join(PLUGINS_DIR, entry.id);
+    const destDir = path.join(getPluginsDir(), entry.id);
     fs.mkdirSync(destDir, { recursive: true });
     execFileSync('unzip', ['-o', tmpZip, '-d', destDir]);
 

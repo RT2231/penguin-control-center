@@ -7,6 +7,7 @@
   "author": "RT2231 <rt2231@users.noreply.github.com>",
   "scripts": {
     "start": "electron .",
+    "test": "node --test tests/*.test.js",
     "publish-gui": "node tools/publish-gui/server.js",
     "dist": "electron-builder --linux AppImage deb",
     "dist:appimage": "electron-builder --linux AppImage",
@@ -16,10 +17,18 @@
     "electron": "^43.1.0",
     "electron-builder": "^26.15.3"
   },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
   "build": {
     "appId": "dev.rt2231.penguin-control-center",
     "productName": "Penguin Control Center",
     "copyright": "Copyright © 2026 RT2231",
+    "publish": {
+      "provider": "github",
+      "owner": "RT2231",
+      "repo": "penguin-control-center"
+    },
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -28,9 +37,7 @@
       "main.js",
       "preload.js",
       "core/**/*",
-      "plugins/**/*",
       "renderer/**/*",
-      "!plugins/**/node_modules",
       "package.json"
     ],
     "linux": {

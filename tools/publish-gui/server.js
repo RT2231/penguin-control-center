@@ -20,6 +20,7 @@ const crypto = require('crypto');
 const ROOT = path.join(__dirname, '..', '..'); // リポジトリルート
 const PLUGINS_DIR = path.join(ROOT, 'plugins');
 const DOWNLOADS_DIR = path.join(ROOT, 'docs', 'downloads');
+const PLUGIN_DOCS_DIR = path.join(ROOT, 'docs', 'plugin-docs');
 const CATALOG_PATH = path.join(ROOT, 'docs', 'catalog.json');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const PORT = 5178;
@@ -116,6 +117,18 @@ function publishPlugin(id, { author, tags, requires }) {
   // システムのzipコマンドを使用（プラグインディレクトリ内から相対パスで固める）
   execFileSync('zip', ['-r', zipPath, '.', '-x', '*.DS_Store'], { cwd: pluginDir });
 
+  // docs.md をストアサイト(GitHub Pages)からも閲覧できるようコピーする
+  let docsRelPath = null;
+  if (manifest.docs) {
+    const srcDocsPath = path.join(pluginDir, manifest.docs);
+    if (fs.existsSync(srcDocsPath)) {
+      fs.mkdirSync(PLUGIN_DOCS_DIR, { recursive: true });
+      const docsFileName = `${id}.md`;
+      fs.copyFileSync(srcDocsPath, path.join(PLUGIN_DOCS_DIR, docsFileName));
+      docsRelPath = `plugin-docs/${docsFileName}`;
+    }
+  }
+
   const catalog = readCatalog();
   const hasHandler = fs.existsSync(path.join(pluginDir, 'handler.js'));
   const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).digest('hex');
@@ -126,6 +139,7 @@ function publishPlugin(id, { author, tags, requires }) {
     description: manifest.description,
     author: author || 'PCC公式',
     download: `downloads/${zipName}`,
+    docs: docsRelPath,
     sha256,
     requires: requires || [],
     tags: tags || [],

@@ -24,12 +24,18 @@ jobs:
         run: npm install
 
       - name: Linuxパッケージをビルド(deb + AppImage)
-        run: npx electron-builder --linux AppImage deb
+        run: npx electron-builder --linux AppImage deb --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ビルド成果物を一覧表示
         run: ls -lh release/
+
+      - name: SHA256SUMSを生成
+        run: |
+          cd release
+          sha256sum *.deb *.AppImage > SHA256SUMS
+          cat SHA256SUMS
 
       - name: GitHub Releaseへ添付
         uses: softprops/action-gh-release@v3
@@ -37,5 +43,7 @@ jobs:
           files: |
             release/*.deb
             release/*.AppImage
+            release/SHA256SUMS
+            release/latest-linux.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

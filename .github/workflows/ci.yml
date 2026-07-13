@@ -16,6 +16,9 @@ jobs:
         with:
           node-version: "20"
 
+      - name: 単体テスト(node --test)
+        run: npm test
+
       - name: JS構文チェック(node --check)
         run: |
           set -e

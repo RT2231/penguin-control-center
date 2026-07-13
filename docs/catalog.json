@@ -6,7 +6,8 @@
     "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
     "author": "PCC公式",
     "download": "downloads/chrony-plugin.zip",
-    "sha256": "bda4b14eba8ffd43abcfd518cb2b25718805665624d9e4ef1e2ddfae37879ed4",
+    "docs": "plugin-docs/chrony.md",
+    "sha256": "f21eb9f42fb753726978a808bc150ef36ca49298f6608b4ce0d05273ad4dd293",
     "requires": [
       "chrony (chronyd)"
     ],
@@ -24,7 +25,8 @@
     "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "Claude",
     "download": "downloads/openssh-plugin.zip",
-    "sha256": "e2f742b835a802295666e3f05919277d875451fad0eb4ed221f174cbbdc2cb12",
+    "docs": "plugin-docs/openssh.md",
+    "sha256": "07f544d8479c970d66476d86c0fb072e4fbc960d7ed7554771d00bccfeda3188",
     "requires": [
       "openssh-server"
     ],
@@ -42,7 +44,8 @@
     "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
     "author": "Claude",
     "download": "downloads/docker-plugin.zip",
-    "sha256": "3c4982154fa6d165b4c3654155f23fd7582a3589c254101a7cbfe777eae6df40",
+    "docs": "plugin-docs/docker.md",
+    "sha256": "fc1cb6f2574374034f1ce1150cd6cac1cbbbacd85312a79bcf6122f4627d3026",
     "requires": [
       "docker.io もしくは Docker Engine"
     ],
@@ -60,7 +63,8 @@
     "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "Claude",
     "download": "downloads/apache2-plugin.zip",
-    "sha256": "9330ed41797eb7771802da2b944e66ae8bf4d834538ede88fc05030117c7527e",
+    "docs": "plugin-docs/apache2.md",
+    "sha256": "49243d03cecd6c7c0987ee8a4ad5f0f1b1552e2d0e36caf00b6ad647c0ce2833",
     "requires": [
       "apache2"
     ],
@@ -78,7 +82,8 @@
     "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
     "author": "Claude",
     "download": "downloads/pihole-plugin.zip",
-    "sha256": "e0d2b11de9665a546a827eb2a2a79612fd8d76f2d1f974b9cc0b6085eb8b6d44",
+    "docs": "plugin-docs/pihole.md",
+    "sha256": "a5a3361bc10a3d62c15987c2534fbd7b2300d56af10765c2af497fc1d3dc43c2",
     "requires": [
       "Pi-hole"
     ],
@@ -96,7 +101,8 @@
     "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
     "author": "Claude",
     "download": "downloads/ufw-plugin.zip",
-    "sha256": "745b307ecc39459e4c21f52c3d1dc6e4f7db6c8900c1cc3b07b9de02a4032bda",
+    "docs": "plugin-docs/ufw.md",
+    "sha256": "cc60e75b5fb4dcea82d732c3e5f81b8210bc17e05b928d8d4018166add35f66e",
     "requires": [
       "ufw"
     ],
@@ -114,7 +120,8 @@
     "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
     "author": "Claude",
     "download": "downloads/fail2ban-plugin.zip",
-    "sha256": "6b098be197550f063348910c7645a4c75754afeede4d97cb94d9124de8daa3ea",
+    "docs": "plugin-docs/fail2ban.md",
+    "sha256": "00c03adab4a6fab8243bac576396afeb7f5c96f31ed884a1acc1a4be249eeeaf",
     "requires": [
       "fail2ban"
     ],
@@ -132,7 +139,8 @@
     "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "Claude",
     "download": "downloads/nginx-plugin.zip",
-    "sha256": "ce83578c64cb46e82bac9672ed55b4c137c33fc27037c9c4961ec7a1c75966f1",
+    "docs": "plugin-docs/nginx.md",
+    "sha256": "bac06f5dbaca1c8720eeb7b689c34867fcad15dd0056af21c416ccdf5210df86",
     "requires": [
       "nginx"
     ],
@@ -150,7 +158,8 @@
     "description": "Windows/Mac/Linux間でファイルを共有するSambaサーバー(smbd)の状態確認・起動停止・設定を管理します。",
     "author": "Claude",
     "download": "downloads/samba-plugin.zip",
-    "sha256": "fe46d6248fdf07ecbe01032a7aad438cae2a46e3d0fff1c9caa8e609c00793a0",
+    "docs": "plugin-docs/samba.md",
+    "sha256": "3dc8a5ae646a871b6c5930da8ea6e7f2ebc806bc23a6fc3ae3f68b98ce3a4d36",
     "requires": [
       "samba"
     ],
@@ -168,7 +177,8 @@
     "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
     "author": "Claude",
     "download": "downloads/cron-plugin.zip",
-    "sha256": "25cf77441fbda59796c74c5a861bdfac7198832db555721eed35c6901ece7935",
+    "docs": "plugin-docs/cron.md",
+    "sha256": "7ec3acb899d95574562558fa1e144fc2d12aa660f615924fcb19575c1891f406",
     "requires": [
       "cron"
     ],
@@ -186,7 +196,8 @@
     "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
     "author": "Claude",
     "download": "downloads/mysql-plugin.zip",
-    "sha256": "eb893314745402b61e87d0fc6108737578a1c8d3599fe8f2922ec574ce28b38b",
+    "docs": "plugin-docs/mysql.md",
+    "sha256": "1fc956c47887b829254cf2bcfde815a97552edac7606a71c77e8da41ad3b34c2",
     "requires": [
       "mysql-server もしくは mariadb-server"
     ],

@@ -2,19 +2,19 @@
 
 const fs = require('fs');
 const path = require('path');
-
-const PLUGINS_DIR = path.join(__dirname, '..', 'plugins');
+const { getPluginsDir } = require('./pluginsPath');
 
 let cache = null; // { [pluginId]: { manifest, dir, handler } }
 
 function loadAll() {
+  const pluginsDir = getPluginsDir();
   const result = {};
-  if (!fs.existsSync(PLUGINS_DIR)) return result;
+  if (!fs.existsSync(pluginsDir)) return result;
 
-  const entries = fs.readdirSync(PLUGINS_DIR, { withFileTypes: true });
+  const entries = fs.readdirSync(pluginsDir, { withFileTypes: true });
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
-    const dir = path.join(PLUGINS_DIR, entry.name);
+    const dir = path.join(pluginsDir, entry.name);
     const manifestPath = path.join(dir, 'plugin.json');
     if (!fs.existsSync(manifestPath)) continue;
 
@@ -77,8 +77,9 @@ function uninstall(pluginId) {
   if (!plugin) throw new Error(`不明なプラグインです: ${pluginId}`);
 
   // 安全対策: 削除対象が必ずplugins/配下に収まっていることを確認してから削除する
+  const pluginsDir = getPluginsDir();
   const resolvedDir = path.resolve(plugin.dir);
-  const resolvedRoot = path.resolve(PLUGINS_DIR);
+  const resolvedRoot = path.resolve(pluginsDir);
   if (resolvedDir !== path.join(resolvedRoot, pluginId) || !resolvedDir.startsWith(resolvedRoot + path.sep)) {
     throw new Error('不正なプラグインパスのため削除を中止しました');
   }
@@ -92,4 +93,9 @@ function reload() {
   return listPlugins();
 }
 
-module.exports = { listPlugins, getPlugin, readDocs, reload, uninstall };
+function validateManifestForTest(manifest) {
+  // テスト用に検証ロジックだけを外部から呼べるようにするエクスポート
+  validateManifest(manifest);
+}
+
+module.exports = { listPlugins, getPlugin, readDocs, reload, uninstall, validateManifest: validateManifestForTest };

@@ -496,7 +496,7 @@ function renderConfigDiff() {
     return;
   }
 
-  const diff = diffLines(configOriginalContent, current);
+  const diff = window.pcc.diffLines(configOriginalContent, current);
   box.innerHTML = '';
   for (const part of diff) {
     const div = document.createElement('div');
@@ -506,39 +506,7 @@ function renderConfigDiff() {
   }
 }
 
-// 行単位のLCSベース差分（外部ライブラリ不使用の最小実装）
-function diffLines(oldText, newText) {
-  const a = oldText.split('\n');
-  const b = newText.split('\n');
-  const m = a.length;
-  const n = b.length;
-
-  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
-  for (let i = m - 1; i >= 0; i--) {
-    for (let j = n - 1; j >= 0; j--) {
-      dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
-    }
-  }
-
-  const result = [];
-  let i = 0;
-  let j = 0;
-  while (i < m && j < n) {
-    if (a[i] === b[j]) {
-      result.push({ type: 'ctx', text: a[i] });
-      i++; j++;
-    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
-      result.push({ type: 'del', text: a[i] });
-      i++;
-    } else {
-      result.push({ type: 'add', text: b[j] });
-      j++;
-    }
-  }
-  while (i < m) { result.push({ type: 'del', text: a[i] }); i++; }
-  while (j < n) { result.push({ type: 'add', text: b[j] }); j++; }
-  return result;
-}
+// 行単位の差分計算は core/diffLines.js の実装を preload.js 経由で利用する(window.pcc.diffLines)。
 
 document.getElementById('save-config').addEventListener('click', async () => {
   const editor = document.getElementById('config-editor');

@@ -4,6 +4,7 @@
 
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
+const { autoUpdater } = require('electron-updater');
 
 const pluginLoader = require('./core/pluginLoader');
 const cliRunner = require('./core/cliRunner');
@@ -50,6 +51,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
+  setupAutoUpdater();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -59,6 +61,52 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+// ---- 自動アップデート ----
+// GitHub Releasesを更新元として使用する(package.jsonのbuild.publish設定)。
+// Linuxではdeb形式の自動更新はサポートされていないため、AppImageとして
+// 実行されている場合のみチェックする(それ以外は静かにスキップ)。
+function setupAutoUpdater() {
+  if (!app.isPackaged) return; // 開発中(npm start)はチェックしない
+  if (process.platform === 'linux' && !process.env.APPIMAGE) {
+    console.log('AppImage以外(.deb等)での実行のため、自動アップデートはスキップします。');
+    return;
+  }
+
+  autoUpdater.autoDownload = false; // ユーザーの同意なしに勝手にダウンロードしない
+
+  autoUpdater.on('update-available', async (info) => {
+    const { response } = await dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      buttons: ['あとで', 'ダウンロードする'],
+      defaultId: 1,
+      cancelId: 0,
+      title: 'アップデートが利用可能です',
+      message: `新しいバージョン ${info.version} が利用可能です。ダウンロードしますか？`,
+    });
+    if (response === 1) autoUpdater.downloadUpdate();
+  });
+
+  autoUpdater.on('update-downloaded', async () => {
+    const { response } = await dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      buttons: ['あとで再起動', '今すぐ再起動してインストール'],
+      defaultId: 1,
+      cancelId: 0,
+      title: 'アップデートの準備ができました',
+      message: 'ダウンロードが完了しました。再起動してインストールしますか？',
+    });
+    if (response === 1) autoUpdater.quitAndInstall();
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('自動アップデート確認中にエラー:', err.message);
+  });
+
+  autoUpdater.checkForUpdates().catch((err) => {
+    console.error('アップデート確認に失敗しました:', err.message);
+  });
+}
 
 // ---- IPCハンドラ ----
 // レンダラーからのすべての要求はここを経由する。
