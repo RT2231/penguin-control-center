@@ -37,6 +37,9 @@ npm install
 ### PR前のチェック
 
 ```bash
+# 単体テスト
+npm test
+
 # 全JS/JSONファイルの構文チェック
 for f in main.js preload.js core/*.js renderer/*.js plugins/*/*.js; do node --check "$f" || echo "NG: $f"; done
 ```

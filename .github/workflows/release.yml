@@ -23,6 +23,12 @@ jobs:
       - name: 依存関係のインストール
         run: npm install
 
+      - name: package.jsonのバージョンをタグに同期
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          npm version "$TAG_VERSION" --no-git-tag-version --allow-same-version
+          echo "package.json version = $TAG_VERSION"
+
       - name: Linuxパッケージをビルド(deb + AppImage)
         run: npx electron-builder --linux AppImage deb --publish never
         env:

@@ -1,6 +1,6 @@
 {
   "name": "penguin-control-center",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "LinuxのCLIツールをGUIで管理し、学習・管理・拡張を一つにまとめるオープンソースプラットフォーム",
   "main": "main.js",
   "license": "GPL-3.0",
@@ -42,8 +42,18 @@
     ],
     "linux": {
       "target": [
-        { "target": "AppImage", "arch": ["x64"] },
-        { "target": "deb", "arch": ["x64"] }
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
       "icon": "build/icons",
       "category": "System",
@@ -51,7 +61,11 @@
       "description": "GUI操作と対応するCLIコマンドを同時に確認しながら、Linuxのシステム管理ソフトウェアを操作・学習できるプラグイン型ツール"
     },
     "deb": {
-      "depends": ["libnotify4", "libxtst6", "libnss3"]
+      "depends": [
+        "libnotify4",
+        "libxtst6",
+        "libnss3"
+      ]
     }
   }
 }
