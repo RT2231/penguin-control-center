@@ -124,6 +124,14 @@ npm run publish-gui
 npm test
 ```
 
+加えて、CIでは実際に`xvfb`上でElectronアプリを起動し、preloadエラーや未捕捉例外が
+出ていないか・プラグイン一覧が実際に描画されているかを確認する**スモークテスト**も実行しています
+（構文チェックや単体テストだけでは検出できない、「Electronとして実際に動くか」を検証するためです）。
+
+```bash
+PCC_SMOKE_TEST=1 xvfb-run -a npx electron . --no-sandbox
+```
+
 CIでもpushのたびに自動実行されます。
 
 ## 新しいプラグインの追加方法（開発者向け）

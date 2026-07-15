@@ -52,6 +52,7 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
   setupAutoUpdater();
+  if (process.env.PCC_SMOKE_TEST) setupSmokeTest();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -61,6 +62,47 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+// ---- スモークテスト(CI用) ----
+// PCC_SMOKE_TEST=1 で起動すると、実際にレンダラーを描画した上で
+// (1) preloadエラー/未捕捉例外が出ていないか (2) プラグイン一覧が実際に表示されているか
+// を確認し、結果に応じたexit codeで終了する。
+// `node --check`(構文)や`npm test`(ロジック単体)では検出できない「Electronとして
+// 実際に起動できるか」を検証するための最終防衛ライン。
+function setupSmokeTest() {
+  const rendererErrors = [];
+
+  mainWindow.webContents.on('console-message', (event, level, message) => {
+    if (/Unable to load preload|Uncaught|No handler registered for/i.test(message)) {
+      rendererErrors.push(message);
+    }
+  });
+
+  mainWindow.webContents.on('render-process-gone', (event, details) => {
+    rendererErrors.push(`renderer process gone: ${details.reason}`);
+  });
+
+  (async () => {
+    await new Promise((r) => setTimeout(r, 2000)); // 初期描画・IPC往復待ち
+
+    let pluginItemCount = -1;
+    try {
+      pluginItemCount = await mainWindow.webContents.executeJavaScript(
+        "document.querySelectorAll('#plugin-list .plugin-item').length"
+      );
+    } catch (err) {
+      rendererErrors.push(`executeJavaScript失敗: ${err.message}`);
+    }
+
+    console.log(`SMOKE_TEST pluginItemCount=${pluginItemCount} errorCount=${rendererErrors.length}`);
+    for (const err of rendererErrors) console.log('SMOKE_TEST_ERROR:', err);
+
+    const ok = rendererErrors.length === 0 && pluginItemCount > 0;
+    console.log(ok ? 'SMOKE_TEST_RESULT=PASS' : 'SMOKE_TEST_RESULT=FAIL');
+
+    app.exit(ok ? 0 : 1);
+  })();
+}
 
 // ---- 自動アップデート ----
 // GitHub Releasesを更新元として使用する(package.jsonのbuild.publish設定)。
