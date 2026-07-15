@@ -1,8 +1,14 @@
-# Penguin Control Center (PCC) — MVP
+# Penguin Control Center (PCC)
 
 LinuxのCLIツールをGUIで管理し、対応するCLIも同時に学べる統合管理ツール。
-このMVPでは `chrony`（NTP時刻同期）プラグイン1本で、設計書（`DESIGN.md`）通りの
-全機能フロー（GUI操作／CLI表示／ログ／設定ファイル編集／ドキュメント）を実証しています。
+GUI操作のたびに対応するCLIコマンドが表示され、設定ファイルの差分表示・自動バックアップ・Undo、
+プラグインストアからのワンクリック導入など、Linux管理と学習を一つにまとめています。
+
+## スクリーンショット
+
+| ホーム(ダッシュボード) | プラグイン操作(GUI↔CLI対応) | 設定ファイルの差分表示 |
+|---|---|---|
+| ![ダッシュボード](screenshots/dashboard.png) | ![プラグイン操作](screenshots/plugin-action.png) | ![設定差分](screenshots/config-diff.png) |
 
 ## 動作環境
 
