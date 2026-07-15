@@ -5,6 +5,14 @@
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-15
+
+### 修正
+- **重大**: `preload.js`が`sandbox: true`環境でローカルの自作モジュール(`core/diffLines.js`)を
+  `require`しており、preloadスクリプトの読み込みに失敗してアプリ全体が起動不能になっていた問題を修正
+  （v0.1.2に含まれています。v0.1.2を導入した方はこのバージョンへの更新を強く推奨します）
+- 再発防止として、preload.jsがローカルモジュールをrequireしていないことを検証する自動テストを追加
+
 ## [0.1.2] - 2026-07-12
 
 ### 追加
@@ -44,7 +52,8 @@
   SECURITY.md, CODE_OF_CONDUCT.md)
 - セキュリティ強化(パストラバーサル対策・オリジン検証・SHA256検証・XSS対策・CSP)
 
-[Unreleased]: https://github.com/RT2231/penguin-control-center/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/RT2231/penguin-control-center/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/RT2231/penguin-control-center/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/RT2231/penguin-control-center/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/RT2231/penguin-control-center/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/RT2231/penguin-control-center/releases/tag/v0.1.0
