@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "LinuxのCLIツールをGUIで管理し、学習・管理・拡張を一つにまとめるオープンソースプラットフォーム",
   "main": "main.js",
-  "license": "GPL-3.0",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "RT2231 <rt2231@users.noreply.github.com>",
   "scripts": {
     "start": "electron .",
