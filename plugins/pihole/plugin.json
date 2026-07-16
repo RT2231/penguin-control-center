@@ -2,19 +2,80 @@
   "id": "pihole",
   "name": "Pi-hole",
   "version": "0.1.0",
+  "author": "RT2231",
   "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
   "service": {
     "systemdUnit": "pihole-FTL.service",
     "configPath": "/etc/pihole/setupVars.conf"
   },
   "actions": [
-    { "id": "status", "label": "ブロック状態を確認", "cli": ["pihole", "status"], "privileged": false },
-    { "id": "chronometer", "label": "統計サマリー", "cli": ["pihole", "-c", "-e"], "privileged": false },
-    { "id": "disable-5m", "label": "5分間だけ一時停止", "cli": ["pihole", "disable", "300"], "privileged": true },
-    { "id": "enable", "label": "ブロックを再開", "cli": ["pihole", "enable"], "privileged": true },
-    { "id": "restartdns", "label": "DNSサービスを再起動", "cli": ["pihole", "restartdns"], "privileged": true },
-    { "id": "updategravity", "label": "ブロックリストを更新(gravity)", "cli": ["pihole", "-g"], "privileged": true },
-    { "id": "service-status", "label": "FTLサービス状態(systemd)", "cli": ["systemctl", "status", "pihole-FTL.service", "--no-pager"], "privileged": false }
+    {
+      "id": "status",
+      "label": "ブロック状態を確認",
+      "cli": [
+        "pihole",
+        "status"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "chronometer",
+      "label": "統計サマリー",
+      "cli": [
+        "pihole",
+        "-c",
+        "-e"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "disable-5m",
+      "label": "5分間だけ一時停止",
+      "cli": [
+        "pihole",
+        "disable",
+        "300"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "ブロックを再開",
+      "cli": [
+        "pihole",
+        "enable"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restartdns",
+      "label": "DNSサービスを再起動",
+      "cli": [
+        "pihole",
+        "restartdns"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "updategravity",
+      "label": "ブロックリストを更新(gravity)",
+      "cli": [
+        "pihole",
+        "-g"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "service-status",
+      "label": "FTLサービス状態(systemd)",
+      "cli": [
+        "systemctl",
+        "status",
+        "pihole-FTL.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

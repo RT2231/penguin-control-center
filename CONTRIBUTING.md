@@ -90,6 +90,7 @@ plugins/<id>/
 | `id` | 一意な識別子（ディレクトリ名と一致させる） |
 | `name` | GUI表示名 |
 | `version` | セマンティックバージョン |
+| `author` | 推奨: 作者名(GitHubユーザー名等)。**著作権はここに記載した作者に帰属します**（[著作権について](#プラグインのライセンスについて)参照）。省略した場合はメンテナがIssue提出者のGitHubアカウント名を記録します |
 | `description` | 1〜2文の説明 |
 | `actions[]` | 各アクション。`id` / `label` / `cli`(配列) / `privileged`(bool) |
 | `service.systemdUnit` | ログタブ・状態確認に使う場合は指定 |

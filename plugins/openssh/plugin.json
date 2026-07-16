@@ -2,19 +2,83 @@
   "id": "openssh",
   "name": "OpenSSH",
   "version": "0.1.0",
+  "author": "RT2231",
   "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
   "service": {
     "systemdUnit": "ssh.service",
     "configPath": "/etc/ssh/sshd_config"
   },
   "actions": [
-    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "ssh.service", "--no-pager"], "privileged": false },
-    { "id": "config-test", "label": "設定ファイルの文法チェック", "cli": ["sshd", "-t"], "privileged": false },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "ssh.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "ssh.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "ssh.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "ssh.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "ssh.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "サービス状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "ssh.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "config-test",
+      "label": "設定ファイルの文法チェック",
+      "cli": [
+        "sshd",
+        "-t"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "ssh.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "ssh.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "ssh.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "ssh.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "ssh.service"
+      ],
+      "privileged": true
+    }
   ],
   "docs": "docs.md"
 }

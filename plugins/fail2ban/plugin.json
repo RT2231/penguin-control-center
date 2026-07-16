@@ -2,20 +2,93 @@
   "id": "fail2ban",
   "name": "Fail2ban (不正アクセス防止)",
   "version": "0.1.0",
+  "author": "RT2231",
   "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
   "service": {
     "systemdUnit": "fail2ban.service",
     "configPath": "/etc/fail2ban/jail.local"
   },
   "actions": [
-    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "fail2ban.service", "--no-pager"], "privileged": false },
-    { "id": "status", "label": "監視対象jail一覧", "cli": ["fail2ban-client", "status"], "privileged": true },
-    { "id": "status-sshd", "label": "sshd jailの状態(BAN中IP一覧)", "cli": ["fail2ban-client", "status", "sshd"], "privileged": true },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "fail2ban.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "fail2ban.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "fail2ban.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "fail2ban.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "fail2ban.service"], "privileged": true }
+    {
+      "id": "service-status",
+      "label": "サービス状態(systemd)",
+      "cli": [
+        "systemctl",
+        "status",
+        "fail2ban.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "status",
+      "label": "監視対象jail一覧",
+      "cli": [
+        "fail2ban-client",
+        "status"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "status-sshd",
+      "label": "sshd jailの状態(BAN中IP一覧)",
+      "cli": [
+        "fail2ban-client",
+        "status",
+        "sshd"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "fail2ban.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "fail2ban.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "fail2ban.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "fail2ban.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "fail2ban.service"
+      ],
+      "privileged": true
+    }
   ],
   "docs": "docs.md"
 }

@@ -1,15 +1,28 @@
-# このLICENSEの適用範囲
+# このLICENSEの適用範囲・著作権について
 
 このファイルは `plugins/` ディレクトリ配下に同梱されている公式プラグイン
-（plugin.json / docs.md / handler.js）にのみ適用されます。
+（plugin.json / docs.md / handler.js）に適用される**デフォルトのライセンス**です。
 リポジトリ本体（main.js, preload.js, core/, renderer/, tools/ 等）は
 リポジトリルートの `LICENSE`（GPL-3.0、プラグイン例外条項付き）に従います。
 
----
+## 著作権は各プラグインの作者に帰属します
+
+MITライセンスは**使用許諾を与えるものであり、著作権を譲渡するものではありません**。
+各プラグインの著作権は、それを実際に書いた作者個人（またはその所属先）に帰属し続けます。
+本プロジェクト（またはメンテナのRT2231）に著作権が移転することはありません。
+
+- どのプラグインを誰が書いたかは、各プラグインの`plugin.json`の`author`フィールド、
+  および[プラグインストアのカタログ](https://rt2231.github.io/penguin-control-center/store.html)
+  に記載されるほか、Gitのコミット履歴でも確認できます
+- 特定の作者が自分のプラグインについてMIT以外のライセンスを希望する場合は、そのプラグインの
+  ディレクトリに個別の`LICENSE`ファイルを置くことで、以下のデフォルトMITライセンスを
+  上書きできます（[CONTRIBUTING.md](../CONTRIBUTING.md)参照）
+
+## デフォルトライセンス全文（個別LICENSEがないプラグインに適用）
 
 MIT License
 
-Copyright (c) 2026 Penguin Control Center公式プラグイン作者(RT2231およびコントリビューター)
+Copyright (c) 各プラグインの作者（plugin.jsonのauthorフィールドおよびストアカタログ参照）
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,4 +41,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-

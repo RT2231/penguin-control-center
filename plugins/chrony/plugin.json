@@ -2,20 +2,93 @@
   "id": "chrony",
   "name": "chrony (NTP時刻同期)",
   "version": "0.1.0",
+  "author": "RT2231",
   "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
   "service": {
     "systemdUnit": "chrony.service",
     "configPath": "/etc/chrony/chrony.conf"
   },
   "actions": [
-    { "id": "status", "label": "同期状態を確認", "cli": ["chronyc", "tracking"], "privileged": false },
-    { "id": "sources", "label": "参照サーバー一覧", "cli": ["chronyc", "sources", "-v"], "privileged": false },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "chrony.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "chrony.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "chrony.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "chrony.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "chrony.service"], "privileged": true },
-    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "chrony.service", "--no-pager"], "privileged": false }
+    {
+      "id": "status",
+      "label": "同期状態を確認",
+      "cli": [
+        "chronyc",
+        "tracking"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "sources",
+      "label": "参照サーバー一覧",
+      "cli": [
+        "chronyc",
+        "sources",
+        "-v"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "chrony.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "chrony.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "chrony.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "chrony.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "chrony.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "service-status",
+      "label": "サービス状態(systemd)",
+      "cli": [
+        "systemctl",
+        "status",
+        "chrony.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

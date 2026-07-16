@@ -9,6 +9,11 @@ labels: plugin-proposal
 
 <!-- 例: OpenSSH, Docker, Pi-hole など -->
 
+## お名前・クレジット表記(著作権者として記載する名前)
+
+<!-- GitHubユーザー名など。plugin.jsonのauthorフィールドとストアに掲載され、
+     あなたがそのプラグインの著作権者であることを示す表記になります -->
+
 ## そのソフトウェアの用途・対象ユーザー
 
 <!-- どんな人がこの管理機能を必要としますか -->
@@ -34,3 +39,7 @@ labels: plugin-proposal
 ---
 ※ このIssueをもとにPCC公式（メンテナ）が内容を確認し、問題なければ `plugins/` に追加のうえ公式サイトのプラグインストアに掲載します。
 plugin.jsonをご自身で用意いただける場合は、このIssueに貼り付けていただいても構いません（[仕様はCONTRIBUTING.md参照](https://github.com/RT2231/penguin-control-center/blob/main/CONTRIBUTING.md)）。
+
+※ 提案いただいたプラグインの著作権は、上記でご記載いただいたお名前（作者）に帰属します。
+プロジェクト側に譲渡されることはありません。デフォルトではMITライセンスで公開されますが、
+別のライセンスをご希望の場合はその旨をこのIssueに記載してください。

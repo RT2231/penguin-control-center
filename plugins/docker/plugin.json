@@ -2,21 +2,101 @@
   "id": "docker",
   "name": "Docker",
   "version": "0.1.0",
+  "author": "RT2231",
   "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
   "service": {
     "systemdUnit": "docker.service",
     "configPath": "/etc/docker/daemon.json"
   },
   "actions": [
-    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "docker.service", "--no-pager"], "privileged": false },
-    { "id": "version", "label": "バージョン確認", "cli": ["docker", "version"], "privileged": false },
-    { "id": "ps", "label": "稼働中コンテナ一覧", "cli": ["docker", "ps"], "privileged": false },
-    { "id": "images", "label": "イメージ一覧", "cli": ["docker", "images"], "privileged": false },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "docker.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "docker.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "docker.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "docker.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "docker.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "サービス状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "docker.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "version",
+      "label": "バージョン確認",
+      "cli": [
+        "docker",
+        "version"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "ps",
+      "label": "稼働中コンテナ一覧",
+      "cli": [
+        "docker",
+        "ps"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "images",
+      "label": "イメージ一覧",
+      "cli": [
+        "docker",
+        "images"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "docker.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "docker.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "docker.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "docker.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "docker.service"
+      ],
+      "privileged": true
+    }
   ],
   "docs": "docs.md"
 }

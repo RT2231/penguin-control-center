@@ -4,10 +4,10 @@
     "name": "chrony (NTP時刻同期)",
     "version": "0.1.0",
     "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
-    "author": "PCC公式",
+    "author": "RT2231",
     "download": "downloads/chrony-plugin.zip",
     "docs": "plugin-docs/chrony.md",
-    "sha256": "f21eb9f42fb753726978a808bc150ef36ca49298f6608b4ce0d05273ad4dd293",
+    "sha256": "7797ca426c0d0714614f0f08f786439d19e028a9f73781c375a289c48f5732dc",
     "requires": [
       "chrony (chronyd)"
     ],
@@ -23,10 +23,10 @@
     "name": "OpenSSH",
     "version": "0.1.0",
     "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/openssh-plugin.zip",
     "docs": "plugin-docs/openssh.md",
-    "sha256": "07f544d8479c970d66476d86c0fb072e4fbc960d7ed7554771d00bccfeda3188",
+    "sha256": "4f4a4ea57db91b49c040e2eea446e8935b1dcc9f1fa1381ddf3aa8ca4e6ee6bb",
     "requires": [
       "openssh-server"
     ],
@@ -42,10 +42,10 @@
     "name": "Docker",
     "version": "0.1.0",
     "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/docker-plugin.zip",
     "docs": "plugin-docs/docker.md",
-    "sha256": "fc1cb6f2574374034f1ce1150cd6cac1cbbbacd85312a79bcf6122f4627d3026",
+    "sha256": "478352bd2b976fd867ab8200a11c7f517c5799f3e72959e3f743dba5846c6184",
     "requires": [
       "docker.io もしくは Docker Engine"
     ],
@@ -61,10 +61,10 @@
     "name": "Apache HTTP Server",
     "version": "0.1.0",
     "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/apache2-plugin.zip",
     "docs": "plugin-docs/apache2.md",
-    "sha256": "49243d03cecd6c7c0987ee8a4ad5f0f1b1552e2d0e36caf00b6ad647c0ce2833",
+    "sha256": "99256d1c3ee575453421fd4ef468be1ecc5dc71ad6fcec4289700c2c4203ef70",
     "requires": [
       "apache2"
     ],
@@ -80,10 +80,10 @@
     "name": "Pi-hole",
     "version": "0.1.0",
     "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/pihole-plugin.zip",
     "docs": "plugin-docs/pihole.md",
-    "sha256": "a5a3361bc10a3d62c15987c2534fbd7b2300d56af10765c2af497fc1d3dc43c2",
+    "sha256": "5c24643c30312276fc302fe47886a5fb77035e3eb9b553ec2af81cb537f8b83e",
     "requires": [
       "Pi-hole"
     ],
@@ -99,10 +99,10 @@
     "name": "UFW (シンプルなファイアウォール)",
     "version": "0.1.0",
     "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/ufw-plugin.zip",
     "docs": "plugin-docs/ufw.md",
-    "sha256": "cc60e75b5fb4dcea82d732c3e5f81b8210bc17e05b928d8d4018166add35f66e",
+    "sha256": "6816456d8af55b75a58f539fec2120cff6ab580be47d56ea018d796470141e2a",
     "requires": [
       "ufw"
     ],
@@ -118,10 +118,10 @@
     "name": "Fail2ban (不正アクセス防止)",
     "version": "0.1.0",
     "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/fail2ban-plugin.zip",
     "docs": "plugin-docs/fail2ban.md",
-    "sha256": "00c03adab4a6fab8243bac576396afeb7f5c96f31ed884a1acc1a4be249eeeaf",
+    "sha256": "d1598586f4283e87b6d28c621972f795969c90b195b1d0826d906cd827e9adbd",
     "requires": [
       "fail2ban"
     ],
@@ -137,10 +137,10 @@
     "name": "Nginx",
     "version": "0.1.0",
     "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/nginx-plugin.zip",
     "docs": "plugin-docs/nginx.md",
-    "sha256": "bac06f5dbaca1c8720eeb7b689c34867fcad15dd0056af21c416ccdf5210df86",
+    "sha256": "266b22810fbb3ee83baf108593cd569a8f87dcc4538f40f377f93cf8ef233b5c",
     "requires": [
       "nginx"
     ],
@@ -156,10 +156,10 @@
     "name": "Samba (ファイル共有)",
     "version": "0.1.0",
     "description": "Windows/Mac/Linux間でファイルを共有するSambaサーバー(smbd)の状態確認・起動停止・設定を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/samba-plugin.zip",
     "docs": "plugin-docs/samba.md",
-    "sha256": "3dc8a5ae646a871b6c5930da8ea6e7f2ebc806bc23a6fc3ae3f68b98ce3a4d36",
+    "sha256": "aa8807df82291ee851c6c3fb261b48a24fc10e3619071b2882d244567dc41e72",
     "requires": [
       "samba"
     ],
@@ -175,10 +175,10 @@
     "name": "cron (定期実行タスク)",
     "version": "0.1.0",
     "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/cron-plugin.zip",
     "docs": "plugin-docs/cron.md",
-    "sha256": "7ec3acb899d95574562558fa1e144fc2d12aa660f615924fcb19575c1891f406",
+    "sha256": "2df774b433e9468ee7e65135b253ad790f2c2f6f37da3968b8380aa8baba10cd",
     "requires": [
       "cron"
     ],
@@ -194,10 +194,10 @@
     "name": "MySQL / MariaDB",
     "version": "0.1.0",
     "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
-    "author": "Claude",
+    "author": "RT2231",
     "download": "downloads/mysql-plugin.zip",
     "docs": "plugin-docs/mysql.md",
-    "sha256": "1fc956c47887b829254cf2bcfde815a97552edac7606a71c77e8da41ad3b34c2",
+    "sha256": "cf8f900e2dd5ef1e41ed0cbb837196b481c8b99cec153e2117dc0758aef64620",
     "requires": [
       "mysql-server もしくは mariadb-server"
     ],
