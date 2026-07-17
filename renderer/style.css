@@ -246,6 +246,16 @@ html, body {
 }
 .dashboard-card .dc-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
 
+.update-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: auto;
+}
+
 /* タグフィルタ(ストア) ----------------------------------------------------- */
 .tag-filter {
   display: flex;

@@ -33,7 +33,10 @@
             <h1>ホーム</h1>
             <p class="muted">導入済みプラグインの稼働状況です。</p>
           </div>
-          <button id="refresh-dashboard" class="btn-ghost">状態を更新</button>
+          <div style="display:flex;gap:8px;">
+            <button id="update-all-btn" class="btn-primary hidden">まとめて更新</button>
+            <button id="refresh-dashboard" class="btn-ghost">状態を更新</button>
+          </div>
         </header>
         <div id="dashboard-list" class="dashboard-list"></div>
       </div>
@@ -74,7 +77,7 @@
 
         <section class="tab-panel hidden" id="panel-cli">
           <div class="panel-toolbar">
-            <span class="muted">実行されたコマンドの履歴（このアプリ内での実行のみ）</span>
+            <span class="muted">このプラグインに関連して実行されたコマンドの履歴</span>
             <button id="refresh-cli" class="btn-ghost">更新</button>
           </div>
           <div id="cli-history" class="cli-history"></div>

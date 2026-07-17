@@ -173,7 +173,10 @@ ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
       const conflictUnit = conflictPlugin?.manifest?.service?.systemdUnit;
       if (!conflictUnit) continue;
 
-      const statusResult = await cliRunner.run(['systemctl', 'is-active', conflictUnit], { privileged: false });
+      const statusResult = await cliRunner.run(['systemctl', 'is-active', conflictUnit], {
+        privileged: false,
+        pluginId: conflictId,
+      });
       if ((statusResult.stdout || '').trim() === 'active') {
         const { response } = await dialog.showMessageBox(mainWindow, {
           type: 'warning',
@@ -207,11 +210,11 @@ ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
     }
   }
 
-  return cliRunner.run(action.cli, { privileged: !!action.privileged });
+  return cliRunner.run(action.cli, { privileged: !!action.privileged, pluginId });
 });
 
-ipcMain.handle('pcc:getCliHistory', async () => {
-  return cliRunner.getHistory();
+ipcMain.handle('pcc:getCliHistory', async (event, pluginId) => {
+  return cliRunner.getHistory(pluginId);
 });
 
 ipcMain.handle('pcc:readConfig', async (event, pluginId) => {
@@ -282,6 +285,7 @@ ipcMain.handle('pcc:getServiceStatus', async (event, pluginId) => {
   // サイドバーの状態ドット表示専用の軽量チェック(CLIタブの履歴にも記録される=透明性を維持)。
   const result = await cliRunner.run(['systemctl', 'is-active', plugin.manifest.service.systemdUnit], {
     privileged: false,
+    pluginId,
   });
   const status = (result.stdout || '').trim() || 'unknown';
   return { status };

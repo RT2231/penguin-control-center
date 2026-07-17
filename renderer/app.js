@@ -68,6 +68,7 @@ function renderDashboard() {
       <div class="dc-top">
         <span class="status-dot" data-plugin-id="${escapeHtml(plugin.id)}"></span>
         <span class="dc-name">${escapeHtml(plugin.name)}</span>
+        <span class="update-badge hidden" data-update-badge="${escapeHtml(plugin.id)}" title="ストアに新しいバージョンがあります">⬆ 更新あり</span>
       </div>
       <div class="dc-status" data-status-label="${escapeHtml(plugin.id)}">確認中...</div>
       <div class="dc-desc">${escapeHtml(plugin.description || '')}</div>
@@ -76,7 +77,51 @@ function renderDashboard() {
     list.appendChild(card);
   }
   refreshSidebarStatusDots();
+  checkForUpdates();
 }
+
+let outdatedPluginIds = [];
+
+async function checkForUpdates() {
+  const updateAllBtn = document.getElementById('update-all-btn');
+  try {
+    const storePlugins = await window.pcc.listStorePlugins();
+    outdatedPluginIds = storePlugins.filter((p) => p.updateAvailable).map((p) => p.id);
+
+    for (const id of outdatedPluginIds) {
+      const badge = document.querySelector(`[data-update-badge="${cssEscape(id)}"]`);
+      if (badge) badge.classList.remove('hidden');
+    }
+
+    updateAllBtn.classList.toggle('hidden', outdatedPluginIds.length === 0);
+    updateAllBtn.textContent = `まとめて更新 (${outdatedPluginIds.length})`;
+  } catch {
+    // ストアに到達できない場合は静かに諦める(オフライン等でも通常のダッシュボード機能は使えるようにする)
+    updateAllBtn.classList.add('hidden');
+  }
+}
+
+document.getElementById('update-all-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('update-all-btn');
+  btn.disabled = true;
+  const targets = [...outdatedPluginIds];
+  let successCount = 0;
+
+  for (const id of targets) {
+    btn.textContent = `更新中... (${successCount}/${targets.length})`;
+    try {
+      plugins = await window.pcc.installStorePlugin(id);
+      successCount++;
+    } catch (err) {
+      showToast(`「${id}」の更新に失敗しました: ${err.message}`, 'error');
+    }
+  }
+
+  showToast(`${successCount}件のプラグインを更新しました`, successCount > 0 ? 'success' : 'error');
+  btn.disabled = false;
+  renderSidebar();
+  renderDashboard();
+});
 
 function filterPluginList(query) {
   const q = query.trim().toLowerCase();
@@ -403,7 +448,7 @@ async function runAction(pluginId, actionId) {
 async function loadCliHistory() {
   const box = document.getElementById('cli-history');
   box.innerHTML = '<div class="muted">読み込み中...</div>';
-  const history = await window.pcc.getCliHistory();
+  const history = await window.pcc.getCliHistory(activePluginId);
 
   if (history.length === 0) {
     box.innerHTML = '<div class="muted">まだ実行履歴はありません。GUI設定タブからアクションを実行してください。</div>';

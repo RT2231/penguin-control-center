@@ -28,3 +28,16 @@ test('run: 実行履歴に記録される', async () => {
   assert.ok(history.length > 0);
   assert.equal(history[0].command, 'echo history-check');
 });
+
+test('getHistory: pluginIdで絞り込める', async () => {
+  await cliRunner.run(['echo', 'plugin-a-1'], { pluginId: 'plugin-a' });
+  await cliRunner.run(['echo', 'plugin-b-1'], { pluginId: 'plugin-b' });
+  await cliRunner.run(['echo', 'plugin-a-2'], { pluginId: 'plugin-a' });
+
+  const historyA = cliRunner.getHistory('plugin-a');
+  assert.ok(historyA.every((h) => h.pluginId === 'plugin-a'));
+  assert.ok(historyA.length >= 2);
+
+  const historyB = cliRunner.getHistory('plugin-b');
+  assert.ok(historyB.every((h) => h.pluginId === 'plugin-b'));
+});

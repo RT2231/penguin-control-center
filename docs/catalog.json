@@ -207,5 +207,24 @@
       "systemd"
     ],
     "hasCode": false
+  },
+  {
+    "id": "certbot",
+    "name": "Certbot (Let's Encrypt証明書)",
+    "version": "0.1.0",
+    "description": "Let's Encryptの無料SSL/TLS証明書を発行・自動更新するCertbotの状態確認・更新テストを管理します。",
+    "author": "RT2231",
+    "download": "downloads/certbot-plugin.zip",
+    "docs": "plugin-docs/certbot.md",
+    "sha256": "3ccc59777292eb4450ba4e924935310801b989c2b5cbb36eb30a1f291c4eeae3",
+    "requires": [
+      "certbot"
+    ],
+    "tags": [
+      "公式",
+      "SSL/TLS",
+      "セキュリティ"
+    ],
+    "hasCode": false
   }
 ]
