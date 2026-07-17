@@ -417,7 +417,7 @@ async function loadCliHistory() {
     const exitClass = entry.exitCode === 0 ? 'exit-ok' : 'exit-err';
     div.innerHTML = `
       <div class="cmd">$ ${escapeHtml(entry.command)}</div>
-      <div class="meta">${entry.timestamp} ・ <span class="${exitClass}">exit ${entry.exitCode}</span> ・ ${entry.durationMs}ms</div>
+      <div class="meta">${escapeHtml(entry.timestamp)} ・ <span class="${exitClass}">exit ${escapeHtml(String(entry.exitCode))}</span> ・ ${escapeHtml(String(entry.durationMs))}ms</div>
     `;
     box.appendChild(div);
   }
