@@ -19,7 +19,9 @@
   （preloadエラーや未捕捉例外の検出、プラグイン一覧の描画確認）。これはv0.1.3で修正した
   preload.jsの起動不能バグのような、単体テストでは検出できない問題を防ぐためのもの
 - ホーム画面に「更新あり」バッジと「まとめて更新」ボタンを追加
-- 新プラグイン: Certbot(Let's Encrypt証明書管理、作成者RT2231)
+- ホーム画面に「最近のアクティビティ」（全プラグイン横断の直近実行履歴）を追加
+- 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate
+  （作成者RT2231、計17プラグイン）
 
 ### セキュリティ
 - CI(`ci.yml`)に`permissions: contents: read`を明示。以前Release用に変更していた

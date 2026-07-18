@@ -226,5 +226,99 @@
       "セキュリティ"
     ],
     "hasCode": false
+  },
+  {
+    "id": "wireguard",
+    "name": "WireGuard (VPN)",
+    "version": "0.1.0",
+    "description": "高速・シンプルなVPNであるWireGuardの接続状態確認・トンネルの起動停止を管理します。",
+    "author": "RT2231",
+    "download": "downloads/wireguard-plugin.zip",
+    "docs": "plugin-docs/wireguard.md",
+    "sha256": "4fb8cb5faa571ae25d2479489afa32e5e635bb567d96f9ae3f25abec423bc1c4",
+    "requires": [
+      "wireguard-tools"
+    ],
+    "tags": [
+      "公式",
+      "VPN",
+      "セキュリティ"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "networkmanager",
+    "name": "NetworkManager (ネットワーク設定)",
+    "version": "0.1.0",
+    "description": "Wi-Fi・有線LANなどのネットワーク接続状態の確認をnmcli経由で管理します。",
+    "author": "RT2231",
+    "download": "downloads/networkmanager-plugin.zip",
+    "docs": "plugin-docs/networkmanager.md",
+    "sha256": "44057d86abee85edad59e3b7f631ed3467f4556fc76f3aa6ccd1609aa22f8542",
+    "requires": [
+      "network-manager"
+    ],
+    "tags": [
+      "公式",
+      "ネットワーク"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "postgresql",
+    "name": "PostgreSQL",
+    "version": "0.1.0",
+    "description": "オープンソースの高機能リレーショナルデータベースPostgreSQLの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
+    "author": "RT2231",
+    "download": "downloads/postgresql-plugin.zip",
+    "docs": "plugin-docs/postgresql.md",
+    "sha256": "a304fc2101e1ada33e464ca8cc139b8614a401d26767922a7d3a0bec4ec84127",
+    "requires": [
+      "postgresql"
+    ],
+    "tags": [
+      "公式",
+      "データベース",
+      "systemd"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "redis",
+    "name": "Redis",
+    "version": "0.1.0",
+    "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
+    "author": "RT2231",
+    "download": "downloads/redis-plugin.zip",
+    "docs": "plugin-docs/redis.md",
+    "sha256": "fc124b9cbc7209c0bfc7017124cb6eaa79d8f4e78ff1bc4bd86f7fd40a07ec72",
+    "requires": [
+      "redis-server"
+    ],
+    "tags": [
+      "公式",
+      "キャッシュ",
+      "KVS"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "logrotate",
+    "name": "logrotate (ログローテーション)",
+    "version": "0.1.0",
+    "description": "ログファイルを自動的に圧縮・世代管理し、ディスクを圧迫させないlogrotateの設定確認・動作テストを管理します。",
+    "author": "RT2231",
+    "download": "downloads/logrotate-plugin.zip",
+    "docs": "plugin-docs/logrotate.md",
+    "sha256": "b3384832fcb68d2f8b8596b2db1639f0ace34cacf5a6ce17709d43d8bce6fd6e",
+    "requires": [
+      "logrotate"
+    ],
+    "tags": [
+      "公式",
+      "ログ管理",
+      "定期実行"
+    ],
+    "hasCode": false
   }
 ]

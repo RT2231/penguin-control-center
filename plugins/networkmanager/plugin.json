@@ -1,0 +1,20 @@
+{
+  "id": "networkmanager",
+  "name": "NetworkManager (ネットワーク設定)",
+  "version": "0.1.0",
+  "author": "RT2231",
+  "description": "Wi-Fi・有線LANなどのネットワーク接続状態の確認をnmcli経由で管理します。",
+  "service": {
+    "systemdUnit": "NetworkManager.service",
+    "configPath": "/etc/NetworkManager/NetworkManager.conf"
+  },
+  "actions": [
+    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "NetworkManager.service", "--no-pager"], "privileged": false },
+    { "id": "device-status", "label": "デバイス一覧・接続状態", "cli": ["nmcli", "device", "status"], "privileged": false },
+    { "id": "connection-list", "label": "接続プロファイル一覧", "cli": ["nmcli", "connection", "show"], "privileged": false },
+    { "id": "wifi-list", "label": "近隣のWi-Fiアクセスポイント一覧", "cli": ["nmcli", "device", "wifi", "list"], "privileged": false },
+    { "id": "radio-status", "label": "Wi-Fi/機内モードの状態", "cli": ["nmcli", "radio"], "privileged": false },
+    { "id": "restart", "label": "サービスを再起動", "cli": ["systemctl", "restart", "NetworkManager.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

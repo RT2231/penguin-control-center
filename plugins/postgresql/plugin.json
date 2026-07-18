@@ -1,0 +1,21 @@
+{
+  "id": "postgresql",
+  "name": "PostgreSQL",
+  "version": "0.1.0",
+  "author": "RT2231",
+  "description": "オープンソースの高機能リレーショナルデータベースPostgreSQLの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
+  "service": {
+    "systemdUnit": "postgresql.service",
+    "configPath": "/etc/postgresql/16/main/postgresql.conf"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "postgresql.service", "--no-pager"], "privileged": false },
+    { "id": "version", "label": "クライアントのバージョン確認", "cli": ["psql", "--version"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "postgresql.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "postgresql.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "postgresql.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "postgresql.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "postgresql.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

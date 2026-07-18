@@ -78,6 +78,38 @@ function renderDashboard() {
   }
   refreshSidebarStatusDots();
   checkForUpdates();
+  renderActivityList();
+}
+
+async function renderActivityList() {
+  const box = document.getElementById('activity-list');
+  const history = await window.pcc.getCliHistory(); // pluginId省略=全プラグイン横断
+  const recent = history.slice(0, 15);
+
+  if (recent.length === 0) {
+    box.innerHTML = '<div class="muted">まだ実行履歴はありません。</div>';
+    return;
+  }
+
+  box.innerHTML = '';
+  for (const entry of recent) {
+    const plugin = plugins.find((p) => p.id === entry.pluginId);
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    const exitClass = entry.exitCode === 0 ? '' : 'exit-err';
+    item.innerHTML = `
+      <span class="activity-plugin">${escapeHtml(plugin ? plugin.name : entry.pluginId || '(不明)')}</span>
+      <span class="activity-cmd">$ ${escapeHtml(entry.command)}</span>
+      <span class="activity-meta ${exitClass}">exit ${escapeHtml(String(entry.exitCode))}</span>
+    `;
+    if (plugin) {
+      item.addEventListener('click', () => {
+        selectPlugin(plugin.id);
+        showTab('cli');
+      });
+    }
+    box.appendChild(item);
+  }
 }
 
 let outdatedPluginIds = [];

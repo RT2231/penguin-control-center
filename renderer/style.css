@@ -225,6 +225,40 @@ html, body {
   margin-top: 20px;
 }
 
+.activity-list { display: flex; flex-direction: column; gap: 6px; }
+
+.activity-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+}
+.activity-item:hover { border-color: var(--accent-dim); }
+.activity-item .activity-plugin {
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.activity-item .activity-cmd {
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+.activity-item .activity-meta {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-size: 11px;
+}
+.activity-item .activity-meta.exit-err { color: var(--danger); }
+
 .dashboard-card {
   background: var(--panel);
   border: 1px solid var(--border);

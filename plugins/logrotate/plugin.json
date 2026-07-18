@@ -1,0 +1,20 @@
+{
+  "id": "logrotate",
+  "name": "logrotate (ログローテーション)",
+  "version": "0.1.0",
+  "author": "RT2231",
+  "description": "ログファイルを自動的に圧縮・世代管理し、ディスクを圧迫させないlogrotateの設定確認・動作テストを管理します。",
+  "service": {
+    "systemdUnit": "logrotate.timer",
+    "configPath": "/etc/logrotate.conf"
+  },
+  "actions": [
+    { "id": "timer-status", "label": "実行タイマーの状態", "cli": ["systemctl", "status", "logrotate.timer", "--no-pager"], "privileged": false },
+    { "id": "config-test", "label": "設定ファイルの文法チェック(dry-run)", "cli": ["logrotate", "-d", "/etc/logrotate.conf"], "privileged": false },
+    { "id": "force-run", "label": "強制的に今すぐ実行", "cli": ["logrotate", "-f", "/etc/logrotate.conf"], "privileged": true },
+    { "id": "list-config-d", "label": "個別設定ファイル一覧(/etc/logrotate.d)", "cli": ["ls", "-la", "/etc/logrotate.d"], "privileged": false },
+    { "id": "timer-enable", "label": "自動実行タイマーを有効化", "cli": ["systemctl", "enable", "--now", "logrotate.timer"], "privileged": true },
+    { "id": "timer-disable", "label": "自動実行タイマーを無効化", "cli": ["systemctl", "disable", "--now", "logrotate.timer"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}
