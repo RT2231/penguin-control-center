@@ -1,7 +1,7 @@
 {
   "id": "pihole",
   "name": "Pi-hole",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
   "service": {
@@ -73,6 +73,15 @@
         "status",
         "pihole-FTL.service",
         "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "version",
+      "label": "バージョン情報",
+      "cli": [
+        "pihole",
+        "-v"
       ],
       "privileged": false
     }

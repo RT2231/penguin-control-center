@@ -13,6 +13,7 @@ cronは「毎日3時にバックアップを実行する」のように、指定
 | `crontab -l` | 現在のユーザーに登録されているcrontabを一覧表示（未登録の場合は「no crontab」と表示） |
 | `crontab -e` | crontabを編集（本プラグイン未対応、ターミナルから直接実行） |
 | `ls -la /etc/cron.d` | システム全体（rootや他ユーザー）が登録した定期タスクの設定ファイル一覧 |
+| `cat /etc/crontab` | システム全体のcrontab本体の内容を表示 |
 
 ## crontab書式チートシート（学習用）
 

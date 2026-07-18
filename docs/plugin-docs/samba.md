@@ -12,6 +12,7 @@ SambaはWindowsのSMB/CIFSプロトコルを使い、Windows・Mac・Linux間で
 |---|---|
 | `testparm -s` | 設定ファイル(`smb.conf`)の文法チェック。エラーがあれば表示 |
 | `smbclient -L localhost -N` | ローカルホストに定義されている共有(shares)一覧を匿名で取得 |
+| `smbstatus` | 現在接続中のクライアントと開かれているファイルの一覧(root権限が必要) |
 | `systemctl restart smbd.service` | 設定変更後の反映に必要 |
 
 ## 設定ファイル

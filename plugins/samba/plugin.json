@@ -1,7 +1,7 @@
 {
   "id": "samba",
   "name": "Samba (ファイル共有)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "Windows/Mac/Linux間でファイルを共有するSambaサーバー(smbd)の状態確認・起動停止・設定を管理します。",
   "service": {
@@ -87,6 +87,14 @@
         "systemctl",
         "disable",
         "smbd.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "smbstatus",
+      "label": "接続中クライアント・開いているファイル",
+      "cli": [
+        "smbstatus"
       ],
       "privileged": true
     }

@@ -13,6 +13,7 @@ systemdタイマー（`logrotate.timer`）によって1日1回自動実行され
 | `logrotate -d /etc/logrotate.conf` | dry-run（実際にはローテーションせず、何が実行されるかだけ表示） |
 | `logrotate -f /etc/logrotate.conf` | 設定された条件（サイズ・日数）を無視して強制的に今すぐローテーション |
 | `ls -la /etc/logrotate.d` | 個別のソフトウェアごとに用意された設定ファイル一覧 |
+| `cat /var/lib/logrotate/status` | 各ログファイルが最後にローテーションされた日時の記録 |
 
 ## 設定ファイルの書き方（学習用）
 

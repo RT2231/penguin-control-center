@@ -1,7 +1,7 @@
 {
   "id": "fail2ban",
   "name": "Fail2ban (不正アクセス防止)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
   "service": {
@@ -86,6 +86,15 @@
         "systemctl",
         "disable",
         "fail2ban.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "reload",
+      "label": "設定を再読込(無停止)",
+      "cli": [
+        "fail2ban-client",
+        "reload"
       ],
       "privileged": true
     }

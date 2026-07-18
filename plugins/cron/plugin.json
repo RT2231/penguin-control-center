@@ -1,7 +1,7 @@
 {
   "id": "cron",
   "name": "cron (定期実行タスク)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
   "service": {
@@ -88,6 +88,15 @@
         "cron.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "cat-crontab",
+      "label": "システムcrontabの内容(/etc/crontab)",
+      "cli": [
+        "cat",
+        "/etc/crontab"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"

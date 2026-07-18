@@ -1,7 +1,7 @@
 {
   "id": "ufw",
   "name": "UFW (シンプルなファイアウォール)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
   "service": {
@@ -75,6 +75,16 @@
       "cli": [
         "ufw",
         "reload"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "app-list",
+      "label": "アプリケーションプロファイル一覧",
+      "cli": [
+        "ufw",
+        "app",
+        "list"
       ],
       "privileged": true
     }

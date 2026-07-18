@@ -11,6 +11,7 @@ Fail2banはSSHなどのログ（認証失敗など）を監視し、一定回数
 |---|---|
 | `fail2ban-client status` | 現在監視中のjail(監視ルール)一覧を表示 |
 | `fail2ban-client status sshd` | sshd jailの詳細（現在BAN中のIPアドレス一覧など）を表示 |
+| `fail2ban-client reload` | サービスを再起動せずに設定ファイルを再読込 |
 | `systemctl restart fail2ban.service` | 設定変更後の反映に必要 |
 
 ## 設定ファイル

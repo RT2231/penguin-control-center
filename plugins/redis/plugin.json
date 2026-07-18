@@ -1,7 +1,7 @@
 {
   "id": "redis",
   "name": "Redis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
   "service": {
@@ -9,14 +9,96 @@
     "configPath": "/etc/redis/redis.conf"
   },
   "actions": [
-    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "redis-server.service", "--no-pager"], "privileged": false },
-    { "id": "ping", "label": "生存確認(ping)", "cli": ["redis-cli", "ping"], "privileged": false },
-    { "id": "info", "label": "サーバー情報(info)", "cli": ["redis-cli", "info", "server"], "privileged": false },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "redis-server.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "redis-server.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "redis-server.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "redis-server.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "redis-server.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "サービス状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "redis-server.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "ping",
+      "label": "生存確認(ping)",
+      "cli": [
+        "redis-cli",
+        "ping"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "info",
+      "label": "サーバー情報(info)",
+      "cli": [
+        "redis-cli",
+        "info",
+        "server"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "redis-server.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "redis-server.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "redis-server.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "redis-server.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "redis-server.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "info-memory",
+      "label": "メモリ使用状況",
+      "cli": [
+        "redis-cli",
+        "info",
+        "memory"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

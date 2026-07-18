@@ -1,7 +1,7 @@
 {
   "id": "mysql",
   "name": "MySQL / MariaDB",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
   "service": {
@@ -78,6 +78,15 @@
         "mysql.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "ping",
+      "label": "接続確認(ping)",
+      "cli": [
+        "mysqladmin",
+        "ping"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"

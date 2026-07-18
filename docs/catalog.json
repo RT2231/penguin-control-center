@@ -2,12 +2,12 @@
   {
     "id": "chrony",
     "name": "chrony (NTP時刻同期)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
     "author": "RT2231",
     "download": "downloads/chrony-plugin.zip",
     "docs": "plugin-docs/chrony.md",
-    "sha256": "7797ca426c0d0714614f0f08f786439d19e028a9f73781c375a289c48f5732dc",
+    "sha256": "35c1b14bd67388e03ea2e400883bfa8a6dc3604a2f58bf23f062f09f2e1b8a23",
     "requires": [
       "chrony (chronyd)"
     ],
@@ -21,12 +21,12 @@
   {
     "id": "openssh",
     "name": "OpenSSH",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "RT2231",
     "download": "downloads/openssh-plugin.zip",
     "docs": "plugin-docs/openssh.md",
-    "sha256": "4f4a4ea57db91b49c040e2eea446e8935b1dcc9f1fa1381ddf3aa8ca4e6ee6bb",
+    "sha256": "e07da96f8717cff7ca037b39f7589205142a7bda83dd20fc7558e0127226fc76",
     "requires": [
       "openssh-server"
     ],
@@ -40,12 +40,12 @@
   {
     "id": "docker",
     "name": "Docker",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
     "author": "RT2231",
     "download": "downloads/docker-plugin.zip",
     "docs": "plugin-docs/docker.md",
-    "sha256": "478352bd2b976fd867ab8200a11c7f517c5799f3e72959e3f743dba5846c6184",
+    "sha256": "58de7a2f3faa67ab52bf9ee5e27c3f5d2a5d08fd8b15985d01f879188fb60dc8",
     "requires": [
       "docker.io もしくは Docker Engine"
     ],
@@ -59,12 +59,12 @@
   {
     "id": "apache2",
     "name": "Apache HTTP Server",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "RT2231",
     "download": "downloads/apache2-plugin.zip",
     "docs": "plugin-docs/apache2.md",
-    "sha256": "99256d1c3ee575453421fd4ef468be1ecc5dc71ad6fcec4289700c2c4203ef70",
+    "sha256": "708fe36a226a57958e92cdc67e0dfe5902a7a60481b30e4832d3bdda48db7eaf",
     "requires": [
       "apache2"
     ],
@@ -78,12 +78,12 @@
   {
     "id": "pihole",
     "name": "Pi-hole",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "ネットワーク全体の広告・トラッカーをDNSレベルでブロックするPi-holeの状態確認・一時停止/再開を管理します。",
     "author": "RT2231",
     "download": "downloads/pihole-plugin.zip",
     "docs": "plugin-docs/pihole.md",
-    "sha256": "5c24643c30312276fc302fe47886a5fb77035e3eb9b553ec2af81cb537f8b83e",
+    "sha256": "e6df8f9441d16761f1ea606f28d90d3d3092ddfdb09e33c7fbc1de62ae6b3aa9",
     "requires": [
       "Pi-hole"
     ],
@@ -97,12 +97,12 @@
   {
     "id": "ufw",
     "name": "UFW (シンプルなファイアウォール)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "UFW(Uncomplicated Firewall)によるファイアウォールの有効化・ルール確認を管理します。",
     "author": "RT2231",
     "download": "downloads/ufw-plugin.zip",
     "docs": "plugin-docs/ufw.md",
-    "sha256": "6816456d8af55b75a58f539fec2120cff6ab580be47d56ea018d796470141e2a",
+    "sha256": "8bb2988ba8c22f30eb7507b5ee513e9672fe931369dba117052230795b693c47",
     "requires": [
       "ufw"
     ],
@@ -116,12 +116,12 @@
   {
     "id": "fail2ban",
     "name": "Fail2ban (不正アクセス防止)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "ログイン試行の失敗を監視し、不正アクセスと判断したIPアドレスを自動でブロックするFail2banを管理します。",
     "author": "RT2231",
     "download": "downloads/fail2ban-plugin.zip",
     "docs": "plugin-docs/fail2ban.md",
-    "sha256": "d1598586f4283e87b6d28c621972f795969c90b195b1d0826d906cd827e9adbd",
+    "sha256": "b48d6bc934f19a2d828aa7cf629b71c26dbbcb89e6d7c46c6022d1b3401b8d04",
     "requires": [
       "fail2ban"
     ],
@@ -135,12 +135,12 @@
   {
     "id": "nginx",
     "name": "Nginx",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
     "author": "RT2231",
     "download": "downloads/nginx-plugin.zip",
     "docs": "plugin-docs/nginx.md",
-    "sha256": "266b22810fbb3ee83baf108593cd569a8f87dcc4538f40f377f93cf8ef233b5c",
+    "sha256": "82fdc9b74eb60b883b8ed595b540cf95cc1d76a2ba8c495b0cc5d7f65ccc7c4a",
     "requires": [
       "nginx"
     ],
@@ -154,12 +154,12 @@
   {
     "id": "samba",
     "name": "Samba (ファイル共有)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Windows/Mac/Linux間でファイルを共有するSambaサーバー(smbd)の状態確認・起動停止・設定を管理します。",
     "author": "RT2231",
     "download": "downloads/samba-plugin.zip",
     "docs": "plugin-docs/samba.md",
-    "sha256": "aa8807df82291ee851c6c3fb261b48a24fc10e3619071b2882d244567dc41e72",
+    "sha256": "6f39c3a724b3037fa3e206e1269ab7b486ca83f82f01dca96362da0f508e2973",
     "requires": [
       "samba"
     ],
@@ -173,12 +173,12 @@
   {
     "id": "cron",
     "name": "cron (定期実行タスク)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "指定した時刻にコマンドを自動実行するcronデーモンの状態確認と、登録済みタスクの一覧確認を管理します。",
     "author": "RT2231",
     "download": "downloads/cron-plugin.zip",
     "docs": "plugin-docs/cron.md",
-    "sha256": "2df774b433e9468ee7e65135b253ad790f2c2f6f37da3968b8380aa8baba10cd",
+    "sha256": "6c8600e4da204495b4c709575c47fecd2c6073d02696150c5e532c74d4213220",
     "requires": [
       "cron"
     ],
@@ -192,12 +192,12 @@
   {
     "id": "mysql",
     "name": "MySQL / MariaDB",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "MySQL/MariaDBデータベースサーバーの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
     "author": "RT2231",
     "download": "downloads/mysql-plugin.zip",
     "docs": "plugin-docs/mysql.md",
-    "sha256": "cf8f900e2dd5ef1e41ed0cbb837196b481c8b99cec153e2117dc0758aef64620",
+    "sha256": "d88a159862c10c29c2023628c881d7be844bb04afae1a17a93e3bb64e52ff289",
     "requires": [
       "mysql-server もしくは mariadb-server"
     ],
@@ -211,12 +211,12 @@
   {
     "id": "certbot",
     "name": "Certbot (Let's Encrypt証明書)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Let's Encryptの無料SSL/TLS証明書を発行・自動更新するCertbotの状態確認・更新テストを管理します。",
     "author": "RT2231",
     "download": "downloads/certbot-plugin.zip",
     "docs": "plugin-docs/certbot.md",
-    "sha256": "3ccc59777292eb4450ba4e924935310801b989c2b5cbb36eb30a1f291c4eeae3",
+    "sha256": "fbe33d17cf8c22ad7a2ebce83d4beb02c59f1900814ce63f684cf54f63ac5c4b",
     "requires": [
       "certbot"
     ],
@@ -230,12 +230,12 @@
   {
     "id": "wireguard",
     "name": "WireGuard (VPN)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "高速・シンプルなVPNであるWireGuardの接続状態確認・トンネルの起動停止を管理します。",
     "author": "RT2231",
     "download": "downloads/wireguard-plugin.zip",
     "docs": "plugin-docs/wireguard.md",
-    "sha256": "4fb8cb5faa571ae25d2479489afa32e5e635bb567d96f9ae3f25abec423bc1c4",
+    "sha256": "19f58c9fc3175ba6edd697a9dc7fbf3c99ab56f7ffa56f80bead9f4127430f35",
     "requires": [
       "wireguard-tools"
     ],
@@ -249,12 +249,12 @@
   {
     "id": "networkmanager",
     "name": "NetworkManager (ネットワーク設定)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Wi-Fi・有線LANなどのネットワーク接続状態の確認をnmcli経由で管理します。",
     "author": "RT2231",
     "download": "downloads/networkmanager-plugin.zip",
     "docs": "plugin-docs/networkmanager.md",
-    "sha256": "44057d86abee85edad59e3b7f631ed3467f4556fc76f3aa6ccd1609aa22f8542",
+    "sha256": "918af53dbfb1cc6211807f579aea5898a932c35b34e157275dd3d7f5d7d96371",
     "requires": [
       "network-manager"
     ],
@@ -267,12 +267,12 @@
   {
     "id": "postgresql",
     "name": "PostgreSQL",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "オープンソースの高機能リレーショナルデータベースPostgreSQLの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
     "author": "RT2231",
     "download": "downloads/postgresql-plugin.zip",
     "docs": "plugin-docs/postgresql.md",
-    "sha256": "a304fc2101e1ada33e464ca8cc139b8614a401d26767922a7d3a0bec4ec84127",
+    "sha256": "9079dc42f7d1e87058486f7683abe388200389ddb9220cafe110f820a9aac5cb",
     "requires": [
       "postgresql"
     ],
@@ -286,12 +286,12 @@
   {
     "id": "redis",
     "name": "Redis",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
     "author": "RT2231",
     "download": "downloads/redis-plugin.zip",
     "docs": "plugin-docs/redis.md",
-    "sha256": "fc124b9cbc7209c0bfc7017124cb6eaa79d8f4e78ff1bc4bd86f7fd40a07ec72",
+    "sha256": "40b251ec778bb3c9c39cfc8bd9a2ecf9412175fad65f7e531c138bd29038a3af",
     "requires": [
       "redis-server"
     ],
@@ -305,12 +305,12 @@
   {
     "id": "logrotate",
     "name": "logrotate (ログローテーション)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "ログファイルを自動的に圧縮・世代管理し、ディスクを圧迫させないlogrotateの設定確認・動作テストを管理します。",
     "author": "RT2231",
     "download": "downloads/logrotate-plugin.zip",
     "docs": "plugin-docs/logrotate.md",
-    "sha256": "b3384832fcb68d2f8b8596b2db1639f0ace34cacf5a6ce17709d43d8bce6fd6e",
+    "sha256": "8f661298789d33d5f07dbda90d7f1ebb0f76b86630c3e3adba8c12ee0ebe9776",
     "requires": [
       "logrotate"
     ],

@@ -1,7 +1,7 @@
 {
   "id": "apache2",
   "name": "Apache HTTP Server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "Apache HTTP Server (apache2) の状態確認・起動停止・設定ファイル編集を管理します。",
   "service": {
@@ -100,6 +100,15 @@
         "apache2.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "vhosts",
+      "label": "仮想ホスト設定の確認",
+      "cli": [
+        "apache2ctl",
+        "-S"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"

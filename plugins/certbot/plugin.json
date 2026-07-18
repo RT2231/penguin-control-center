@@ -1,7 +1,7 @@
 {
   "id": "certbot",
   "name": "Certbot (Let's Encrypt証明書)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "Let's Encryptの無料SSL/TLS証明書を発行・自動更新するCertbotの状態確認・更新テストを管理します。",
   "service": {
@@ -9,12 +9,77 @@
     "configPath": "/etc/letsencrypt/renewal"
   },
   "actions": [
-    { "id": "timer-status", "label": "自動更新タイマーの状態", "cli": ["systemctl", "status", "certbot.timer", "--no-pager"], "privileged": false },
-    { "id": "certificates", "label": "証明書一覧・有効期限確認", "cli": ["certbot", "certificates"], "privileged": true },
-    { "id": "renew-dry-run", "label": "更新テスト(dry-run、実際には更新しない)", "cli": ["certbot", "renew", "--dry-run"], "privileged": true },
-    { "id": "renew-force", "label": "強制更新", "cli": ["certbot", "renew", "--force-renewal"], "privileged": true },
-    { "id": "timer-enable", "label": "自動更新タイマーを有効化", "cli": ["systemctl", "enable", "--now", "certbot.timer"], "privileged": true },
-    { "id": "timer-disable", "label": "自動更新タイマーを無効化", "cli": ["systemctl", "disable", "--now", "certbot.timer"], "privileged": true }
+    {
+      "id": "timer-status",
+      "label": "自動更新タイマーの状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "certbot.timer",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "certificates",
+      "label": "証明書一覧・有効期限確認",
+      "cli": [
+        "certbot",
+        "certificates"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "renew-dry-run",
+      "label": "更新テスト(dry-run、実際には更新しない)",
+      "cli": [
+        "certbot",
+        "renew",
+        "--dry-run"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "renew-force",
+      "label": "強制更新",
+      "cli": [
+        "certbot",
+        "renew",
+        "--force-renewal"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "timer-enable",
+      "label": "自動更新タイマーを有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "--now",
+        "certbot.timer"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "timer-disable",
+      "label": "自動更新タイマーを無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "--now",
+        "certbot.timer"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "version",
+      "label": "バージョン確認",
+      "cli": [
+        "certbot",
+        "--version"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

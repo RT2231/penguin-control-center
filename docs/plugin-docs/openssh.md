@@ -11,6 +11,8 @@
 |---|---|
 | `systemctl status ssh.service` | サービスの稼働状態を表示 |
 | `sshd -t` | 設定ファイルの文法チェック（構文エラーがあれば表示、正常なら無出力） |
+| `who` | 現在ログイン中のユーザー一覧 |
+| `last -n 10` | 直近10件のログイン履歴 |
 | `systemctl restart ssh.service` | 設定変更後の反映に必要 |
 
 ## 設定ファイル

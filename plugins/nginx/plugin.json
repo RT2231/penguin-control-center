@@ -1,7 +1,7 @@
 {
   "id": "nginx",
   "name": "Nginx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "Nginx Webサーバーの状態確認・起動停止・設定ファイル編集を管理します。",
   "service": {
@@ -100,6 +100,15 @@
         "nginx.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "dump-config",
+      "label": "実効設定を全て表示(nginx -T)",
+      "cli": [
+        "nginx",
+        "-T"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"

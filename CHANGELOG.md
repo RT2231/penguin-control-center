@@ -22,6 +22,7 @@
 - ホーム画面に「最近のアクティビティ」（全プラグイン横断の直近実行履歴）を追加
 - 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate
   （作成者RT2231、計17プラグイン）
+- 既存を含む全17プラグインにアクションを追加(v0.1.1、docs.mdのコマンド表も更新)
 
 ### セキュリティ
 - CI(`ci.yml`)に`permissions: contents: read`を明示。以前Release用に変更していた

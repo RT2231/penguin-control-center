@@ -1,7 +1,7 @@
 {
   "id": "chrony",
   "name": "chrony (NTP時刻同期)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "chronyデーモンによるシステム時刻の自動同期を管理します。",
   "service": {
@@ -86,6 +86,33 @@
         "status",
         "chrony.service",
         "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "sourcestats",
+      "label": "参照サーバーの統計情報",
+      "cli": [
+        "chronyc",
+        "sourcestats"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "activity",
+      "label": "接続中/切断中のサーバー数",
+      "cli": [
+        "chronyc",
+        "activity"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "timedatectl",
+      "label": "システム時刻の全体状況(timedatectl)",
+      "cli": [
+        "timedatectl",
+        "status"
       ],
       "privileged": false
     }

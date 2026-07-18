@@ -13,6 +13,9 @@
 | `chronyc sources -v` | 参照しているNTPサーバー一覧と各サーバーの評価を表示 |
 | `systemctl status chrony.service` | systemdサービスとしての稼働状態を表示 |
 | `systemctl restart chrony.service` | サービスを再起動（設定変更後に必要） |
+| `chronyc sourcestats` | 各サーバーとのオフセット・周波数のばらつき統計 |
+| `chronyc activity` | 現在接続中/切断中のサーバー数のサマリー |
+| `timedatectl status` | システム全体の時刻設定(タイムゾーン・NTP同期有無)を表示 |
 
 ## 設定ファイル
 

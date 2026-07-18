@@ -1,7 +1,7 @@
 {
   "id": "openssh",
   "name": "OpenSSH",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "SSHサーバー(sshd)の状態確認・起動停止・設定ファイル編集を管理します。",
   "service": {
@@ -78,6 +78,24 @@
         "ssh.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "logged-in-users",
+      "label": "現在ログイン中のユーザー",
+      "cli": [
+        "who"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "recent-logins",
+      "label": "最近のログイン履歴(直近10件)",
+      "cli": [
+        "last",
+        "-n",
+        "10"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"

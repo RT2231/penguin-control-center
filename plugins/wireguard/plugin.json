@@ -1,7 +1,7 @@
 {
   "id": "wireguard",
   "name": "WireGuard (VPN)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "高速・シンプルなVPNであるWireGuardの接続状態確認・トンネルの起動停止を管理します。",
   "service": {
@@ -9,12 +9,77 @@
     "configPath": "/etc/wireguard/wg0.conf"
   },
   "actions": [
-    { "id": "status", "label": "接続状態を確認", "cli": ["wg", "show"], "privileged": true },
-    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "wg-quick@wg0.service", "--no-pager"], "privileged": false },
-    { "id": "up", "label": "トンネルを起動(wg0)", "cli": ["systemctl", "start", "wg-quick@wg0.service"], "privileged": true },
-    { "id": "down", "label": "トンネルを停止(wg0)", "cli": ["systemctl", "stop", "wg-quick@wg0.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "wg-quick@wg0.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "wg-quick@wg0.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "接続状態を確認",
+      "cli": [
+        "wg",
+        "show"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "service-status",
+      "label": "サービス状態(systemd)",
+      "cli": [
+        "systemctl",
+        "status",
+        "wg-quick@wg0.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "up",
+      "label": "トンネルを起動(wg0)",
+      "cli": [
+        "systemctl",
+        "start",
+        "wg-quick@wg0.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "down",
+      "label": "トンネルを停止(wg0)",
+      "cli": [
+        "systemctl",
+        "stop",
+        "wg-quick@wg0.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "wg-quick@wg0.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "wg-quick@wg0.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "link-status",
+      "label": "インターフェースのリンク状態",
+      "cli": [
+        "ip",
+        "link",
+        "show",
+        "wg0"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

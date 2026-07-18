@@ -19,6 +19,7 @@ Wi-Fi経由でこのマシンに接続して操作している場合、「サー
 | `nmcli connection show` | 保存されている接続プロファイルの一覧 |
 | `nmcli device wifi list` | 近隣で検出されているWi-Fiアクセスポイントの一覧 |
 | `nmcli radio` | Wi-Fi/WWAN/機内モードのON・OFF状態 |
+| `nmcli general status` | 全体の接続状態(CONNECTED/DISCONNECTED等)のサマリー |
 
 ## 設定ファイル
 

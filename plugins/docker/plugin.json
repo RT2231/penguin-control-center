@@ -1,7 +1,7 @@
 {
   "id": "docker",
   "name": "Docker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
   "service": {
@@ -96,6 +96,36 @@
         "docker.service"
       ],
       "privileged": true
+    },
+    {
+      "id": "system-df",
+      "label": "ディスク使用量(イメージ/コンテナ/ボリューム)",
+      "cli": [
+        "docker",
+        "system",
+        "df"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "network-list",
+      "label": "ネットワーク一覧",
+      "cli": [
+        "docker",
+        "network",
+        "ls"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "volume-list",
+      "label": "ボリューム一覧",
+      "cli": [
+        "docker",
+        "volume",
+        "ls"
+      ],
+      "privileged": false
     }
   ],
   "docs": "docs.md"
