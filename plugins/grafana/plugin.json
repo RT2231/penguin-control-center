@@ -1,0 +1,21 @@
+{
+  "id": "grafana",
+  "name": "Grafana (監視ダッシュボード)",
+  "version": "0.1.0",
+  "author": "RT2231",
+  "description": "メトリクスやログを可視化するダッシュボードツールGrafanaの状態確認・プラグイン一覧確認を管理します。",
+  "service": {
+    "systemdUnit": "grafana-server.service",
+    "configPath": "/etc/grafana/grafana.ini"
+  },
+  "actions": [
+    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "grafana-server.service", "--no-pager"], "privileged": false },
+    { "id": "plugins-list", "label": "インストール済みプラグイン一覧", "cli": ["grafana-cli", "plugins", "ls"], "privileged": false },
+    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "grafana-server.service"], "privileged": true },
+    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "grafana-server.service"], "privileged": true },
+    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "grafana-server.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "grafana-server.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "grafana-server.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

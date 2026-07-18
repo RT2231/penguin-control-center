@@ -1,0 +1,22 @@
+{
+  "id": "tailscale",
+  "name": "Tailscale (メッシュVPN)",
+  "version": "0.1.0",
+  "author": "RT2231",
+  "description": "WireGuardベースのゼロコンフィグメッシュVPN、Tailscaleの接続状態確認・起動停止を管理します。",
+  "service": {
+    "systemdUnit": "tailscaled.service",
+    "configPath": "/etc/default/tailscaled"
+  },
+  "actions": [
+    { "id": "status", "label": "接続状態・参加端末一覧", "cli": ["tailscale", "status"], "privileged": false },
+    { "id": "ip", "label": "自分に割り当てられたTailscale IP", "cli": ["tailscale", "ip"], "privileged": false },
+    { "id": "service-status", "label": "サービス状態(systemd)", "cli": ["systemctl", "status", "tailscaled.service", "--no-pager"], "privileged": false },
+    { "id": "start", "label": "デーモンを起動", "cli": ["systemctl", "start", "tailscaled.service"], "privileged": true },
+    { "id": "stop", "label": "デーモンを停止", "cli": ["systemctl", "stop", "tailscaled.service"], "privileged": true },
+    { "id": "restart", "label": "デーモンを再起動", "cli": ["systemctl", "restart", "tailscaled.service"], "privileged": true },
+    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "tailscaled.service"], "privileged": true },
+    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "tailscaled.service"], "privileged": true }
+  ],
+  "docs": "docs.md"
+}

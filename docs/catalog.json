@@ -320,5 +320,119 @@
       "定期実行"
     ],
     "hasCode": false
+  },
+  {
+    "id": "tailscale",
+    "name": "Tailscale (メッシュVPN)",
+    "version": "0.1.0",
+    "description": "WireGuardベースのゼロコンフィグメッシュVPN、Tailscaleの接続状態確認・起動停止を管理します。",
+    "author": "RT2231",
+    "download": "downloads/tailscale-plugin.zip",
+    "docs": "plugin-docs/tailscale.md",
+    "sha256": "20a7c92e34cade5a99b06a1f8f9e775d4f440994b4e88107e3a0950526da44c7",
+    "requires": [
+      "tailscale"
+    ],
+    "tags": [
+      "公式",
+      "VPN",
+      "セキュリティ"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "postfix",
+    "name": "Postfix (メールサーバー)",
+    "version": "0.1.0",
+    "description": "代表的なMTA(メール転送エージェント)であるPostfixの状態確認・キュー確認・設定チェックを管理します。",
+    "author": "RT2231",
+    "download": "downloads/postfix-plugin.zip",
+    "docs": "plugin-docs/postfix.md",
+    "sha256": "1fc897fe6780362b894d0e14ed1895b7eb70afe76c6836001a780a243cb912a6",
+    "requires": [
+      "postfix"
+    ],
+    "tags": [
+      "公式",
+      "メール",
+      "MTA"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "clamav",
+    "name": "ClamAV (アンチウイルス)",
+    "version": "0.1.0",
+    "description": "オープンソースのアンチウイルスエンジンClamAVのデーモン状態確認・定義ファイル更新を管理します。",
+    "author": "RT2231",
+    "download": "downloads/clamav-plugin.zip",
+    "docs": "plugin-docs/clamav.md",
+    "sha256": "345d793842262f7b0b9506499a18fb9e72c1b79473a3b4f5fed6581c9bbf04f5",
+    "requires": [
+      "clamav-daemon"
+    ],
+    "tags": [
+      "公式",
+      "セキュリティ",
+      "アンチウイルス"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "rsync",
+    "name": "rsync (ファイル同期デーモン)",
+    "version": "0.1.0",
+    "description": "rsyncをデーモンモードで動かし、ネットワーク越しのファイル同期・バックアップの受け口として使うための状態確認・起動停止を管理します。",
+    "author": "RT2231",
+    "download": "downloads/rsync-plugin.zip",
+    "docs": "plugin-docs/rsync.md",
+    "sha256": "ad0b42983e0c4a78d7f8ae7a70c4b73a863144c92aa459d79195d68c801b4707",
+    "requires": [
+      "rsync"
+    ],
+    "tags": [
+      "公式",
+      "バックアップ",
+      "ファイル同期"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "grafana",
+    "name": "Grafana (監視ダッシュボード)",
+    "version": "0.1.0",
+    "description": "メトリクスやログを可視化するダッシュボードツールGrafanaの状態確認・プラグイン一覧確認を管理します。",
+    "author": "RT2231",
+    "download": "downloads/grafana-plugin.zip",
+    "docs": "plugin-docs/grafana.md",
+    "sha256": "d4eeb4e50e6fa12a8d02e0c3d6d762b8ee95a63f1f358293f296c48335cde87e",
+    "requires": [
+      "grafana"
+    ],
+    "tags": [
+      "公式",
+      "監視",
+      "ダッシュボード"
+    ],
+    "hasCode": false
+  },
+  {
+    "id": "node_exporter",
+    "name": "Node Exporter (Prometheusメトリクス公開)",
+    "version": "0.1.0",
+    "description": "CPU・メモリ・ディスク等のシステムメトリクスをPrometheus形式で公開するNode Exporterの状態確認・起動停止を管理します。",
+    "author": "RT2231",
+    "download": "downloads/node_exporter-plugin.zip",
+    "docs": "plugin-docs/node_exporter.md",
+    "sha256": "906ed644bdd31ce7b455304c847a6ef9fc5cebdbced274eb6033b959b54c48ad",
+    "requires": [
+      "prometheus-node-exporter"
+    ],
+    "tags": [
+      "公式",
+      "監視",
+      "Prometheus"
+    ],
+    "hasCode": false
   }
 ]

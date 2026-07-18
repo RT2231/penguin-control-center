@@ -20,8 +20,8 @@
   preload.jsの起動不能バグのような、単体テストでは検出できない問題を防ぐためのもの
 - ホーム画面に「更新あり」バッジと「まとめて更新」ボタンを追加
 - ホーム画面に「最近のアクティビティ」（全プラグイン横断の直近実行履歴）を追加
-- 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate
-  （作成者RT2231、計17プラグイン）
+- 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate、
+  Tailscale、Postfix、ClamAV、rsync、Grafana、Node Exporter（作成者RT2231、計23プラグイン）
 - 既存を含む全17プラグインにアクションを追加(v0.1.1、docs.mdのコマンド表も更新)
 
 ### セキュリティ
