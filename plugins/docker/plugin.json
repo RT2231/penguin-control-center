@@ -1,7 +1,7 @@
 {
   "id": "docker",
   "name": "Docker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "RT2231",
   "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
   "service": {
@@ -124,6 +124,16 @@
         "docker",
         "volume",
         "ls"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "stats-snapshot",
+      "label": "コンテナのリソース使用量(1回だけ取得)",
+      "cli": [
+        "docker",
+        "stats",
+        "--no-stream"
       ],
       "privileged": false
     }

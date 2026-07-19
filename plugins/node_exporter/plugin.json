@@ -1,7 +1,7 @@
 {
   "id": "node_exporter",
   "name": "Node Exporter (Prometheusメトリクス公開)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "CPU・メモリ・ディスク等のシステムメトリクスをPrometheus形式で公開するNode Exporterの状態確認・起動停止を管理します。",
   "service": {
@@ -9,13 +9,86 @@
     "configPath": "/etc/default/node_exporter"
   },
   "actions": [
-    { "id": "status", "label": "サービス状態", "cli": ["systemctl", "status", "node_exporter.service", "--no-pager"], "privileged": false },
-    { "id": "version", "label": "バージョン確認", "cli": ["node_exporter", "--version"], "privileged": false },
-    { "id": "start", "label": "起動", "cli": ["systemctl", "start", "node_exporter.service"], "privileged": true },
-    { "id": "stop", "label": "停止", "cli": ["systemctl", "stop", "node_exporter.service"], "privileged": true },
-    { "id": "restart", "label": "再起動", "cli": ["systemctl", "restart", "node_exporter.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "node_exporter.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "node_exporter.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "サービス状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "node_exporter.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "version",
+      "label": "バージョン確認",
+      "cli": [
+        "node_exporter",
+        "--version"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "start",
+      "label": "起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "node_exporter.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "node_exporter.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "node_exporter.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "node_exporter.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "node_exporter.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "endpoint-check",
+      "label": "メトリクスエンドポイントの応答確認",
+      "cli": [
+        "curl",
+        "-sI",
+        "http://localhost:9100/metrics"
+      ],
+      "privileged": false
+    }
   ],
   "docs": "docs.md"
 }

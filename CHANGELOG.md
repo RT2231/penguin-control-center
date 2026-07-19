@@ -23,6 +23,8 @@
 - 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate、
   Tailscale、Postfix、ClamAV、rsync、Grafana、Node Exporter（作成者RT2231、計23プラグイン）
 - 既存を含む全17プラグインにアクションを追加(v0.1.1、docs.mdのコマンド表も更新)
+- Tailscale/Postfix/ClamAV/Grafana/Node Exporter/Docker/PostgreSQL/Redis/NetworkManagerに
+  追加のアクションを実装(netcheck、postconf -n、freshclam自動更新設定、pg_isready等)
 
 ### セキュリティ
 - CI(`ci.yml`)に`permissions: contents: read`を明示。以前Release用に変更していた

@@ -13,6 +13,7 @@ Redisは高速なインメモリのキーバリューストアで、キャッシ
 | `redis-cli ping` | サーバーが応答するか確認（正常なら`PONG`が返る） |
 | `redis-cli info server` | バージョン・稼働時間・プロセスID等のサーバー情報を表示 |
 | `redis-cli info memory` | メモリ使用量・断片化率などの統計情報 |
+| `redis-cli info clients` | 現在接続中のクライアント数などの情報 |
 | `systemctl restart redis-server.service` | `redis.conf`変更後の反映に必要 |
 
 ## 認証(requirepass)について

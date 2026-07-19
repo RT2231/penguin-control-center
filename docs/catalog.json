@@ -40,12 +40,12 @@
   {
     "id": "docker",
     "name": "Docker",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Dockerデーモンの状態確認・起動停止・稼働中コンテナ一覧の確認を管理します。",
     "author": "RT2231",
     "download": "downloads/docker-plugin.zip",
     "docs": "plugin-docs/docker.md",
-    "sha256": "58de7a2f3faa67ab52bf9ee5e27c3f5d2a5d08fd8b15985d01f879188fb60dc8",
+    "sha256": "0cecc7d73f3276ffa2768ad876ae6cf3985b2f697cdd96bc96fa9fb9ccaeac9a",
     "requires": [
       "docker.io もしくは Docker Engine"
     ],
@@ -249,12 +249,12 @@
   {
     "id": "networkmanager",
     "name": "NetworkManager (ネットワーク設定)",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Wi-Fi・有線LANなどのネットワーク接続状態の確認をnmcli経由で管理します。",
     "author": "RT2231",
     "download": "downloads/networkmanager-plugin.zip",
     "docs": "plugin-docs/networkmanager.md",
-    "sha256": "918af53dbfb1cc6211807f579aea5898a932c35b34e157275dd3d7f5d7d96371",
+    "sha256": "31c8248fcd1681996811b3c149f546ecb398e29f110f87bb9edb011db623e400",
     "requires": [
       "network-manager"
     ],
@@ -267,12 +267,12 @@
   {
     "id": "postgresql",
     "name": "PostgreSQL",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "オープンソースの高機能リレーショナルデータベースPostgreSQLの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
     "author": "RT2231",
     "download": "downloads/postgresql-plugin.zip",
     "docs": "plugin-docs/postgresql.md",
-    "sha256": "9079dc42f7d1e87058486f7683abe388200389ddb9220cafe110f820a9aac5cb",
+    "sha256": "67c5a3baf12501dd23d1dfa948ed93e11472192fd5256081ff212eb914bc6979",
     "requires": [
       "postgresql"
     ],
@@ -286,12 +286,12 @@
   {
     "id": "redis",
     "name": "Redis",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
     "author": "RT2231",
     "download": "downloads/redis-plugin.zip",
     "docs": "plugin-docs/redis.md",
-    "sha256": "40b251ec778bb3c9c39cfc8bd9a2ecf9412175fad65f7e531c138bd29038a3af",
+    "sha256": "82443292a8955fb9fc538bcd47eed0caea98716ad9bcb3b27425260cbb7099e2",
     "requires": [
       "redis-server"
     ],
@@ -324,12 +324,12 @@
   {
     "id": "tailscale",
     "name": "Tailscale (メッシュVPN)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "WireGuardベースのゼロコンフィグメッシュVPN、Tailscaleの接続状態確認・起動停止を管理します。",
     "author": "RT2231",
     "download": "downloads/tailscale-plugin.zip",
     "docs": "plugin-docs/tailscale.md",
-    "sha256": "20a7c92e34cade5a99b06a1f8f9e775d4f440994b4e88107e3a0950526da44c7",
+    "sha256": "af56057515b017979a4b10b091234e0af49dd24b070b0490e49621ae66a41083",
     "requires": [
       "tailscale"
     ],
@@ -343,12 +343,12 @@
   {
     "id": "postfix",
     "name": "Postfix (メールサーバー)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "代表的なMTA(メール転送エージェント)であるPostfixの状態確認・キュー確認・設定チェックを管理します。",
     "author": "RT2231",
     "download": "downloads/postfix-plugin.zip",
     "docs": "plugin-docs/postfix.md",
-    "sha256": "1fc897fe6780362b894d0e14ed1895b7eb70afe76c6836001a780a243cb912a6",
+    "sha256": "4779b2d05a05feb5f87ae7b1724820ccf817836dcdad77ca045ec0d39c19bc6d",
     "requires": [
       "postfix"
     ],
@@ -362,12 +362,12 @@
   {
     "id": "clamav",
     "name": "ClamAV (アンチウイルス)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "オープンソースのアンチウイルスエンジンClamAVのデーモン状態確認・定義ファイル更新を管理します。",
     "author": "RT2231",
     "download": "downloads/clamav-plugin.zip",
     "docs": "plugin-docs/clamav.md",
-    "sha256": "345d793842262f7b0b9506499a18fb9e72c1b79473a3b4f5fed6581c9bbf04f5",
+    "sha256": "571c2cbf034d6c24b20946c88b152072533d43cb5b4c9612a2ea41fa5bbe7fcf",
     "requires": [
       "clamav-daemon"
     ],
@@ -400,12 +400,12 @@
   {
     "id": "grafana",
     "name": "Grafana (監視ダッシュボード)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "メトリクスやログを可視化するダッシュボードツールGrafanaの状態確認・プラグイン一覧確認を管理します。",
     "author": "RT2231",
     "download": "downloads/grafana-plugin.zip",
     "docs": "plugin-docs/grafana.md",
-    "sha256": "d4eeb4e50e6fa12a8d02e0c3d6d762b8ee95a63f1f358293f296c48335cde87e",
+    "sha256": "3a803d3dc4e7d3fc4e3e0f9772b31592253105c5af079791196b67f02fe8db8d",
     "requires": [
       "grafana"
     ],
@@ -419,12 +419,12 @@
   {
     "id": "node_exporter",
     "name": "Node Exporter (Prometheusメトリクス公開)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "CPU・メモリ・ディスク等のシステムメトリクスをPrometheus形式で公開するNode Exporterの状態確認・起動停止を管理します。",
     "author": "RT2231",
     "download": "downloads/node_exporter-plugin.zip",
     "docs": "plugin-docs/node_exporter.md",
-    "sha256": "906ed644bdd31ce7b455304c847a6ef9fc5cebdbced274eb6033b959b54c48ad",
+    "sha256": "51e13040b4d87e770f88b83e8f3ba85c4c36d151d453c241abc2f79f66863842",
     "requires": [
       "prometheus-node-exporter"
     ],

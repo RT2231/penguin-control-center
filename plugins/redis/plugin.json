@@ -1,7 +1,7 @@
 {
   "id": "redis",
   "name": "Redis",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "RT2231",
   "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
   "service": {
@@ -96,6 +96,16 @@
         "redis-cli",
         "info",
         "memory"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "info-clients",
+      "label": "接続中クライアント数",
+      "cli": [
+        "redis-cli",
+        "info",
+        "clients"
       ],
       "privileged": false
     }

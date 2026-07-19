@@ -23,6 +23,8 @@ GUIから行えるようにします。
 | `clamscan --version` | ClamAVのバージョンとウイルス定義ファイルの日付を表示 |
 | `freshclam` | ウイルス定義ファイルを手動で最新版に更新 |
 | `systemctl status clamav-freshclam.service` | 定義ファイル自動更新サービスの状態 |
+| `systemctl enable --now clamav-freshclam.service` | 定義ファイルの自動更新を有効化 |
+| `systemctl disable --now clamav-freshclam.service` | 定義ファイルの自動更新を無効化 |
 
 ## 2つのサービスについて
 

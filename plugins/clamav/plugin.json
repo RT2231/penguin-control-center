@@ -1,7 +1,7 @@
 {
   "id": "clamav",
   "name": "ClamAV (アンチウイルス)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "RT2231",
   "description": "オープンソースのアンチウイルスエンジンClamAVのデーモン状態確認・定義ファイル更新を管理します。",
   "service": {
@@ -9,15 +9,117 @@
     "configPath": "/etc/clamav/clamd.conf"
   },
   "actions": [
-    { "id": "status", "label": "デーモンの状態", "cli": ["systemctl", "status", "clamav-daemon.service", "--no-pager"], "privileged": false },
-    { "id": "freshclam-status", "label": "定義ファイル更新サービスの状態", "cli": ["systemctl", "status", "clamav-freshclam.service", "--no-pager"], "privileged": false },
-    { "id": "version", "label": "バージョン・定義ファイル日付確認", "cli": ["clamscan", "--version"], "privileged": false },
-    { "id": "update-definitions", "label": "ウイルス定義を手動更新", "cli": ["freshclam"], "privileged": true },
-    { "id": "start", "label": "デーモンを起動", "cli": ["systemctl", "start", "clamav-daemon.service"], "privileged": true },
-    { "id": "stop", "label": "デーモンを停止", "cli": ["systemctl", "stop", "clamav-daemon.service"], "privileged": true },
-    { "id": "restart", "label": "デーモンを再起動", "cli": ["systemctl", "restart", "clamav-daemon.service"], "privileged": true },
-    { "id": "enable", "label": "自動起動を有効化", "cli": ["systemctl", "enable", "clamav-daemon.service"], "privileged": true },
-    { "id": "disable", "label": "自動起動を無効化", "cli": ["systemctl", "disable", "clamav-daemon.service"], "privileged": true }
+    {
+      "id": "status",
+      "label": "デーモンの状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "clamav-daemon.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "freshclam-status",
+      "label": "定義ファイル更新サービスの状態",
+      "cli": [
+        "systemctl",
+        "status",
+        "clamav-freshclam.service",
+        "--no-pager"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "version",
+      "label": "バージョン・定義ファイル日付確認",
+      "cli": [
+        "clamscan",
+        "--version"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "update-definitions",
+      "label": "ウイルス定義を手動更新",
+      "cli": [
+        "freshclam"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "start",
+      "label": "デーモンを起動",
+      "cli": [
+        "systemctl",
+        "start",
+        "clamav-daemon.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "stop",
+      "label": "デーモンを停止",
+      "cli": [
+        "systemctl",
+        "stop",
+        "clamav-daemon.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "restart",
+      "label": "デーモンを再起動",
+      "cli": [
+        "systemctl",
+        "restart",
+        "clamav-daemon.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "enable",
+      "label": "自動起動を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "clamav-daemon.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "disable",
+      "label": "自動起動を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "clamav-daemon.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "freshclam-enable",
+      "label": "定義ファイル自動更新を有効化",
+      "cli": [
+        "systemctl",
+        "enable",
+        "--now",
+        "clamav-freshclam.service"
+      ],
+      "privileged": true
+    },
+    {
+      "id": "freshclam-disable",
+      "label": "定義ファイル自動更新を無効化",
+      "cli": [
+        "systemctl",
+        "disable",
+        "--now",
+        "clamav-freshclam.service"
+      ],
+      "privileged": true
+    }
   ],
   "docs": "docs.md"
 }

@@ -21,6 +21,8 @@ GUIから行えるようにします。
 | `tailscale status` | 自分を含むネットワーク参加端末の一覧とオンライン状態 |
 | `tailscale ip` | このマシンに割り当てられたTailscale上のIPアドレス(100.x.y.z形式) |
 | `systemctl status tailscaled.service` | デーモンのsystemd上の状態 |
+| `tailscale netcheck` | NAT種別・コーディネーションサーバーへの遅延など、接続品質の診断情報 |
+| `tailscale version` | インストールされているTailscaleのバージョン |
 
 ## WireGuardプラグインとの違い
 
