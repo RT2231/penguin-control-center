@@ -45,7 +45,7 @@ function diffLines(oldText, newText) {
 
 contextBridge.exposeInMainWorld('pcc', {
   listPlugins: () => ipcRenderer.invoke('pcc:listPlugins'),
-  runAction: (pluginId, actionId) => ipcRenderer.invoke('pcc:runAction', pluginId, actionId),
+  runAction: (pluginId, actionId, paramValues) => ipcRenderer.invoke('pcc:runAction', pluginId, actionId, paramValues),
   getCliHistory: (pluginId) => ipcRenderer.invoke('pcc:getCliHistory', pluginId),
   readConfig: (pluginId) => ipcRenderer.invoke('pcc:readConfig', pluginId),
   writeConfig: (pluginId, content) => ipcRenderer.invoke('pcc:writeConfig', pluginId, content),

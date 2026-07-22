@@ -211,12 +211,12 @@
   {
     "id": "certbot",
     "name": "Certbot (Let's Encrypt証明書)",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Let's Encryptの無料SSL/TLS証明書を発行・自動更新するCertbotの状態確認・更新テストを管理します。",
     "author": "RT2231",
     "download": "downloads/certbot-plugin.zip",
     "docs": "plugin-docs/certbot.md",
-    "sha256": "fbe33d17cf8c22ad7a2ebce83d4beb02c59f1900814ce63f684cf54f63ac5c4b",
+    "sha256": "cc2cbcb3648dea105cec47ef333b7626813d68a478958c79c0b9b65c44beaf09",
     "requires": [
       "certbot"
     ],

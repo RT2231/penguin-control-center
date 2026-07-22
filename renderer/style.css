@@ -429,6 +429,65 @@ html, body {
 
 .action-cli::before { content: "$ "; color: var(--text-muted); }
 
+/* パラメータ入力フォーム ---------------------------------------------------- */
+.param-form {
+  margin-top: 16px;
+  background: var(--panel);
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.param-form-header {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.param-field { margin-bottom: 10px; }
+.param-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.param-field input {
+  width: 100%;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+.param-field input:focus { outline: none; border-color: var(--accent); }
+.param-field .param-error { color: var(--danger); font-size: 11px; margin-top: 4px; display: none; }
+.param-field.invalid input { border-color: var(--danger); }
+.param-field.invalid .param-error { display: block; }
+
+.param-form-cli-preview {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--panel-alt);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 10px 0;
+  word-break: break-all;
+}
+.param-form-cli-preview::before { content: "$ "; color: var(--text-muted); }
+
+.param-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+.action-params-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--warn);
+  margin-top: 6px;
+}
+
 .result-box {
   margin-top: 16px;
   background: var(--panel-alt);
