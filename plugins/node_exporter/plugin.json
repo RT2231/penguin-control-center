@@ -1,12 +1,12 @@
 {
-  "id": "redis",
-  "name": "Redis",
-  "version": "0.1.2",
+  "id": "node_exporter",
+  "name": "Node Exporter (Prometheusメトリクス公開)",
+  "version": "0.1.1",
   "author": "RT2231",
-  "description": "高速なインメモリKVS/キャッシュサーバーRedisの状態確認・起動停止・簡易な生存確認を管理します。",
+  "description": "CPU・メモリ・ディスク等のシステムメトリクスをPrometheus形式で公開するNode Exporterの状態確認・起動停止を管理します。",
   "service": {
-    "systemdUnit": "redis-server.service",
-    "configPath": "/etc/redis/redis.conf"
+    "systemdUnit": "node_exporter.service",
+    "configPath": "/etc/default/node_exporter"
   },
   "actions": [
     {
@@ -15,27 +15,17 @@
       "cli": [
         "systemctl",
         "status",
-        "redis-server.service",
+        "node_exporter.service",
         "--no-pager"
       ],
       "privileged": false
     },
     {
-      "id": "ping",
-      "label": "生存確認(ping)",
+      "id": "version",
+      "label": "バージョン確認",
       "cli": [
-        "redis-cli",
-        "ping"
-      ],
-      "privileged": false
-    },
-    {
-      "id": "info",
-      "label": "サーバー情報(info)",
-      "cli": [
-        "redis-cli",
-        "info",
-        "server"
+        "node_exporter",
+        "--version"
       ],
       "privileged": false
     },
@@ -45,7 +35,7 @@
       "cli": [
         "systemctl",
         "start",
-        "redis-server.service"
+        "node_exporter.service"
       ],
       "privileged": true
     },
@@ -55,7 +45,7 @@
       "cli": [
         "systemctl",
         "stop",
-        "redis-server.service"
+        "node_exporter.service"
       ],
       "privileged": true
     },
@@ -65,7 +55,7 @@
       "cli": [
         "systemctl",
         "restart",
-        "redis-server.service"
+        "node_exporter.service"
       ],
       "privileged": true
     },
@@ -75,7 +65,7 @@
       "cli": [
         "systemctl",
         "enable",
-        "redis-server.service"
+        "node_exporter.service"
       ],
       "privileged": true
     },
@@ -85,27 +75,17 @@
       "cli": [
         "systemctl",
         "disable",
-        "redis-server.service"
+        "node_exporter.service"
       ],
       "privileged": true
     },
     {
-      "id": "info-memory",
-      "label": "メモリ使用状況",
+      "id": "endpoint-check",
+      "label": "メトリクスエンドポイントの応答確認",
       "cli": [
-        "redis-cli",
-        "info",
-        "memory"
-      ],
-      "privileged": false
-    },
-    {
-      "id": "info-clients",
-      "label": "接続中クライアント数",
-      "cli": [
-        "redis-cli",
-        "info",
-        "clients"
+        "curl",
+        "-sI",
+        "http://localhost:9100/metrics"
       ],
       "privileged": false
     }

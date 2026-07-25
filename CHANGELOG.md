@@ -20,9 +20,15 @@
   preload.jsの起動不能バグのような、単体テストでは検出できない問題を防ぐためのもの
 - ホーム画面に「更新あり」バッジと「まとめて更新」ボタンを追加
 - ホーム画面に「最近のアクティビティ」（全プラグイン横断の直近実行履歴）を追加
-- 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate
-  （作成者RT2231、計17プラグイン）
+- 新プラグイン: Certbot、WireGuard、NetworkManager、PostgreSQL、Redis、logrotate、
+  Tailscale、Postfix、ClamAV、rsync、Grafana、Node Exporter（作成者RT2231、計23プラグイン）
 - 既存を含む全17プラグインにアクションを追加(v0.1.1、docs.mdのコマンド表も更新)
+- Tailscale/Postfix/ClamAV/Grafana/Node Exporter/Docker/PostgreSQL/Redis/NetworkManagerに
+  追加のアクションを実装(netcheck、postconf -n、freshclam自動更新設定、pg_isready等)
+- **パラメータ入力付きアクション**に対応。`plugin.json`の`cli`配列に`{{paramId}}`トークンを
+  含めることで、GUIから値を入力して実行できるアクションを宣言可能に（配列の1要素として
+  安全に置換、シェル文字列結合はしない）。第1弾としてCertbotに「新規証明書を発行(Nginx)」
+  アクション（ドメイン名・メールアドレス入力、非対話フラグ付き）を追加
 
 ### セキュリティ
 - CI(`ci.yml`)に`permissions: contents: read`を明示。以前Release用に変更していた

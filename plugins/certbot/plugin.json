@@ -1,7 +1,7 @@
 {
   "id": "certbot",
   "name": "Certbot (Let's Encrypt証明書)",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "RT2231",
   "description": "Let's Encryptの無料SSL/TLS証明書を発行・自動更新するCertbotの状態確認・更新テストを管理します。",
   "service": {
@@ -79,6 +79,42 @@
         "--version"
       ],
       "privileged": false
+    },
+    {
+      "id": "obtain-nginx",
+      "label": "新規証明書を発行(Nginx)",
+      "cli": [
+        "certbot",
+        "certonly",
+        "--nginx",
+        "-d",
+        "{{domain}}",
+        "-m",
+        "{{email}}",
+        "--agree-tos",
+        "--non-interactive"
+      ],
+      "privileged": true,
+      "params": [
+        {
+          "id": "domain",
+          "label": "ドメイン名",
+          "type": "text",
+          "placeholder": "example.com",
+          "required": true,
+          "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$",
+          "errorMessage": "正しいドメイン名を入力してください(例: example.com)"
+        },
+        {
+          "id": "email",
+          "label": "メールアドレス(有効期限通知用)",
+          "type": "email",
+          "placeholder": "admin@example.com",
+          "required": true,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "errorMessage": "正しいメールアドレスを入力してください"
+        }
+      ]
     }
   ],
   "docs": "docs.md"

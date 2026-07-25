@@ -1,7 +1,7 @@
 {
   "id": "postgresql",
   "name": "PostgreSQL",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "RT2231",
   "description": "オープンソースの高機能リレーショナルデータベースPostgreSQLの状態確認・起動停止を管理します（DB内部の操作は対象外）。",
   "service": {
@@ -84,6 +84,14 @@
       "label": "クラスタ一覧(バージョン・ポート・状態)",
       "cli": [
         "pg_lsclusters"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "is-ready",
+      "label": "接続受付状態の確認(pg_isready、認証不要)",
+      "cli": [
+        "pg_isready"
       ],
       "privileged": false
     }
