@@ -158,12 +158,19 @@ ipcMain.handle('pcc:listPlugins', async () => {
   return pluginLoader.listPlugins();
 });
 
-ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
+// ---- パラメータ付きアクション ----
+// 検証・置換ロジックはcore/paramSubstitution.jsに切り出し、単体テスト可能にしている。
+const { buildCliWithParams } = require('./core/paramSubstitution');
+
+ipcMain.handle('pcc:runAction', async (event, pluginId, actionId, paramValues) => {
   const plugin = pluginLoader.getPlugin(pluginId);
   if (!plugin) throw new Error(`不明なプラグインです: ${pluginId}`);
 
   const action = plugin.manifest.actions.find((a) => a.id === actionId);
   if (!action) throw new Error(`不明なアクションです: ${actionId}`);
+
+  // パラメータの検証・置換はここで行う(不正な値は例外としてrejectされ、実行に進まない)
+  const resolvedCli = buildCliWithParams(action, paramValues);
 
   // 競合チェック: サービスを起動する系のアクションで、宣言的に競合するプラグインが
   // 現在稼働中の場合は警告する(例: Apache稼働中にNginxを起動するとポートが競合する等)
@@ -194,7 +201,7 @@ ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
     }
   }
 
-  // 特権操作は実行前にネイティブ確認ダイアログを出す
+  // 特権操作は実行前にネイティブ確認ダイアログを出す(置換後の実コマンドを表示)
   if (action.privileged) {
     const { response } = await dialog.showMessageBox(mainWindow, {
       type: 'warning',
@@ -203,14 +210,14 @@ ipcMain.handle('pcc:runAction', async (event, pluginId, actionId) => {
       cancelId: 0,
       title: '管理者権限が必要な操作です',
       message: `「${action.label}」を実行しますか？`,
-      detail: `実行コマンド: ${action.cli.join(' ')}\n\nOSの認証ダイアログが表示される場合があります。`,
+      detail: `実行コマンド: ${resolvedCli.join(' ')}\n\nOSの認証ダイアログが表示される場合があります。`,
     });
     if (response !== 1) {
       return { cancelled: true };
     }
   }
 
-  return cliRunner.run(action.cli, { privileged: !!action.privileged, pluginId });
+  return cliRunner.run(resolvedCli, { privileged: !!action.privileged, pluginId });
 });
 
 ipcMain.handle('pcc:getCliHistory', async (event, pluginId) => {

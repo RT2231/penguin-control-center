@@ -1,7 +1,7 @@
 {
   "id": "networkmanager",
   "name": "NetworkManager (ネットワーク設定)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "RT2231",
   "description": "Wi-Fi・有線LANなどのネットワーク接続状態の確認をnmcli経由で管理します。",
   "service": {
@@ -77,6 +77,17 @@
         "nmcli",
         "general",
         "status"
+      ],
+      "privileged": false
+    },
+    {
+      "id": "active-connections",
+      "label": "現在アクティブな接続のみ表示",
+      "cli": [
+        "nmcli",
+        "connection",
+        "show",
+        "--active"
       ],
       "privileged": false
     }

@@ -436,26 +436,133 @@ function renderActionList(plugin) {
   const container = document.getElementById('action-list');
   container.innerHTML = '';
   document.getElementById('action-result').hidden = true;
+  document.getElementById('action-param-form').classList.add('hidden');
 
   for (const action of plugin.actions) {
     const card = document.createElement('button');
     card.className = 'action-card' + (action.privileged ? ' privileged' : '');
+    const cliDisplay = displayCli(action);
+    const hint = action.params && action.params.length > 0
+      ? '<div class="action-params-hint">✎ 入力が必要</div>'
+      : '';
     card.innerHTML = `
       <div class="action-label">${escapeHtml(action.label)}</div>
-      <div class="action-cli">${escapeHtml(action.cli.join(' '))}</div>
+      <div class="action-cli">${escapeHtml(cliDisplay)}</div>
+      ${hint}
     `;
-    card.addEventListener('click', () => runAction(plugin.id, action.id));
+    card.addEventListener('click', () => {
+      if (action.params && action.params.length > 0) {
+        showParamForm(plugin.id, action);
+      } else {
+        runAction(plugin.id, action.id);
+      }
+    });
     container.appendChild(card);
   }
 }
 
-async function runAction(pluginId, actionId) {
+// cli配列のプレースホルダー({{domain}}等)を、表示用に<domain>という読みやすい形にする
+function displayCli(action) {
+  return action.cli
+    .map((token) => {
+      const m = /^\{\{(\w+)\}\}$/.exec(token);
+      return m ? `<${m[1]}>` : token;
+    })
+    .join(' ');
+}
+
+function showParamForm(pluginId, action) {
+  document.getElementById('action-result').hidden = true;
+  const formBox = document.getElementById('action-param-form');
+
+  const fieldsHtml = action.params
+    .map(
+      (p) => `
+    <div class="param-field" data-field-for="${escapeHtml(p.id)}">
+      <label>${escapeHtml(p.label)}${p.required ? ' *' : ''}</label>
+      <input type="${p.type === 'email' ? 'email' : 'text'}" data-param-id="${escapeHtml(p.id)}"
+             placeholder="${escapeHtml(p.placeholder || '')}" autocomplete="off" />
+      <div class="param-error">${escapeHtml(p.errorMessage || '入力内容を確認してください')}</div>
+    </div>
+  `
+    )
+    .join('');
+
+  formBox.innerHTML = `
+    <div class="param-form-header">${escapeHtml(action.label)} — 値を入力してください</div>
+    ${fieldsHtml}
+    <div class="param-form-cli-preview" id="param-cli-preview"></div>
+    <div class="param-form-actions">
+      <button id="param-form-cancel" class="btn-ghost">キャンセル</button>
+      <button id="param-form-submit" class="btn-primary">実行</button>
+    </div>
+  `;
+  formBox.classList.remove('hidden');
+  formBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  const inputs = formBox.querySelectorAll('[data-param-id]');
+
+  function updatePreview() {
+    const values = collectParamValues();
+    const preview = action.cli
+      .map((token) => {
+        const m = /^\{\{(\w+)\}\}$/.exec(token);
+        if (!m) return token;
+        const v = values[m[1]];
+        return v ? v : `<${m[1]}>`;
+      })
+      .join(' ');
+    document.getElementById('param-cli-preview').textContent = preview;
+  }
+
+  function collectParamValues() {
+    const values = {};
+    inputs.forEach((el) => {
+      values[el.dataset.paramId] = el.value;
+    });
+    return values;
+  }
+
+  inputs.forEach((el) => el.addEventListener('input', updatePreview));
+  updatePreview();
+  if (inputs[0]) inputs[0].focus();
+
+  document.getElementById('param-form-cancel').addEventListener('click', () => {
+    formBox.classList.add('hidden');
+  });
+
+  document.getElementById('param-form-submit').addEventListener('click', async () => {
+    const values = collectParamValues();
+    let hasError = false;
+
+    for (const p of action.params) {
+      const v = (values[p.id] || '').trim();
+      const fieldEl = formBox.querySelector(`[data-field-for="${cssEscape(p.id)}"]`);
+      let invalid = false;
+      if (p.required && v === '') invalid = true;
+      if (v !== '' && p.pattern && !new RegExp(p.pattern).test(v)) invalid = true;
+
+      fieldEl.classList.toggle('invalid', invalid);
+      if (invalid) hasError = true;
+    }
+
+    if (hasError) {
+      showToast('入力内容を確認してください', 'error');
+      return;
+    }
+
+    formBox.classList.add('hidden');
+    await runAction(pluginId, action.id, values);
+  });
+}
+
+async function runAction(pluginId, actionId, paramValues) {
   const resultBox = document.getElementById('action-result');
   resultBox.hidden = false;
   resultBox.textContent = '実行中...';
 
   try {
-    const result = await window.pcc.runAction(pluginId, actionId);
+    const result = await window.pcc.runAction(pluginId, actionId, paramValues);
     if (result.cancelled) {
       resultBox.textContent = 'キャンセルされました。';
       return;
