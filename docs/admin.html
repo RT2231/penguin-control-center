@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com; img-src 'self'; object-src 'none'; base-uri 'none';" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>メンテナ管理画面 — Penguin Control Center</title>
+<style>
+:root{
+  --bg:#14171a; --panel:#1c2126; --panel-alt:#20262c; --border:#2a3138;
+  --text:#e6edf3; --text-muted:#8b949e;
+  --accent:#45d9c0; --accent-dim:#2b8f7e; --warn:#f0a83c; --danger:#e5534b; --ok:#3fb950;
+  --font-mono: ui-monospace,"IBM Plex Mono","JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  --font-sans: -apple-system,"Segoe UI",system-ui,"Noto Sans JP",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);}
+a{color:var(--accent)}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+nav.topbar{border-bottom:1px solid var(--border);padding:16px 0;}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:var(--font-mono);font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text);}
+.topbar-links{display:flex;gap:20px;font-family:var(--font-mono);font-size:13px;}
+.topbar-links a{color:var(--text-muted);text-decoration:none;}
+.topbar-links a:hover{color:var(--text);}
+
+header.page-head{padding:36px 0 24px;border-bottom:1px solid var(--border);}
+.eyebrow{font-family:var(--font-mono);color:var(--warn);font-size:12px;letter-spacing:.08em;margin-bottom:10px;}
+h1{font-family:var(--font-mono);font-size:clamp(22px,3.2vw,30px);margin:0 0 12px;}
+.lede{color:var(--text-muted);font-size:14px;max-width:70ch;margin:0;line-height:1.7;}
+
+main{padding:32px 0 80px;}
+
+section.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:20px;}
+section.panel h2{font-family:var(--font-mono);font-size:15px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+section.panel .step-desc{color:var(--text-muted);font-size:12.5px;margin:0 0 16px;line-height:1.6;}
+section.panel[data-disabled="true"]{opacity:.45;pointer-events:none;}
+
+label{display:block;font-family:var(--font-mono);font-size:12px;color:var(--text-muted);margin:14px 0 6px;}
+label:first-of-type{margin-top:0;}
+input[type=text],input[type=password],input[type=number],textarea,select{
+  width:100%;background:var(--panel-alt);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-family:var(--font-mono);font-size:12.5px;padding:9px 10px;
+}
+textarea{min-height:120px;resize:vertical;line-height:1.5;}
+textarea.tall{min-height:220px;}
+.row{display:flex;gap:10px;flex-wrap:wrap;}
+.row > *{flex:1;min-width:160px;}
+
+button{font-family:var(--font-mono);font-size:13px;padding:9px 16px;border-radius:6px;border:1px solid var(--border);
+  background:var(--panel-alt);color:var(--text);cursor:pointer;}
+button:hover{border-color:var(--accent-dim);}
+button:disabled{opacity:.4;cursor:not-allowed;}
+button.primary{background:var(--accent-dim);border:1px solid var(--accent);color:#06201b;font-weight:600;}
+button.danger{background:#3a2020;border:1px solid var(--danger);color:#ffd2cd;}
+.btn-row{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+
+.status-line{font-family:var(--font-mono);font-size:12.5px;margin-top:10px;padding:8px 10px;border-radius:6px;display:none;}
+.status-line.show{display:block;}
+.status-line.ok{background:rgba(63,185,80,.1);border:1px solid var(--ok);color:var(--ok);}
+.status-line.warn{background:rgba(240,168,60,.1);border:1px solid var(--warn);color:var(--warn);}
+.status-line.err{background:rgba(229,83,75,.1);border:1px solid var(--danger);color:#ffb4ae;}
+
+.raw-issue{background:var(--panel-alt);border:1px solid var(--border);border-radius:6px;padding:12px 14px;
+  font-family:var(--font-mono);font-size:11.5px;white-space:pre-wrap;max-height:260px;overflow:auto;color:var(--text-muted);margin-top:10px;}
+
+.check-list{list-style:none;margin:8px 0 0;padding:0;}
+.check-list li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 0;border-bottom:1px solid var(--border);}
+.check-list li:last-child{border-bottom:none;}
+.check-list input[type=checkbox]{width:auto;margin-top:3px;}
+
+.result-item{display:flex;gap:8px;align-items:flex-start;font-family:var(--font-mono);font-size:12px;padding:6px 0;}
+.badge{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.03em;flex-shrink:0;margin-top:1px;}
+.badge.pass{background:rgba(63,185,80,.15);color:var(--ok);}
+.badge.warn{background:rgba(240,168,60,.15);color:var(--warn);}
+.badge.fail{background:rgba(229,83,75,.15);color:#ffb4ae;}
+
+datalist{}
+
+.hint{color:var(--text-muted);font-size:11.5px;margin-top:6px;line-height:1.6;}
+.hint code{color:var(--accent);}
+
+footer{padding:32px 0 60px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);}
+footer a{color:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="wrap">
+    <div class="brand">🐧 Penguin Control Center</div>
+    <div class="topbar-links">
+      <a href="store.html">プラグインストア</a>
+      <a href="index.html">トップ</a>
+      <a href="https://github.com/RT2231/penguin-control-center">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">🔒 メンテナ専用 / MAINTAINER ONLY</div>
+    <h1>コミュニティプラグイン レビュー管理画面</h1>
+    <p class="lede">
+      プラグイン提案Issueを取り込み、内容を編集・静的チェック・手動レビューチェックリストを経て
+      <code>plugins/&lt;id&gt;/</code> へコミットし、Issueをクローズします。
+      このページはGitHub Pages上の静的ページのため、右にPersonal Access Tokenをブラウザ内(sessionStorage)に入力して直接GitHub APIを呼び出します。
+      トークンはこのタブを閉じると破棄され、どこにも送信・保存されません。
+    </p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="panel" id="panel-auth">
+    <h2>① 接続</h2>
+    <p class="step-desc">Fine-grained PAT（このリポジトリに対する <code>Contents: Read and write</code> / <code>Issues: Read and write</code> 権限）を入力してください。</p>
+    <div class="row">
+      <div>
+        <label for="owner">リポジトリ owner</label>
+        <input type="text" id="owner" value="RT2231" />
+      </div>
+      <div>
+        <label for="repo">リポジトリ名</label>
+        <input type="text" id="repo" value="penguin-control-center" />
+      </div>
+    </div>
+    <label for="pat">Personal Access Token（github_pat_... / タブを閉じると破棄されます）</label>
+    <input type="password" id="pat" autocomplete="off" placeholder="github_pat_xxxxxxxxxxxx" />
+    <div class="btn-row">
+      <button class="primary" id="btn-connect">接続して権限を確認</button>
+    </div>
+    <div class="status-line" id="auth-status"></div>
+  </section>
+
+  <section class="panel" id="panel-issue" data-disabled="true">
+    <h2>② Issueを取り込む</h2>
+    <p class="step-desc">プラグイン提案Issueの番号またはURLを入力してください。本文中に <code>```json</code> のコードブロックがあれば <code>plugin.json</code> 欄へ自動抽出します。</p>
+    <label for="issue-input">Issue番号 または Issue URL</label>
+    <input type="text" id="issue-input" placeholder="例: 42 または https://github.com/RT2231/penguin-control-center/issues/42" />
+    <div class="btn-row">
+      <button class="primary" id="btn-fetch-issue">Issueを取得</button>
+    </div>
+    <div class="status-line" id="issue-status"></div>
+    <div id="raw-issue-wrap" style="display:none;">
+      <label>Issue本文（参照用・読み取り専用）</label>
+      <div class="raw-issue" id="raw-issue"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-edit" data-disabled="true">
+    <h2>③ 内容を編集</h2>
+    <p class="step-desc">自動抽出されなかった場合はIssue本文を見ながら手動で記入してください。<code>handler.js</code> は複雑な処理が必要な場合のみ任意で入力します。</p>
+
+    <label for="field-id">プラグインID（ディレクトリ名・半角英数とハイフンのみ）</label>
+    <input type="text" id="field-id" placeholder="例: openssh" />
+
+    <label for="field-plugin-json">plugin.json</label>
+    <textarea id="field-plugin-json" class="tall" spellcheck="false" placeholder='{
+  "id": "example",
+  "name": "Example",
+  "version": "0.1.0",
+  "author": "",
+  "description": "",
+  "actions": []
+}'></textarea>
+
+    <label for="field-docs-md">docs.md</label>
+    <textarea id="field-docs-md" class="tall" spellcheck="false" placeholder="# タイトル
+
+## 概要
+
+## 主なCLIコマンド
+
+## よくあるトラブル
+"></textarea>
+
+    <label for="field-handler-js">handler.js（任意・空欄可）</label>
+    <textarea id="field-handler-js" spellcheck="false" placeholder="// 複雑な処理が必要な場合のみ記述"></textarea>
+
+    <div class="btn-row">
+      <button class="primary" id="btn-run-checks">④ 静的チェックを実行</button>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-checks" data-disabled="true">
+    <h2>④ 静的チェック結果</h2>
+    <p class="step-desc">JSON妥当性・必須項目・ID重複・危険コマンドパターンを機械的にスキャンします（あくまで補助であり、目視レビューの代わりにはなりません）。</p>
+    <div id="check-results"></div>
+  </section>
+
+  <section class="panel" id="panel-review" data-disabled="true">
+    <h2>⑤ 手動レビューチェックリスト</h2>
+    <p class="step-desc">CONTRIBUTING.mdのセキュリティレビュー基準に基づく9項目です。全て確認・チェックすると承認ボタンが有効になります。</p>
+    <ul class="check-list" id="checklist"></ul>
+
+    <label for="reviewer-name">レビュワー名</label>
+    <input type="text" id="reviewer-name" list="reviewer-suggestions" placeholder="例: RT2231 / AI" />
+    <datalist id="reviewer-suggestions">
+      <option value="AI"></option>
+      <option value="RT2231"></option>
+    </datalist>
+    <p class="hint">「AI」はレビュワー名の選択肢の一つとして入力できるだけで、実際のAI自動判定は行われません。チェックリストの確認は常に人間（あなた）が行ってください。</p>
+
+    <div class="btn-row">
+      <button class="primary" id="btn-approve" disabled>承認してコミット・Issueをクローズ</button>
+      <button class="danger" id="btn-reject">却下してコメント・クローズ</button>
+    </div>
+    <div class="status-line" id="review-status"></div>
+  </section>
+
+  <section class="panel" id="panel-log" style="display:none;">
+    <h2>実行ログ</h2>
+    <div id="log-body" style="font-family:var(--font-mono);font-size:12px;line-height:1.8;"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Penguin Control Center — メンテナ専用ページ。一般ユーザー向けのプラグインストアは <a href="store.html">store.html</a> です。</p>
+  </div>
+</footer>
+
+<script src="admin.js"></script>
+</body>
+</html>
