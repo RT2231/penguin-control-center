@@ -9,6 +9,20 @@
 
 const API_BASE = 'https://api.github.com';
 
+// GitHub OAuth App(Client IDは公開情報。Client SecretはCloudflare Worker側にのみ保持)
+const OAUTH_CLIENT_ID = 'Ov23liLKrIMy2iphdEiA';
+// トークン交換だけを代行するCloudflare Worker(Client Secretを保持し、CORS非対応な
+// github.com/login/oauth/access_token をサーバー側から叩いて結果だけ返す)
+const OAUTH_WORKER_URL = 'https://pcc-oauth.shirokuma0822.workers.dev/';
+// このリポジトリはpublicのため、書き込みに必要な最小スコープはpublic_repoで足りる
+// (public_repoにはissuesの読み書きも含まれる)
+const OAUTH_SCOPE = 'public_repo';
+
+function oauthRedirectUri() {
+  // 現在のページURLからクエリ/ハッシュを除いたものを使う(GitHub側の登録値と完全一致させる必要がある)
+  return `${location.origin}${location.pathname}`;
+}
+
 const state = {
   owner: '',
   repo: '',
@@ -78,46 +92,122 @@ async function gh(path, options = {}) {
 }
 
 // ---------- ① 接続 ----------
+//
+// 2通りの経路でトークンを得られる:
+// (a) 「GitHubでログイン」ボタン → OAuth Authorize → Cloudflare Workerでcodeをaccess_tokenに交換
+// (b) 手動でPersonal Access Tokenを貼り付け(上級者向けフォールバック)
+// どちらの場合も、最終的に connectWithToken() で「そのトークンにpush権限があるか」を検証する。
 
-document.getElementById('btn-connect').addEventListener('click', async () => {
+async function connectWithToken(token, { silent = false } = {}) {
   const owner = document.getElementById('owner').value.trim();
   const repo = document.getElementById('repo').value.trim();
-  const pat = document.getElementById('pat').value.trim();
 
-  if (!owner || !repo || !pat) {
-    setStatus('auth-status', 'err', 'owner / repo / トークンを入力してください。');
-    return;
+  if (!owner || !repo || !token) {
+    if (!silent) setStatus('auth-status', 'err', 'owner / repo / トークンを入力してください。');
+    return false;
   }
 
-  setStatus('auth-status', 'warn', '確認中...');
+  if (!silent) setStatus('auth-status', 'warn', '確認中...');
 
+  state.pat = token; // gh()がこの時点のstate.patを見るため先にセットしておく
   const { ok, status, json } = await gh(`/repos/${owner}/${repo}`);
 
   if (!ok) {
+    state.pat = '';
     setStatus('auth-status', 'err', `リポジトリの取得に失敗しました (HTTP ${status})。owner/repo名またはトークンを確認してください。`);
-    return;
+    return false;
   }
 
   const hasPush = !!(json.permissions && json.permissions.push);
   if (!hasPush) {
-    setStatus('auth-status', 'err', 'このトークンにはリポジトリへの書き込み権限(push)がありません。Fine-grained PATの Contents: Read and write 権限を確認してください。');
-    return;
+    state.pat = '';
+    setStatus('auth-status', 'err', 'このトークンにはリポジトリへの書き込み権限(push)がありません。権限設定を確認してください。');
+    return false;
   }
 
   state.owner = owner;
   state.repo = repo;
-  state.pat = pat;
   state.authed = true;
-  sessionStorage.setItem('pcc-admin-pat', pat); // タブ内のみ・リロード時の再入力を減らすため(閉じれば消える)
+  sessionStorage.setItem('pcc-admin-pat', token); // タブ内のみ・リロード時の再ログインを減らすため(閉じれば消える)
 
   setStatus('auth-status', 'ok', `接続OK: ${owner}/${repo} への書き込み権限を確認しました。`);
+  document.getElementById('btn-login-github').style.display = 'none';
+  document.getElementById('btn-logout').style.display = 'inline-block';
+  document.getElementById('manual-pat-box').style.display = 'none';
   setPanelEnabled('panel-issue', true);
+  return true;
+}
+
+document.getElementById('btn-connect').addEventListener('click', () => {
+  const pat = document.getElementById('pat').value.trim();
+  connectWithToken(pat);
 });
 
-// リロード時にsessionStorageのPATを復元(利便性のため。保存はsessionStorageのみでサーバー送信はしない)
-window.addEventListener('DOMContentLoaded', () => {
+document.getElementById('btn-login-github').addEventListener('click', () => {
+  const stateToken = crypto.randomUUID();
+  sessionStorage.setItem('pcc-oauth-state', stateToken);
+  const params = new URLSearchParams({
+    client_id: OAUTH_CLIENT_ID,
+    scope: OAUTH_SCOPE,
+    redirect_uri: oauthRedirectUri(),
+    state: stateToken,
+  });
+  location.href = `https://github.com/login/oauth/authorize?${params.toString()}`;
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  sessionStorage.removeItem('pcc-admin-pat');
+  sessionStorage.removeItem('pcc-oauth-state');
+  location.reload();
+});
+
+document.getElementById('toggle-manual-pat').addEventListener('click', (e) => {
+  e.preventDefault();
+  const box = document.getElementById('manual-pat-box');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+});
+
+// GitHubからOAuthのcode付きでリダイレクトされてきた場合の処理
+async function handleOAuthRedirect() {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  const returnedState = params.get('state');
+  if (!code) return false;
+
+  // URLからcode/stateを消しておく(リロード時の二重処理・履歴への残留を防ぐ)
+  history.replaceState({}, '', oauthRedirectUri());
+
+  const savedState = sessionStorage.getItem('pcc-oauth-state');
+  sessionStorage.removeItem('pcc-oauth-state');
+  if (!savedState || returnedState !== savedState) {
+    setStatus('auth-status', 'err', 'OAuthのstateが一致しませんでした(CSRF対策で拒否されました)。もう一度ログインしてください。');
+    return true;
+  }
+
+  setStatus('auth-status', 'warn', 'GitHubからのログインを処理中です...');
+  try {
+    const res = await fetch(`${OAUTH_WORKER_URL}?code=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    if (!res.ok || !data.access_token) {
+      setStatus('auth-status', 'err', `ログインに失敗しました: ${data.error_description || data.error || 'unknown error'}`);
+      return true;
+    }
+    await connectWithToken(data.access_token);
+  } catch (err) {
+    setStatus('auth-status', 'err', `Worker経由のトークン取得に失敗しました: ${err.message}`);
+  }
+  return true;
+}
+
+// リロード時にsessionStorageのトークンがあれば自動で再接続を試みる(OAuth/手動PATどちらでも)
+window.addEventListener('DOMContentLoaded', async () => {
+  const handledRedirect = await handleOAuthRedirect();
+  if (handledRedirect) return;
+
   const saved = sessionStorage.getItem('pcc-admin-pat');
-  if (saved) document.getElementById('pat').value = saved;
+  if (saved) {
+    await connectWithToken(saved, { silent: true });
+  }
 });
 
 // ---------- ② Issue取り込み ----------

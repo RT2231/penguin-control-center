@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com; img-src 'self'; object-src 'none'; base-uri 'none';" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com https://pcc-oauth.shirokuma0822.workers.dev; img-src 'self'; object-src 'none'; base-uri 'none';" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>メンテナ管理画面 — Penguin Control Center</title>
@@ -116,7 +116,7 @@ footer a{color:var(--text-muted);}
 
   <section class="panel" id="panel-auth">
     <h2>① 接続</h2>
-    <p class="step-desc">Fine-grained PAT（このリポジトリに対する <code>Contents: Read and write</code> / <code>Issues: Read and write</code> 権限）を入力してください。</p>
+    <p class="step-desc">GitHubアカウントでログインしてください。トークンはブラウザの sessionStorage にのみ保持され、タブを閉じるかログアウトすると破棄されます。</p>
     <div class="row">
       <div>
         <label for="owner">リポジトリ owner</label>
@@ -127,12 +127,23 @@ footer a{color:var(--text-muted);}
         <input type="text" id="repo" value="penguin-control-center" />
       </div>
     </div>
-    <label for="pat">Personal Access Token（github_pat_... / タブを閉じると破棄されます）</label>
-    <input type="password" id="pat" autocomplete="off" placeholder="github_pat_xxxxxxxxxxxx" />
+
     <div class="btn-row">
-      <button class="primary" id="btn-connect">接続して権限を確認</button>
+      <button class="primary" id="btn-login-github">🔑 GitHubでログイン</button>
+      <button id="btn-logout" style="display:none;">ログアウト</button>
     </div>
     <div class="status-line" id="auth-status"></div>
+
+    <p class="hint" style="margin-top:16px;">
+      <a href="#" id="toggle-manual-pat">▸ うまくログインできない場合はPersonal Access Tokenを直接入力する(上級者向け)</a>
+    </p>
+    <div id="manual-pat-box" style="display:none;margin-top:10px;">
+      <label for="pat">Personal Access Token（github_pat_... / classic ghp_... どちらも可）</label>
+      <input type="password" id="pat" autocomplete="off" placeholder="github_pat_xxxxxxxxxxxx" />
+      <div class="btn-row">
+        <button id="btn-connect">このトークンで接続</button>
+      </div>
+    </div>
   </section>
 
   <section class="panel" id="panel-issue" data-disabled="true">
