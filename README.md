@@ -1,5 +1,7 @@
 # Penguin Control Center (PCC)
 
+[![Tsukuttaに掲載中](https://tsukutta.app/api/badge/f31576b3-5f17-415b-8e19-55929298b498?lang=ja)](https://tsukutta.app/apps/f31576b3-5f17-415b-8e19-55929298b498)
+
 LinuxのCLIツールをGUIで管理し、対応するCLIも同時に学べる統合管理ツール。
 GUI操作のたびに対応するCLIコマンドが表示され、設定ファイルの差分表示・自動バックアップ・Undo、
 プラグインストアからのワンクリック導入など、Linux管理と学習を一つにまとめています。
