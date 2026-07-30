@@ -34,6 +34,21 @@ function readCatalog() {
   }
 }
 
+// admin.html(メンテナ用レビュー画面)がコミュニティプラグイン採用時に生成する
+// plugins/<id>/review.json を読み込む。存在しない/不正な場合はnull。
+// (公式プラグイン(RT2231が直接plugins/へ追加したもの)にはreview.jsonがなくてもよい)
+function readReview(pluginDir) {
+  const reviewPath = path.join(pluginDir, 'review.json');
+  if (!fs.existsSync(reviewPath)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(reviewPath, 'utf-8'));
+    if (!data.reviewedBy || !data.reviewedAt) return null;
+    return { reviewedBy: data.reviewedBy, reviewedAt: data.reviewedAt };
+  } catch {
+    return null;
+  }
+}
+
 function writeCatalog(catalog) {
   fs.writeFileSync(CATALOG_PATH, JSON.stringify(catalog, null, 2) + '\n', 'utf-8');
 }
@@ -67,6 +82,7 @@ function getPlugins() {
     const existing = catalog.find((c) => c.id === id) || {};
     const zipPath = path.join(DOWNLOADS_DIR, `${id}-plugin.zip`);
     const hasHandler = fs.existsSync(path.join(PLUGINS_DIR, id, 'handler.js'));
+    const review = readReview(path.join(PLUGINS_DIR, id));
 
     result.push({
       id,
@@ -82,6 +98,8 @@ function getPlugins() {
       tags: existing.tags || [],
       requires: existing.requires || [],
       hasHandler,
+      reviewedBy: review ? review.reviewedBy : null,
+      reviewedAt: review ? review.reviewedAt : null,
     });
   }
   return result;
@@ -132,6 +150,7 @@ function publishPlugin(id, { author, tags, requires }) {
   const catalog = readCatalog();
   const hasHandler = fs.existsSync(path.join(pluginDir, 'handler.js'));
   const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).digest('hex');
+  const review = readReview(pluginDir);
   const entry = {
     id: manifest.id,
     name: manifest.name,
@@ -144,6 +163,7 @@ function publishPlugin(id, { author, tags, requires }) {
     requires: requires || [],
     tags: tags || [],
     hasCode: hasHandler,
+    ...(review ? { reviewedBy: review.reviewedBy, reviewedAt: review.reviewedAt } : {}),
   };
 
   const idx = catalog.findIndex((c) => c.id === id);

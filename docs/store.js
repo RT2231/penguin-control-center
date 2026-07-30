@@ -10,6 +10,9 @@ fetch('catalog.json')
       const codeBadge = p.hasCode
         ? '<span class="tag code-badge" title="このプラグインは宣言的なCLI定義に加えて、追加のJavaScriptコード(handler.js)を含みます">⚠ カスタムコード含む</span>'
         : '<span class="tag manifest-badge" title="宣言的なCLI定義のみで構成されています(追加コードなし)">manifest-only</span>';
+      const reviewedBadge = p.reviewedBy
+        ? `<span class="tag reviewed-badge" title="レビュー日: ${escapeHtml(p.reviewedAt || '')}">✓ reviewed by ${escapeHtml(p.reviewedBy)}</span>`
+        : '';
       const downloadHref = isSafeRelativePath(p.download) ? escapeHtml(p.download) : '#';
       const detailHref = `plugin.html?id=${encodeURIComponent(p.id)}`;
       card.innerHTML = `
@@ -18,7 +21,7 @@ fetch('catalog.json')
           <div class="version">v${escapeHtml(p.version)} ・ ${escapeHtml(p.author || '')}</div>
           <div class="desc">${escapeHtml(p.description)}</div>
         </a>
-        <div class="tags">${tags}${codeBadge}</div>
+        <div class="tags">${tags}${codeBadge}${reviewedBadge}</div>
         <div style="display:flex;gap:8px;">
           <a class="btn" href="${detailHref}" style="flex:1;text-align:center;background:transparent;border:1px solid var(--border);color:var(--text);">詳細を見る</a>
           <a class="btn" href="${downloadHref}" download style="flex:1;text-align:center;">ダウンロード</a>

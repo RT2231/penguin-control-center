@@ -34,6 +34,9 @@ function renderCard(p) {
   } else {
     statusPills.push('<span class="pill warn">未公開</span>');
   }
+  if (p.reviewedBy) {
+    statusPills.push(`<span class="pill ok" title="レビュー日: ${escapeHtml(p.reviewedAt || '')}">✓ reviewed by ${escapeHtml(p.reviewedBy)}</span>`);
+  }
 
   card.innerHTML = `
     <div class="plugin-head">

@@ -45,6 +45,9 @@ async function init() {
   const codeBadge = plugin.hasCode
     ? '<span class="tag code-badge">⚠ カスタムコード含む</span>'
     : '<span class="tag manifest-badge">manifest-only</span>';
+  const reviewedBadge = plugin.reviewedBy
+    ? `<span class="tag reviewed-badge" title="レビュー日: ${escapeHtml(plugin.reviewedAt || '')}">✓ reviewed by ${escapeHtml(plugin.reviewedBy)}</span>`
+    : '';
   const downloadHref = isSafeRelativePath(plugin.download) ? escapeHtml(plugin.download) : '#';
 
   content.innerHTML = `
@@ -52,7 +55,7 @@ async function init() {
       <h1>${escapeHtml(plugin.name)}</h1>
       <div class="meta-row">id: ${escapeHtml(plugin.id)} ・ v${escapeHtml(plugin.version)} ・ ${escapeHtml(plugin.author || '')}</div>
       <p class="desc">${escapeHtml(plugin.description || '')}</p>
-      <div class="tags">${tags}${codeBadge}</div>
+      <div class="tags">${tags}${codeBadge}${reviewedBadge}</div>
       <a class="btn" href="${downloadHref}" download>ダウンロード (.zip)</a>
     </header>
     <div class="docs-body" id="docs-body"><span class="muted">ドキュメントを読み込み中...</span></div>
