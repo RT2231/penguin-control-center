@@ -19,8 +19,12 @@ const OAUTH_WORKER_URL = 'https://pcc-oauth.shirokuma0822.workers.dev/';
 const OAUTH_SCOPE = 'public_repo';
 
 function oauthRedirectUri() {
-  // 現在のページURLからクエリ/ハッシュを除いたものを使う(GitHub側の登録値と完全一致させる必要がある)
-  return `${location.origin}${location.pathname}`;
+  // location.pathnameから動的に組み立てると、GitHub Pagesの「拡張子なしURLでも
+  // admin.htmlの中身をURLバーを書き換えずに返す」仕様により、ユーザーが
+  // ".../admin"(拡張子なし)でアクセスした場合に redirect_uri が ".../admin" になり、
+  // GitHub OAuth Appに登録した ".../admin.html" と不一致でエラーになっていた。
+  // アクセス経路に依存しないよう、常にこの固定値を使う(GitHub側の登録値と完全一致させること)。
+  return 'https://rt2231.github.io/penguin-control-center/admin.html';
 }
 
 const state = {
