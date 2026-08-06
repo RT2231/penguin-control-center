@@ -18,6 +18,11 @@
 
 name: "Microsoft Defender For Devops"
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 on:
   push:
     branches: [ "main" ]
@@ -30,10 +35,6 @@ jobs:
   MSDO:
     # currently only windows latest is supported
     runs-on: windows-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
 
     steps:
     - uses: actions/checkout@v7
